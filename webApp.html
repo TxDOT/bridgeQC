@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <!-- Add metadata information for html, within head -->
+        <meta charset="utf-8"/>
+        <meta name = "viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+        <title> Intern Bridge QAQC WebApp</title>
+
+        <!-- SET ESRI CSS SOURCE -->
+        <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css"/>
+        
+        <!-- SET ESRI JS API SOURCE -->
+        <script src="https://js.arcgis.com/4.26/"></script>
+        
+        <!-- CSS IN A STYLE TAG -->
+        <style>
+            html,
+            body,
+            #mapViewDiv {
+                padding: 0;
+                margin: 0;
+                height: 100%;
+                width: 100%;
+            }
+
+            #btnDiv {
+                position: fixed;
+                top: 130px;
+                right: 15px;
+            }
+
+            /*Loader Spinner and Mask*/
+            #loader {
+                display: block;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                z-index: 100;
+                width: 150px;
+                height: 150px;
+                margin: -75px 0 0 -75px;
+                border: 16px solid #f3f3f3;
+                border-radius: 50%;
+                border-top: 16px solid #3498db;
+                width: 120px;
+                height: 120px;
+                -webkit-animation: spin 1s linear infinite;
+                animation: spin 1s linear infinite;
+            }
+
+            /* Safari */
+            @-webkit-keyframes spin {
+                0% { -webkit-transform: rotate(0deg); }
+                100% { -webkit-transform: rotate(360deg); }
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            #mask{
+                height: 100%;
+                width: 100%;
+                top: 0;
+                left: 0;
+                background-color: #606060;
+                position: fixed;
+                display: block;
+                z-index: 99;
+            }
+        </style>
+
+
+
+    </head>
+</html>
