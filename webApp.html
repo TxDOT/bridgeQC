@@ -1,15 +1,15 @@
 <html>
     <head>
-        <!-- Add metadata information for html, within head -->
+        <!-- ADD METADATA INFORMATION FOR HTML, WITHIN HEAD-->
         <meta charset="utf-8"/>
         <meta name = "viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
         <title> Intern Bridge QAQC WebApp</title>
 
         <!-- SET ESRI CSS SOURCE -->
-        <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css"/>
+        <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css"/>
         
         <!-- SET ESRI JS API SOURCE -->
-        <script src="https://js.arcgis.com/4.26/"></script>
+        <script src="https://js.arcgis.com/4.22/"></script>
         
         <!-- CSS IN A STYLE TAG -->
         <style>
@@ -28,7 +28,7 @@
                 right: 15px;
             }
 
-            /*Loader Spinner and Mask*/
+            /*LOADER/SPINNER AND MASK*/
             #loader {
                 display: block;
                 position: absolute;
@@ -47,7 +47,7 @@
                 animation: spin 1s linear infinite;
             }
 
-            /* Safari */
+            /* SAFARI */
             @-webkit-keyframes spin {
                 0% { -webkit-transform: rotate(0deg); }
                 100% { -webkit-transform: rotate(360deg); }
@@ -69,6 +69,124 @@
                 z-index: 99;
             }
         </style>
+
+        <!-- JS IN A SCRIPT TAG-->
+        <script>
+            // REQUIRE STATEMENT LOADS individual ESRI MODULES
+            require(
+                [// MAP AND MAPVIEW
+                "esri/config",
+                "esri/core/watchUtils",
+                "esri/Map",
+                "esri/views/MapView",
+                "esri/Basemap",
+
+                // WIDGETS AND UI
+                "esri/widgets/Home",
+                "esri/widgets/Zoom",
+
+                // LAYERS
+                "esri/layers/FeatureLayer",
+                "esri/layers/VectorTileLayer",
+
+                // DOJO
+                "dojo/dom",
+                "dojo/domReady!"            
+            ],
+
+            //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
+            (esriConfig, watchUtils, Map, MapView, Basemap, Home, Zoom, FeatureLayer, VectorTileLayer, dom) => {
+
+                //CREATE MAP WITH TXDOT VECTOR TILE BASEMAP
+                const txdotVectorTiles = new VectorTileLayer("https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer");
+
+                const vTBasemap = new Basemap({
+                    baseLayers: txdotVectorTiles
+                });
+
+                const map = new Map({
+                    basemap: vTBasemap
+                });
+
+
+                // CREATE MAPVIEW
+                const mapView = new MapView({
+                    container: "mapViewDiv",
+                    map: map,
+                    center: [-100,341389, 31.132222],
+                    zoom: 6,
+                    constraints: {
+                        minZoom: 5,
+                        rotationEnabled: false
+                    },
+                    popup: {
+                        dockOptions: {
+                            position: "bottom-right"
+                        }
+                    }
+                });
+
+                // ESRI UI WIDGETS
+                const home = new Home({
+                    view: mapView
+                });
+
+                // NOT SURE WHAT THESE CONSOLE.LOGS ARE FOR YET
+                console.log("msg");
+                console.log(map);
+                const zoom = new Zoom({
+                    viw: mapView
+                });
+
+                // ADD AN POSITION WIDGETS IN THE MAPVIEW
+                mapView.ui.remove ("attribution");
+                mapView.ui.empty ("top-left");
+                mapView.ui.add([
+                    {
+                        component: home,
+                        position: "top-right"
+                        index: 1
+                    }, {
+                        component: zoom,
+                        position: "top-right"
+                        index: 0
+                    },
+                ]);
+
+                // CONSTRUCT POPUP TEMPLATES FOR FEATURELAYERS
+                const roadwayTemplate = {
+                    title: "Roadways",
+                    content: [{
+                        type: "fields"
+                        fieldInfos: [{
+                            fieldName: "RTE_NM",
+                            label: "Route ID",
+                            visible: true
+                        },{
+                            fieldName: "RDBD_TYPE",
+                            label: "Roadbed Type",
+                            visible: true 
+                        }, {
+                            fieldName: "MAP_LBL",
+                            label: "Name/Number",
+                            visible: true 
+                        }, {
+                            fieldName: "BEGIN_DFO",
+                            label: "Begin DFO",
+                            places: 3,
+                            visible: true 
+                        }, {
+                            fieldName: "END_DFO",
+                            label: "End DFO",
+                            places: 3,
+                            visible: true
+                        }]
+                    }]
+                };
+
+            }
+            )
+        </script>
 
 
 
