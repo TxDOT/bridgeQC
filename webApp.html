@@ -25,7 +25,7 @@
             #btnDiv {
                 position: fixed;
                 top: 130px;
-                right: 15px;
+                right: 15px
             }
 
             /*LOADER/SPINNER AND MASK*/
@@ -74,143 +74,144 @@
         <script>
             // REQUIRE STATEMENT LOADS individual ESRI MODULES
             require(
-                [// MAP AND MAPVIEW
-                "esri/config",
-                "esri/core/watchUtils",
-                "esri/Map",
-                "esri/views/MapView",
-                "esri/Basemap",
+                [
+                    // MAP AND MAPVIEW
+                    "esri/config",
+                    "esri/core/watchUtils",
+                    "esri/Map",
+                    "esri/views/MapView",
+                    "esri/Basemap",
 
-                // WIDGETS AND UI
-                "esri/widgets/Home",
-                "esri/widgets/Zoom",
+                    // WIDGETS AND UI
+                    "esri/widgets/Home",
+                    "esri/widgets/Zoom",
 
-                // LAYERS
-                "esri/layers/FeatureLayer",
-                "esri/layers/VectorTileLayer",
+                    // LAYERS
+                    "esri/layers/FeatureLayer",
+                    "esri/layers/VectorTileLayer",
 
-                // DOJO
-                "dojo/dom",
-                "dojo/domReady!"            
+                    // DOJO
+                    "dojo/dom",
+                    "dojo/domReady!"            
             ],
 
             //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
             (esriConfig, watchUtils, Map, MapView, Basemap, Home, Zoom, FeatureLayer, VectorTileLayer, dom) => {
 
-                //CREATE MAP WITH TXDOT VECTOR TILE BASEMAP
-                const txdotVectorTiles = new VectorTileLayer("https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer");
+            //CREATE MAP WITH TXDOT VECTOR TILE BASEMAP
+            const txdotVectorTiles = new VectorTileLayer("https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer");
 
-                const vTBasemap = new Basemap({
-                    baseLayers: txdotVectorTiles
-                });
-
-                const map = new Map({
-                    basemap: vTBasemap
-                });
-
-
-                // CREATE MAPVIEW
-                const mapView = new MapView({
-                    container: "mapViewDiv",
-                    map: map,
-                    center: [-100,341389, 31.132222],
-                    zoom: 6,
-                    constraints: {
-                        minZoom: 5,
-                        rotationEnabled: false
-                    },
-                    popup: {
-                        dockOptions: {
-                            position: "bottom-right"
-                        }
-                    }
-                });
-
-                // ESRI UI WIDGETS
-                const home = new Home({
-                    view: mapView
-                });
-
-                // NOT SURE WHAT THESE CONSOLE.LOGS ARE FOR YET
-                console.log("msg");
-                console.log(map);
-                const zoom = new Zoom({
-                    viw: mapView
-                });
-
-                // ADD AN POSITION WIDGETS IN THE MAPVIEW
-                mapView.ui.remove ("attribution");
-                mapView.ui.empty ("top-left");
-                mapView.ui.add([
-                    {
-                        component: home,
-                        position: "top-right",
-                        index: 1
-                    }, {
-                        component: zoom,
-                        position: "top-right",
-                        index: 0
-                    },
-                ]);
-
-                // CONSTRUCT POPUP TEMPLATES FOR FEATURELAYERS
-                const roadwayTemplate = {
-                    title: "Roadways",
-                    content: [{
-                        type: "fields",
-                        fieldInfos: [{
-                            fieldName: "RTE_NM",
-                            label: "Route ID",
-                            visible: true
-                        },{
-                            fieldName: "RDBD_TYPE",
-                            label: "Roadbed Type",
-                            visible: true 
-                        }, {
-                            fieldName: "MAP_LBL",
-                            label: "Name/Number",
-                            visible: true 
-                        }, {
-                            fieldName: "BEGIN_DFO",
-                            label: "Begin DFO",
-                            places: 3,
-                            visible: true 
-                        }, {
-                            fieldName: "END_DFO",
-                            label: "End DFO",
-                            places: 3,
-                            visible: true
-                        }]
-                    }]
-                };
-
-                // CONSTRUCT FEATURELAYERS
-                const roadways = new FeatureLayer({
-                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer/0",
-                    legendEnabled: false,
-                    opacity: 0.0, // ADD LAYER BUT DO NOT SHOW
-                    visible: true,
-                    popupEnabled: true,
-                    outFields: ["RTE_NM", "RDBD_TYPE", "MAP_LBL", "RTE_PRFX", "BEGIN_DFO", "END_DFO"],
-                    popupTemplate: roadwayTemplate,
-                    title: "Roadways"
-                });
-
-                // ADD FEATURELAYER TO THE MAP
-                map.add(roadways);
-
-                // SET TIMEOUT FUNCTION - NOT SURE YET
-
-                window.setTimeout(function(){
-                    document.getElementByID("loader").style = "display: none";
-                    document.getElementByID("mask").style = "display: none";
-                }, 2000);
-
-                document.getElementById("btnJTG").addEventListener("click", function(){
-                    console.log(mapView.center);
-                });
-
+            const vTBasemap = new Basemap({
+                baseLayers: txdotVectorTiles
             });
+
+            const map = new Map({
+                basemap: vTBasemap
+            });
+
+
+            // CREATE MAPVIEW
+            const mapView = new MapView({
+                container: "mapViewDiv",
+                map: map,
+                center: [-100,341389, 31.132222],
+                zoom: 6,
+                constraints: {
+                    minZoom: 5,
+                    rotationEnabled: false
+                },
+                popup: {
+                    dockOptions: {
+                        position: "bottom-right"
+                    }
+                }
+            });
+
+            // ESRI UI WIDGETS
+            const home = new Home({
+                view: mapView
+            });
+
+            // NOT SURE WHAT THESE CONSOLE.LOGS ARE FOR YET
+            console.log("msg");
+            console.log(map);
+            const zoom = new Zoom({
+                view: mapView
+            });
+
+            // ADD AN POSITION WIDGETS IN THE MAPVIEW
+            mapView.ui.remove ("attribution");
+            mapView.ui.empty ("top-left");
+            mapView.ui.add([
+                {
+                    component: home,
+                    position: "top-right",
+                    index: 1
+                }, {
+                    component: zoom,
+                    position: "top-right",
+                    index: 0
+                },
+            ]);
+
+            // CONSTRUCT POPUP TEMPLATES FOR FEATURELAYERS
+            const roadwayTemplate = {
+                title: "Roadways",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "RTE_NM",
+                        label: "Route ID",
+                        visible: true
+                    }, {
+                        fieldName: "RDBD_TYPE",
+                        label: "Roadbed Type",
+                        visible: true 
+                    }, {
+                        fieldName: "MAP_LBL",
+                        label: "Name/Number",
+                        visible: true 
+                    }, {
+                        fieldName: "BEGIN_DFO",
+                        label: "Begin DFO",
+                        places: 3,
+                        visible: true 
+                    }, {
+                        fieldName: "END_DFO",
+                        label: "End DFO",
+                        places: 3,
+                        visible: true
+                    }]
+                }]
+            };
+
+            // CONSTRUCT FEATURELAYERS
+            const roadways = new FeatureLayer({
+                url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer/0",
+                legendEnabled: false,
+                visible: true,
+                opacity: 0.0, // ADD LAYER BUT DO NOT SHOW
+                popupEnabled: true,
+                outFields: ["RTE_NM", "RDBD_TYPE", "MAP_LBL", "RTE_PRFX", "BEGIN_DFO", "END_DFO"],
+                popupTemplate: roadwayTemplate,
+                title: "Roadways"
+            });
+
+            // ADD FEATURELAYER TO THE MAP
+            map.add(roadways);
+
+            // SET TIMEOUT FUNCTION - NOT SURE YET
+
+            window.setTimeout(function(){
+                document.getElementByID("loader").style = "display: none";
+                document.getElementByID("mask").style = "display: none";
+            }, 2000);
+
+            document.getElementById("btnJTG").addEventListener("click", function(){
+                console.log(mapView.center);
+            });
+
+        });
         </script>
     </head>
 
