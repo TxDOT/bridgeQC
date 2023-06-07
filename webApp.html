@@ -184,11 +184,46 @@
                     }]
                 };
 
-            }
-            )
+                // CONSTRUCT FEATURELAYERS
+                const roadways = new FeatureLayer({
+                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer/0",
+                    legendEnabled: false,
+                    opacity: 0.0, // ADD LAYER BUT DO NOT SHOW
+                    visible: true,
+                    popupEnabled: true,
+                    outFields: ["RTE_NM", "RDBD_TYPE", "MAP_LBL", "RTE_PRFX", "BEGIN_DFO", "END_DFO"],
+                    popupTemplate: roadwayTemplate,
+                    title: "Roadways"
+                });
+
+                // ADD FEATURELAYER TO THE MAP
+                map.add(roadways);
+
+                // SET TIMEOUT FUNCTION - NOT SURE YET
+
+                window.setTimeout(function(){
+                    document.getElementByID("loader").style = "display: none";
+                    document.getElementByID("mask").style = "display: none";
+                }, 2000);
+
+                document.getElementById("btnJTG").addEventListener("click", function(){
+                    console.log(mapView.center);
+                });
+
+            });
         </script>
-
-
-
     </head>
+
+    <!--- AFTER THE HEAD COMES THE BODY WITHIN THE HTML BRACES-->
+    <body>
+        <div id="loader"></div>
+		<div id="mask"></div>
+        <div id="mapViewDiv">
+            <div id="btnDiv" class="esri-component">
+                <button 
+                id="btnJTG" class="action-button esri-icon-applications">
+                </button>
+            </div>
+        </div>
+    </body>
 </html>
