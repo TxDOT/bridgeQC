@@ -20,6 +20,28 @@
                 height: 100%;
                 width: 100%;
             }
+
+            #layerToggle {
+                top: 20px;
+                right: 20px;
+                position: absolute;
+                z-index: 99;
+                background-color: white;
+                border-radius: 8px;
+                padding: 10px;
+                opacity: 0.75;
+            }
+
+            #layerToggle2 {
+                top: 70px;
+                right: 20px;
+                position: absolute;
+                z-index: 99;
+                background-color: white;
+                border-radius: 8px;
+                padding: 10px;
+                opacity: 0.75;
+            }
         </style>
 
         <!-- JS IN A SCRIPT TAG-->
@@ -35,29 +57,15 @@
 
                     // LAYERS
                     "esri/layers/FeatureLayer",
-                    "esri/layers/VectorTileLayer",
-
-                    // OAUTH 2.0
-                    "esri/identity/OAuthInfo",
-                    "esri/identity/IdentityManager",           
+                    "esri/layers/TileLayer",         
                 ],
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
-                function(esriConfig, Map, MapView, Basemap, FeatureLayer, VectorTileLayer, OAuthInfo, IdentityManager) {
+                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer) {
 
 
                 // HAVE TO HAVE API KEY TO ACCESS ARCGIS SERVICES
                 esriConfig.apiKey = "AAPK47940bdbad24479c8e5cfc3285632cf0D6SI_0gce6ZC0zx7iGkSeVP7k66w2b23CD8OKRR1jRMFulXcBwmgjXjgUHmhXMNS";
-
-                //SET UP OAUTH
-                //const info = new OAuthInfo({
-                    //REGISTERED APPLICATION ID
-                    //appId: "91H8RXSUHGiUTCi9",
-                    //flowType: "auto",
-                    //popup: false
-                //});
-
-                //esriId.registerOAuthInfos([info]);
 
 
                 //CREATE MAP WITH IMAGERY BASEMAP
@@ -75,17 +83,15 @@
                 });
 
                 // CONSTRUCT FEATURELAYERS
+
+                //ROADWAYS
                 const roadways = new FeatureLayer({
                     url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer/0",
-                    //legendEnabled: false,
-                    //visible: true,
-                    opacity: 0.0, // ADD LAYER BUT DO NOT SHOW
-                    //popupEnabled: true,
-                    //outFields: ["RTE_NM", "RDBD_TYPE", "MAP_LBL", "RTE_PRFX", "BEGIN_DFO", "END_DFO"],
-                    //popupTemplate: roadwayTemplate,
-                    //title: "Roadways"
+                    id: "roadways",
+                    visible: true
                 });
 
+                // BRIDGE RENDERER (SYMBOLOGY) AND BRIDGE LAYER
                 const bridgesRenderer = {
                     type: "simple",
                     symbol: {
@@ -104,11 +110,34 @@
                     url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0",
                     renderer: bridgesRenderer,
                     opacity: 0.5
-                })
+                });
+
+                // STREAMS
+                const streams = new FeatureLayer ({
+                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Streams/FeatureServer",
+                    id: "streams",
+                    visible: true
+                });
 
                 // ADD FEATURELAYER TO THE MAP
                 map.add(roadways);
                 map.add(bridgeTest);
+                map.add(streams);
+
+                // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
+                const streamsLayerToggle = document.getElementById("streams");
+                const roadwaysLayerToggle = document.getElementById("roadways");
+
+                // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOX
+                streamsLayerToggle.addEventListener("change", () => {
+                    // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
+                    streams.visible = streamsLayerToggle.checked;
+                });
+
+                roadwaysLayerToggle.addEventListener("change", () => {
+                    // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
+                    roadways.visible = roadwaysLayerToggle.checked;
+                });
 
             });
         </script>
@@ -117,5 +146,7 @@
     <!--- AFTER THE HEAD COMES THE BODY WITHIN THE HTML BRACES-->
     <body>
         <div id="viewDiv"></div>
+        <span id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" checked /> Streams </span>
+        <span id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" checked /> Roadways </span>
     </body>
 </html>
