@@ -86,8 +86,29 @@
                     //title: "Roadways"
                 });
 
+                /*function createFillSymbol(value, color) {
+                    return {
+                        "value": value,
+                        "symbol": {
+                            "color": color,
+                            "type": "simple-fill",
+                            "style": "solid",
+                            "outline": {
+                                "style": "none"
+                            }
+                        },
+                        "label": value
+                    };
+                }
+
+                const bridgesRenderer = {
+                    type: "unique-value",
+                    field: "TYPE"
+                }*/
+
                 const bridgeTest = new FeatureLayer({
-                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_TEST/FeatureServer/0?f=pjson&token=q6pZW0B6J-g4uDbpdfNtsLLmyOtxxbnyM1azgGoWrGMzSl_8fRtxsPnHJBljTNvOXfsIK2IbpbD1_RUHJOQ19Yj1A3AYHftvB1DBiB_f9tv5p6mcRYczgunf1gcWymObRR2JiJ6qiFjQd8nr26WNxPte5UtpjsyRqNBtHwNzqysZu1P0WQ6oH8ZKrhGN4kQMLTZ8GA35vJoGNMDn_DBr9prjVCe4S0b4cpcJMiKTKW0hE2AEeM9rfG_dKLji-3hM"
+                    //THIS IS A TEST COPY LAYER, USING UT AUSTIN AGO
+                    url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0"
                 })
 
                 // ADD FEATURELAYER TO THE MAP
