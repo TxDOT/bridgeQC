@@ -24,7 +24,7 @@
 
         <!-- JS IN A SCRIPT TAG-->
         <script>
-            // REQUIRE STATEMENT LOADS individual ESRI MODULES
+            // REQUIRE STATEMENT LOADS INDIVIDUAL ESRI MODULES
             require(
                 [
                     // MAP AND MAPVIEW
@@ -62,7 +62,7 @@
 
                 //CREATE MAP WITH IMAGERY BASEMAP
                 const map = new Map({
-                    basemap: "arcgis-topographic" // CHANGING TO IMAGERY
+                    basemap: "arcgis-imagery" // CHANGING TO IMAGERY
                 });
 
 
@@ -86,29 +86,24 @@
                     //title: "Roadways"
                 });
 
-                /*function createFillSymbol(value, color) {
-                    return {
-                        "value": value,
-                        "symbol": {
-                            "color": color,
-                            "type": "simple-fill",
-                            "style": "solid",
-                            "outline": {
-                                "style": "none"
-                            }
-                        },
-                        "label": value
-                    };
-                }
-
                 const bridgesRenderer = {
-                    type: "unique-value",
-                    field: "TYPE"
-                }*/
+                    type: "simple",
+                    symbol: {
+                        type: "simple-fill",
+                        style: "solid",
+                        color: "#73B2FF",
+                        outline: {
+                            color: "#5E5E5E",
+                            width: 1
+                        }
+                    }
+                };
 
                 const bridgeTest = new FeatureLayer({
                     //THIS IS A TEST COPY LAYER, USING UT AUSTIN AGO
-                    url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0"
+                    url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0",
+                    renderer: bridgesRenderer,
+                    opacity: 0.5
                 })
 
                 // ADD FEATURELAYER TO THE MAP
