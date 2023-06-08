@@ -57,20 +57,34 @@
 
                     // LAYERS
                     "esri/layers/FeatureLayer",
-                    "esri/layers/TileLayer",         
+                    "esri/layers/TileLayer",
+                    "esri/layers/WMTSLayer"         
                 ],
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
-                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer) {
+                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer) {
 
 
                 // HAVE TO HAVE API KEY TO ACCESS ARCGIS SERVICES
                 esriConfig.apiKey = "AAPK47940bdbad24479c8e5cfc3285632cf0D6SI_0gce6ZC0zx7iGkSeVP7k66w2b23CD8OKRR1jRMFulXcBwmgjXjgUHmhXMNS";
 
+                // CREATE WMTS BASEMAP FOR TEXAS 6 INCH IMAGERY
+                const TISBasemap = new Basemap({
+                    baseLayers: [
+                        new WMTSLayer({
+                            url: "https://txgi.tnris.org/login/path/food-paul-zebra-shirt/wmts/1.0.0/WMTSCapabilities.xml",
+                            activeLayer: {
+                                id: "texas"
+                            }
+                        })  
+                    ]
+                });
+
 
                 //CREATE MAP WITH IMAGERY BASEMAP
                 const map = new Map({
-                    basemap: "arcgis-imagery" // CHANGING TO IMAGERY
+                    //basemap: "arcgis-imagery" // CHANGING TO IMAGERY
+                    basemap : TISBasemap // NOW IT IS THE TEXAS IMAGERY SERVICE LAYER
                 });
 
 
