@@ -42,6 +42,17 @@
                 padding: 10px;
                 opacity: 0.75;
             }
+
+            #layerToggle3 {
+                top: 120px;
+                right: 20px;
+                position: absolute;
+                z-index: 99;
+                background-color: white;
+                border-radius: 8px;
+                padding: 10px;
+                opacity: 0.75;
+            }
         </style>
 
         <!-- JS IN A SCRIPT TAG-->
@@ -133,14 +144,33 @@
                     visible: true
                 });
 
+                // BRIDGE POINTS
+                const nbiRenderer = {
+                    type: "simple",
+                    symbol: {
+                        type: "simple-marker",
+                        size: 5,
+                        color: "red"
+                    }
+                };
+
+                const nbiPoints = new FeatureLayer ({
+                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Bridges/FeatureServer",
+                    renderer: nbiRenderer,
+                    id: "nbiPoints", 
+                    visible: true
+                });
+
                 // ADD FEATURELAYER TO THE MAP
                 map.add(roadways);
                 map.add(bridgeTest);
                 map.add(streams);
+                map.add(nbiPoints);
 
                 // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
                 const streamsLayerToggle = document.getElementById("streams");
                 const roadwaysLayerToggle = document.getElementById("roadways");
+                const nbiLayerToggle = document.getElementById("nbiPoints");
 
                 // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOX
                 streamsLayerToggle.addEventListener("change", () => {
@@ -153,6 +183,11 @@
                     roadways.visible = roadwaysLayerToggle.checked;
                 });
 
+                nbiLayerToggle.addEventListener("change", () => {
+                    // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
+                    nbiPoints.visible = nbiLayerToggle.checked;
+                });
+
             });
         </script>
     </head>
@@ -162,5 +197,6 @@
         <div id="viewDiv"></div>
         <span id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" checked /> Streams </span>
         <span id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" checked /> Roadways </span>
+        <span id="layerToggle3" class="esri-widget"> <input type="checkbox" id="nbiPoints" checked /> Bridge Points </span>
     </body>
 </html>
