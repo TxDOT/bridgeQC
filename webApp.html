@@ -5,209 +5,187 @@
         <title> Intern Bridge QAQC WebApp</title>
 
         <!-- SET ESRI CSS SOURCE -->
-        <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css"/>
+        <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css"/>
         
         <!-- SET ESRI JS API SOURCE -->
-        <script src="https://js.arcgis.com/4.22/"></script>
+        <script src="https://js.arcgis.com/4.26/"></script>
         
         <!-- CSS IN A STYLE TAG -->
         <style>
             html,
             body,
-            #mapViewDiv {
+            #viewDiv {
                 padding: 0;
                 margin: 0;
                 height: 100%;
                 width: 100%;
             }
 
-            #btnDiv {
-                position: fixed;
-                top: 130px;
-                right: 15px
-            }
-
-            /*LOADER/SPINNER AND MASK*/
-            #loader {
-                display: block;
+            #layerToggle {
+                top: 20px;
+                right: 20px;
                 position: absolute;
-                left: 50%;
-                top: 50%;
-                z-index: 100;
-                width: 150px;
-                height: 150px;
-                margin: -75px 0 0 -75px;
-                border: 16px solid #f3f3f3;
-                border-radius: 50%;
-                border-top: 16px solid #3498db;
-                width: 120px;
-                height: 120px;
-                -webkit-animation: spin 1s linear infinite;
-                animation: spin 1s linear infinite;
-            }
-
-            /* SAFARI */
-            @-webkit-keyframes spin {
-                0% { -webkit-transform: rotate(0deg); }
-                100% { -webkit-transform: rotate(360deg); }
-            }
-
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-
-            #mask{
-                height: 100%;
-                width: 100%;
-                top: 0;
-                    left: 0;
-                background-color: #606060;
-                position: fixed;
-                display: block;
                 z-index: 99;
+                background-color: white;
+                border-radius: 8px;
+                padding: 10px;
+                opacity: 0.75;
+            }
+
+            #layerToggle2 {
+                top: 70px;
+                right: 20px;
+                position: absolute;
+                z-index: 99;
+                background-color: white;
+                border-radius: 8px;
+                padding: 10px;
+                opacity: 0.75;
+            }
+
+            #layerToggle3 {
+                top: 120px;
+                right: 20px;
+                position: absolute;
+                z-index: 99;
+                background-color: white;
+                border-radius: 8px;
+                padding: 10px;
+                opacity: 0.75;
             }
         </style>
 
         <!-- JS IN A SCRIPT TAG-->
         <script>
-            // REQUIRE STATEMENT LOADS individual ESRI MODULES
+            // REQUIRE STATEMENT LOADS INDIVIDUAL ESRI MODULES
             require(
                 [
                     // MAP AND MAPVIEW
                     "esri/config",
-                    "esri/core/watchUtils",
                     "esri/Map",
                     "esri/views/MapView",
                     "esri/Basemap",
 
-                    // WIDGETS AND UI
-                    "esri/widgets/Home",
-                    "esri/widgets/Zoom",
-
                     // LAYERS
                     "esri/layers/FeatureLayer",
-                    "esri/layers/VectorTileLayer",
-
-                    // DOJO
-                    "dojo/dom",
-                    "dojo/domReady!"            
+                    "esri/layers/TileLayer",
+                    "esri/layers/WMTSLayer"         
                 ],
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
-                (esriConfig, watchUtils, Map, MapView, Basemap, Home, Zoom, FeatureLayer, VectorTileLayer, dom) => {
+                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer) {
 
-                //CREATE MAP WITH TXDOT VECTOR TILE BASEMAP
-                const txdotVectorTiles = new VectorTileLayer("https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer");
 
-                const vTBasemap = new Basemap({
-                    baseLayers: txdotVectorTiles
+                // HAVE TO HAVE API KEY TO ACCESS ARCGIS SERVICES
+                esriConfig.apiKey = "AAPK47940bdbad24479c8e5cfc3285632cf0D6SI_0gce6ZC0zx7iGkSeVP7k66w2b23CD8OKRR1jRMFulXcBwmgjXjgUHmhXMNS";
+
+                // CREATE WMTS BASEMAP FOR TEXAS 6 INCH IMAGERY
+                const TISBasemap = new Basemap({
+                    baseLayers: [
+                        new WMTSLayer({
+                            url: "https://txgi.tnris.org/login/path/food-paul-zebra-shirt/wmts/1.0.0/WMTSCapabilities.xml",
+                            activeLayer: {
+                                id: "texas"
+                            }
+                        })  
+                    ]
                 });
 
+
+                //CREATE MAP WITH IMAGERY BASEMAP
                 const map = new Map({
-                    basemap: vTBasemap
+                    //basemap: "arcgis-imagery" // CHANGING TO IMAGERY
+                    basemap : TISBasemap // NOW IT IS THE TEXAS IMAGERY SERVICE LAYER
                 });
 
 
                 // CREATE MAPVIEW
                 const mapView = new MapView({
-                    container: "mapViewDiv",
                     map: map,
                     center: [-100.341389, 31.132222],
                     zoom: 6,
-                    constraints: {
-                        minZoom: 5,
-                        rotationEnabled: false
-                    },
-                    popup: {
-                        dockOptions: {
-                            position: "bottom-right"
-                        }
-                    }
+                    container: "viewDiv"
                 });
-
-                // ESRI UI WIDGETS
-                const home = new Home({
-                    view: mapView
-                });
-
-                // NOT SURE WHAT THESE CONSOLE.LOGS ARE FOR YET
-                console.log("msg");
-                console.log(map);
-                const zoom = new Zoom({
-                    view: mapView
-                });
-
-                // ADD AN POSITION WIDGETS IN THE MAPVIEW
-                mapView.ui.remove ("attribution");
-                mapView.ui.empty ("top-left");
-                mapView.ui.add([
-                    {
-                        component: home,
-                        position: "top-right",
-                        index: 1
-                    }, {
-                        component: zoom,
-                        position: "top-right",
-                        index: 0
-                    },
-                ]);
-
-                // CONSTRUCT POPUP TEMPLATES FOR FEATURELAYERS
-                const roadwayTemplate = {
-                    title: "Roadways",
-                    content: [{
-                        type: "fields",
-                        fieldInfos: [{
-                            fieldName: "RTE_NM",
-                            label: "Route ID",
-                            visible: true
-                        }, {
-                            fieldName: "RDBD_TYPE",
-                            label: "Roadbed Type",
-                            visible: true 
-                        }, {
-                            fieldName: "MAP_LBL",
-                            label: "Name/Number",
-                            visible: true 
-                        }, {
-                            fieldName: "BEGIN_DFO",
-                            label: "Begin DFO",
-                            places: 3,
-                            visible: true 
-                        }, {
-                            fieldName: "END_DFO",
-                            label: "End DFO",
-                            places: 3,
-                            visible: true
-                        }]
-                    }]
-                };
 
                 // CONSTRUCT FEATURELAYERS
+
+                //ROADWAYS
                 const roadways = new FeatureLayer({
                     url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer/0",
-                    legendEnabled: false,
-                    visible: true,
-                    opacity: 0.0, // ADD LAYER BUT DO NOT SHOW
-                    popupEnabled: true,
-                    outFields: ["RTE_NM", "RDBD_TYPE", "MAP_LBL", "RTE_PRFX", "BEGIN_DFO", "END_DFO"],
-                    popupTemplate: roadwayTemplate,
-                    title: "Roadways"
+                    id: "roadways",
+                    visible: true
+                });
+
+                // BRIDGE RENDERER (SYMBOLOGY) AND BRIDGE LAYER
+                const bridgesRenderer = {
+                    type: "simple",
+                    symbol: {
+                        type: "simple-fill",
+                        style: "solid",
+                        color: "#73B2FF",
+                        outline: {
+                            color: "#5E5E5E",
+                            width: 1
+                        }
+                    }
+                };
+
+                const bridgeTest = new FeatureLayer({
+                    //THIS IS A TEST COPY LAYER, USING UT AUSTIN AGO
+                    url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0",
+                    renderer: bridgesRenderer,
+                    opacity: 0.5
+                });
+
+                // STREAMS
+                const streams = new FeatureLayer ({
+                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Streams/FeatureServer",
+                    id: "streams",
+                    visible: true
+                });
+
+                // BRIDGE POINTS
+                const nbiRenderer = {
+                    type: "simple",
+                    symbol: {
+                        type: "simple-marker",
+                        size: 5,
+                        color: "red"
+                    }
+                };
+
+                const nbiPoints = new FeatureLayer ({
+                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Bridges/FeatureServer",
+                    renderer: nbiRenderer,
+                    id: "nbiPoints", 
+                    visible: true
                 });
 
                 // ADD FEATURELAYER TO THE MAP
                 map.add(roadways);
+                map.add(bridgeTest);
+                map.add(streams);
+                map.add(nbiPoints);
 
-                // SET TIMEOUT FUNCTION - NOT SURE YET
+                // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
+                const streamsLayerToggle = document.getElementById("streams");
+                const roadwaysLayerToggle = document.getElementById("roadways");
+                const nbiLayerToggle = document.getElementById("nbiPoints");
 
-                window.setTimeout(function(){
-                    document.getElementById("loader").style = "display: none";
-                    document.getElementById("mask").style = "display: none";
-                }, 2000);
+                // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOX
+                streamsLayerToggle.addEventListener("change", () => {
+                    // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
+                    streams.visible = streamsLayerToggle.checked;
+                });
 
-                document.getElementById("btnJTG").addEventListener("click", function(){
-                    console.log(mapView.center);
+                roadwaysLayerToggle.addEventListener("change", () => {
+                    // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
+                    roadways.visible = roadwaysLayerToggle.checked;
+                });
+
+                nbiLayerToggle.addEventListener("change", () => {
+                    // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
+                    nbiPoints.visible = nbiLayerToggle.checked;
                 });
 
             });
@@ -216,14 +194,9 @@
 
     <!--- AFTER THE HEAD COMES THE BODY WITHIN THE HTML BRACES-->
     <body>
-        <div id="loader"></div>
-		<div id="mask"></div>
-        <div id="mapViewDiv">
-            <div id="btnDiv" class="esri-component">
-                <button 
-                id="btnJTG" class="action-button esri-icon-applications">
-                </button>
-            </div>
-        </div>
+        <div id="viewDiv"></div>
+        <span id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" checked /> Streams </span>
+        <span id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" checked /> Roadways </span>
+        <span id="layerToggle3" class="esri-widget"> <input type="checkbox" id="nbiPoints" checked /> Bridge Points </span>
     </body>
 </html>
