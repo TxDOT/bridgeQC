@@ -69,11 +69,14 @@
                     // LAYERS
                     "esri/layers/FeatureLayer",
                     "esri/layers/TileLayer",
-                    "esri/layers/WMTSLayer"         
+                    "esri/layers/WMTSLayer",
+                    
+                    // WIDGETS
+                    "esri/widgets/Editor"
                 ],
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
-                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer) {
+                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, Editor) {
 
 
                 // HAVE TO HAVE API KEY TO ACCESS ARCGIS SERVICES
@@ -187,6 +190,47 @@
                     // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
                     nbiPoints.visible = nbiLayerToggle.checked;
                 });
+
+
+                // // SET UP EDITABLE LAYERS
+                // mapView.map.editableLayers.forEach((layer) => {
+                //     if (layer.type === 'feature') {
+                //         switch (layer.geometryType) {
+                //             case "polygon":
+                //                 polygonLayer = layer;
+                //                 break;
+                //             case "polyline":
+                //                 lineLayer = layer;
+                //                 break;
+                //             case "point":
+                //                 pointLayer = layer;
+                //                 break;
+                //         }
+                //     }
+                // });
+
+                // // SET BRIDGE LAYER'S LAYERINFO
+                // const bridgeInfos = {
+                //     layer: bridgeTest,
+                //     formTemplate: { // AUTOCASTS TO FORMTEMPLATE
+                //         elements: [{ // AUTOCASTS TO FIELD ELEMENTS
+                //             type: "field",
+                //             fieldName: "IS_IRREG",
+                //             label: "Is Irregular"
+                //         }]
+                //     }
+                // };
+
+
+
+                // // EDITOR WIDGET
+                // const editor = new Editor({
+                //     view: mapView,
+                //     layerInfos: [bridgeInfos]
+                // });
+
+                // //ADD WIDGET TO THE VIEW
+                // mapView.ui.add(editor, "bottom-left");
 
             });
         </script>
