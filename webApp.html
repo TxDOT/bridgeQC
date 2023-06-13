@@ -79,7 +79,7 @@
                     "esri/layers/FeatureLayer",
                     "esri/layers/TileLayer",
                     "esri/layers/WMTSLayer",
-                    
+                                        
                     // WIDGETS
                     "esri/widgets/Editor"
                 ],
@@ -181,6 +181,17 @@
                 map.add(bridgeTest);
                 map.add(streams);
                 map.add(nbiPoints);
+
+                // QUERY BRIDGE LAYER TO ONLY SEE THE REMAINING ONES
+                // let query = bridgeTest.createQuery();
+                // query.where = "IS_IRREG = 'TRUE'";
+                // query.returnGeometry = true;
+                // query.outFields = ["*"];
+
+                // bridgeTest.queryFeatures(query)
+                //     .then(function(response){
+                //         //DOES THIS WORK
+                //     });
 
                 // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
                 const streamsLayerToggle = document.getElementById("streams");
