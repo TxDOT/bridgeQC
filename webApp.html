@@ -13,46 +13,56 @@
         <!-- CSS IN A STYLE TAG -->
         <style>
             html,
-            body,
-            #viewDiv {
+            body {
                 padding: 0;
                 margin: 0;
                 height: 100%;
                 width: 100%;
             }
+            #viewDiv {
+                padding: 0;
+                margin: 0;
+                height: 100%;
+                width: 70%;
+                float: right;
+            }
+
+            #sidebar {
+                z-index: 99;
+                position: absolute;
+                top: 0;
+                float: left;
+                height: 100%;
+                width: 30%;
+                background-color: white;
+                border: solid black 1px;
+            }
 
             #layerToggle {
                 top: 20px;
-                right: 20px;
+                left: 20px;
                 position: absolute;
                 z-index: 99;
-                background-color: white;
-                border-radius: 8px;
                 padding: 10px;
-                opacity: 0.75;
             }
 
             #layerToggle2 {
                 top: 70px;
-                right: 20px;
+                left: 20px;
                 position: absolute;
                 z-index: 99;
-                background-color: white;
-                border-radius: 8px;
                 padding: 10px;
-                opacity: 0.75;
             }
 
             #layerToggle3 {
                 top: 120px;
-                right: 20px;
+                left: 20px;
                 position: absolute;
                 z-index: 99;
-                background-color: white;
-                border-radius: 8px;
                 padding: 10px;
-                opacity: 0.75;
             }
+
+
         </style>
 
         <!-- JS IN A SCRIPT TAG-->
@@ -245,8 +255,10 @@
     <!--- AFTER THE HEAD COMES THE BODY WITHIN THE HTML BRACES-->
     <body>
         <div id="viewDiv"></div>
+        <div id="sidebar" class="esri-widget"></div>
         <span id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" checked /> Streams </span>
         <span id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" checked /> Roadways </span>
         <span id="layerToggle3" class="esri-widget"> <input type="checkbox" id="nbiPoints" checked /> Bridge Points </span>
+
     </body>
 </html>
