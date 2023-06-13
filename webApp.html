@@ -13,17 +13,12 @@
         <!-- CSS IN A STYLE TAG -->
         <style>
             html,
-            body {
-                padding: 0;
-                margin: 0;
-                height: 100%;
-                width: 100%;
-            }
+            body 
             #viewDiv {
                 padding: 0;
                 margin: 0;
                 height: 100%;
-                width: 70%;
+                width: 100%;
                 float: right;
             }
 
@@ -31,22 +26,18 @@
                 z-index: 99;
                 position: absolute;
                 top: 0;
-                float: left;
+                left: 0;
                 height: 100%;
-                width: 30%;
-                background-color: white;
-                border: solid black 1px;
+                width: 400px;
+                background: rgba(0, 0, 0, 0.5);
+            }
+
+            #text {
+                color: white;
+                padding: 3%;
             }
 
             #layerToggle {
-                top: 20px;
-                left: 20px;
-                position: absolute;
-                z-index: 99;
-                padding: 10px;
-            }
-
-            #layerToggle2 {
                 top: 70px;
                 left: 20px;
                 position: absolute;
@@ -54,8 +45,16 @@
                 padding: 10px;
             }
 
-            #layerToggle3 {
+            #layerToggle2 {
                 top: 120px;
+                left: 20px;
+                position: absolute;
+                z-index: 99;
+                padding: 10px;
+            }
+
+            #layerToggle3 {
+                top: 170px;
                 left: 20px;
                 position: absolute;
                 z-index: 99;
@@ -117,7 +116,10 @@
                     map: map,
                     center: [-100.341389, 31.132222],
                     zoom: 6,
-                    container: "viewDiv"
+                    container: "viewDiv",
+                    padding: {
+                        left: 400 
+                    }
                 });
 
                 // CONSTRUCT FEATURELAYERS
@@ -254,11 +256,15 @@
 
     <!--- AFTER THE HEAD COMES THE BODY WITHIN THE HTML BRACES-->
     <body>
-        <div id="viewDiv"></div>
-        <div id="sidebar" class="esri-widget"></div>
-        <span id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" checked /> Streams </span>
-        <span id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" checked /> Roadways </span>
-        <span id="layerToggle3" class="esri-widget"> <input type="checkbox" id="nbiPoints" checked /> Bridge Points </span>
-
+        <div id="viewDiv">
+            <div id="sidebar" class="esri-widget">
+                <div id="text">
+                    <h1>TOGGLE LAYERS</h1>
+                </div>
+                <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" checked /> Streams </div>
+                <div id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" checked /> Roadways </div>
+                <div id="layerToggle3" class="esri-widget"> <input type="checkbox" id="nbiPoints" checked /> Bridge Points </div>
+            </div>
+        </div>
     </body>
 </html>
