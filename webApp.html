@@ -192,45 +192,51 @@
                 });
 
 
-                // // SET UP EDITABLE LAYERS
-                // mapView.map.editableLayers.forEach((layer) => {
-                //     if (layer.type === 'feature') {
-                //         switch (layer.geometryType) {
-                //             case "polygon":
-                //                 polygonLayer = layer;
-                //                 break;
-                //             case "polyline":
-                //                 lineLayer = layer;
-                //                 break;
-                //             case "point":
-                //                 pointLayer = layer;
-                //                 break;
-                //         }
-                //     }
-                // });
+                // SET UP EDITABLE LAYERS
+                mapView.map.editableLayers.forEach((layer) => {
+                    if (layer.type === 'feature') {
+                        switch (layer.geometryType) {
+                            case "polygon":
+                                polygonLayer = layer;
+                                break;
+                            case "polyline":
+                                lineLayer = layer;
+                                break;
+                            case "point":
+                                pointLayer = layer;
+                                break;
+                        }
+                    }
+                });
 
-                // // SET BRIDGE LAYER'S LAYERINFO
-                // const bridgeInfos = {
-                //     layer: bridgeTest,
-                //     formTemplate: { // AUTOCASTS TO FORMTEMPLATE
-                //         elements: [{ // AUTOCASTS TO FIELD ELEMENTS
-                //             type: "field",
-                //             fieldName: "IS_IRREG",
-                //             label: "Is Irregular"
-                //         }]
-                //     }
-                // };
+                // SET BRIDGE LAYER'S LAYERINFO
+                const bridgeInfos = {
+                    layer: bridgeTest,
+                    formTemplate: { // AUTOCASTS TO FORMTEMPLATE
+                        elements: [{ // AUTOCASTS TO FIELD ELEMENTS
+                            type: "field",
+                            fieldName: "IS_IRREG",
+                            label: "Is Irregular"
+                        }, {
+                            type: "field",
+                            fieldName: "IRREG_RSN",
+                            label: "Irregular Reason"
+                        }, {
+                            type: "field",
+                            fieldName: "COMMENT",
+                            label: "Comment"
+                        }]
+                    }
+                };
 
+                // EDITOR WIDGET
+                const editor = new Editor({
+                    view: mapView,
+                    layerInfos: [bridgeInfos]
+                });
 
-
-                // // EDITOR WIDGET
-                // const editor = new Editor({
-                //     view: mapView,
-                //     layerInfos: [bridgeInfos]
-                // });
-
-                // //ADD WIDGET TO THE VIEW
-                // mapView.ui.add(editor, "bottom-left");
+                //ADD WIDGET TO THE VIEW
+                mapView.ui.add(editor, "bottom-left");
 
             });
         </script>
