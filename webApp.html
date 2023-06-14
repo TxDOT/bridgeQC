@@ -46,6 +46,14 @@
             }
 
             #layerToggle2 {
+                top: 270px;
+                left: 120px;
+                position: absolute;
+                z-index: 99;
+                padding: 10px;
+            }
+
+            #layerToggle3 {
                 top: 320px;
                 left: 20px;
                 position: absolute;
@@ -53,32 +61,22 @@
                 padding: 10px;
             }
 
-            #layerToggle3 {
-                top: 370px;
-                left: 20px;
-                position: absolute;
-                z-index: 99;
-                padding: 10px;
-            }
-
             #layerToggle4 {
-                top:420px;
-                left: 20px;
+                top:320px;
+                left: 154px;
                 position: absolute;
                 z-index: 99;
                 padding: 10px;
-                /* background-color: white;
-                border-radius: 8px;
-                padding: 10px;
-                opacity: 0.75; */
             }
 
-            /* #editorBox {
-                top: 470px;
+            #editorBox {
+                top: 390px;
                 left: 20px;
                 position: absolute;
                 z-index: 99;
-            } */
+                width: 360px;
+                height: 400px;
+            }
 
             /* #buttonTest {
                 top: 470px;
@@ -295,15 +293,20 @@
                     }
                 };
 
-                // // EDITOR WIDGET
-                // const editor = new Editor({
-                //     view: mapView,
-                //     layerInfos: [bridgeInfos],
-                //     container: "editorBox"
-                // });
+                // EDITOR WIDGET
+                const editor = new Editor({
+                    view: mapView,
+                    layerInfos: [bridgeInfos],
+                    container: editorBox,
+                    // supportingWidgetDefaults: {
+                    //     : {
+                            
+                    //     }
+                    // }
+                });
 
-                //ADD WIDGET TO THE VIEW
-                // mapView.ui.add(editor, "bottom-left");
+                // ADD WIDGET TO THE VIEW
+                //mapView.ui.add(editor, "bottom-left");
 
 
                 // QUERY REFERENCE POINTS LAYER TO ONLY SEE THE REMAINING ONES
@@ -395,9 +398,10 @@
                 <div id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" unchecked /> Roadways </div>
                 <div id="layerToggle3" class="esri-widget"> <input type="checkbox" id="nbiPoints" unchecked /> Bridge Points </div>
                 <span id="layerToggle4" class="esri-widget"> <input type="checkbox" id="railroads" unchecked /> Railroads </span>
-                <!-- <button id = "superButton"> Click Me! </button>
-                <div id="editorBox"></div> -->
+                <!-- <button id = "superButton"> Click Me! </button> -->
+                <div id="editorBox"></div>
             </div>
         </div>
     </body>
 </html>
+
