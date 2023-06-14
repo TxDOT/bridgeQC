@@ -61,6 +61,13 @@
                 padding: 10px;
             }
 
+            /* #editorBox {
+                top: 470px;
+                left: 20px;
+                position: absolute;
+                z-index: 99;
+            } */
+
             /* #buttonTest {
                 top: 470px;
                 left: 20 px;
@@ -158,7 +165,8 @@
                 const bridgeTest = new FeatureLayer({
                     url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0",
                     renderer: bridgesRenderer,
-                    opacity: 0.5
+                    opacity: 0.5,
+                    definitionExpression: "IS_IRREG IS NULL"
                 });
                 // STREAMS
                 const streams = new FeatureLayer ({
@@ -182,18 +190,18 @@
                     visible: true
                 });
 
-                const referencePoints = new FeatureLayer ({
-                    url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/referencepoints/FeatureServer",
-                    visible: false,
-                    id: "referencePoints"
-                });
+                // const referencePoints = new FeatureLayer ({
+                //     url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/referencepoints/FeatureServer",
+                //     visible: false,
+                //     id: "referencePoints"
+                // });
 
                 // ADD FEATURELAYERS TO THE MAP
                 map.add(roadways);
                 map.add(bridgeTest);
                 map.add(streams);
                 map.add(nbiPoints);
-                map.add(referencePoints);
+                // map.add(referencePoints);
 
 
                 // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
@@ -214,58 +222,65 @@
                     nbiPoints.visible = nbiLayerToggle.checked;
                 });
 
-                // // SET UP EDITABLE LAYERS
-                // mapView.map.editableLayers.forEach((layer) => {
-                //     if (layer.type === 'feature') {
-                //         switch (layer.geometryType) {
-                //             case "polygon":
-                //                 polygonLayer = layer;
-                //                 break;
-                //             case "polyline":
-                //                 lineLayer = layer;
-                //                 break;
-                //             case "point":
-                //                 pointLayer = layer;
-                //                 break;
-                //         }
-                //     }
+                // const superButton = document.getElementById("superButton");
+                // superButton.addEventListener("click", () => {
+                //     console.log(bridgeTest.id)
+
                 // });
 
-                // // SET BRIDGE LAYER'S LAYERINFO
-                // const bridgeInfos = {
-                //     layer: bridgeTest,
-                //     formTemplate: { // AUTOCASTS TO FORMTEMPLATE
-                //         elements: [{ // AUTOCASTS TO FIELD ELEMENTS
-                //             type: "field",
-                //             fieldName: "IS_IRREG",
-                //             label: "Is Irregular"
-                //         }, {
-                //             type: "field",
-                //             fieldName: "IRREG_RSN",
-                //             label: "Irregular Reason"
-                //         }, {
-                //             type: "field",
-                //             fieldName: "COMMENT",
-                //             label: "Comment"
-                //         }]
-                //     }
-                // };
+                // SET UP EDITABLE LAYERS
+                mapView.map.editableLayers.forEach((layer) => {
+                    if (layer.type === 'feature') {
+                        switch (layer.geometryType) {
+                            case "polygon":
+                                polygonLayer = layer;
+                                break;
+                            case "polyline":
+                                lineLayer = layer;
+                                break;
+                            case "point":
+                                pointLayer = layer;
+                                break;
+                        }
+                    }
+                });
+
+                // SET BRIDGE LAYER'S LAYERINFO
+                const bridgeInfos = {
+                    layer: bridgeTest,
+                    formTemplate: { // AUTOCASTS TO FORMTEMPLATE
+                        elements: [{ // AUTOCASTS TO FIELD ELEMENTS
+                            type: "field",
+                            fieldName: "IS_IRREG",
+                            label: "Is Irregular"
+                        }, {
+                            type: "field",
+                            fieldName: "IRREG_RSN",
+                            label: "Irregular Reason"
+                        }, {
+                            type: "field",
+                            fieldName: "COMMENT",
+                            label: "Comment"
+                        }]
+                    }
+                };
 
                 // // EDITOR WIDGET
                 // const editor = new Editor({
                 //     view: mapView,
-                //     layerInfos: [bridgeInfos]
+                //     layerInfos: [bridgeInfos],
+                //     container: "editorBox"
                 // });
 
-                // //ADD WIDGET TO THE VIEW
+                //ADD WIDGET TO THE VIEW
                 // mapView.ui.add(editor, "bottom-left");
 
 
                 // QUERY REFERENCE POINTS LAYER TO ONLY SEE THE REMAINING ONES
-                // let query = referencePoints.createQuery();
-                // query.where = "STATUS = 'AVAILABLE'";
-                // query.returnGeometry = false;
-                // query.outFields = ["*"];
+                let query = bridgeTest.createQuery();
+                query.where = "IS_IRREG IS NULL";
+                query.returnGeometry = false;
+                query.outFields = ["*"];
         
                 
                 // LOAD MAP AND FIND REFERENCE
@@ -321,7 +336,10 @@
                 // testbtn.addEventListener("click", () => {
                 //     console.log("clicked");
                 // })
+
+
             });
+
         </script>
     </head>
 
@@ -346,6 +364,8 @@
                 <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" checked /> Streams </div>
                 <div id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" checked /> Roadways </div>
                 <div id="layerToggle3" class="esri-widget"> <input type="checkbox" id="nbiPoints" checked /> Bridge Points </div>
+                <!-- <button id = "superButton"> Click Me! </button>
+                <div id="editorBox"></div> -->
             </div>
         </div>
     </body>
