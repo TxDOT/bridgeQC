@@ -61,6 +61,13 @@
                 padding: 10px;
             }
 
+            #layerToggle4 {
+                top: 420px;
+                left: 20px;
+                position:absolute;
+                z-index: 99;
+                padding: 10px;
+            }
             /* #editorBox {
                 top: 470px;
                 left: 20px;
@@ -82,16 +89,7 @@
                 left: 5px;
             }   */
 
-            #layerToggle4 {
-                top: 170px;
-                right: 20px;
-                position:absolute;
-                z-index: 99;
-                background-color: white;
-                border-radius: 8px;
-                padding: 10px;
-                opacity: 0.75;
-            }
+            
           
         </style>
 
@@ -185,6 +183,27 @@
                     visible: true
                 });
 
+                // WATER BODIES
+                /*const waterbodiesRenderer = {
+                    type: "simple",
+                    symbol: {
+                        type: "simple-fill",
+                        style: "solid",
+                        color: "#1F51FF",
+                        outline: {
+                            color: "#0437F2",
+                            width: 1
+                        }
+                    }
+                };
+
+                const waterbodies = new FeatureLayer({
+                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_NHD_Waterbodies/FeatureServer",
+                    //renderer: waterbodiesRenderer,
+                    opacity: 0.5,
+                    visible: true
+                });
+                */
 
                 // RAIL ROADS RENDERER (SYMBOLOGY) AND RAIL ROADS LAYER
                 const railroadsRenderer = {
@@ -231,6 +250,7 @@
                 map.add(roadways);
                 map.add(bridgeTest);
                 map.add(streams);
+                //map.add(waterbodies);
                 map.add(railroads);
                 map.add(nbiPoints);
                 // map.add(referencePoints);
