@@ -61,6 +61,18 @@
                 padding: 10px;
             }
 
+            #layerToggle4 {
+                top:420px;
+                left: 20px;
+                position: absolute;
+                z-index: 99;
+                padding: 10px;
+                /* background-color: white;
+                border-radius: 8px;
+                padding: 10px;
+                opacity: 0.75; */
+            }
+
             /* #editorBox {
                 top: 470px;
                 left: 20px;
@@ -76,22 +88,6 @@
                 padding: 10px;
             } */
 
-            /* #theOutput {
-                position: absolute;
-                bottom: 25px;
-                left: 5px;
-            }   */
-
-            #layerToggle4 {
-                top: 170px;
-                right: 20px;
-                position:absolute;
-                z-index: 99;
-                background-color: white;
-                border-radius: 8px;
-                padding: 10px;
-                opacity: 0.75;
-            }
           
         </style>
 
@@ -118,7 +114,6 @@
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
                 function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, Editor) {
 
-
                 // HAVE TO HAVE API KEY TO ACCESS ARCGIS SERVICES
                 esriConfig.apiKey = "AAPK47940bdbad24479c8e5cfc3285632cf0D6SI_0gce6ZC0zx7iGkSeVP7k66w2b23CD8OKRR1jRMFulXcBwmgjXjgUHmhXMNS";
 
@@ -136,8 +131,7 @@
 
                 //CREATE MAP WITH IMAGERY BASEMAP
                 const map = new Map({
-                    //basemap: "arcgis-imagery" // CHANGING TO IMAGERY
-                    basemap : TISBasemap // NOW IT IS THE TEXAS IMAGERY SERVICE LAYER
+                    basemap : TISBasemap 
                 });
 
                 // CREATE MAPVIEW
@@ -157,9 +151,10 @@
                 const roadways = new FeatureLayer({
                     url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer/0",
                     id: "roadways",
-                    visible: true
+                    visible: false
                 });
-                // BRIDGES
+
+                // BRIDGES RENDERER AND LAYER
                 const bridgesRenderer = {
                     type: "simple",
                     symbol: {
@@ -178,11 +173,12 @@
                     opacity: 0.5,
                     definitionExpression: "IS_IRREG IS NULL"
                 });
+
                 // STREAMS
                 const streams = new FeatureLayer ({
                     url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Streams/FeatureServer",
                     id: "streams",
-                    visible: true
+                    visible: false
                 });
 
 
@@ -196,12 +192,11 @@
                         width: 1.5
                     },
                 };
-
                 const railroads = new FeatureLayer ({
                     url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Railroads/FeatureServer",
                     renderer: railroadsRenderer,
                     id: "railroads",
-                    visible: true
+                    visible: false
                 });
 
                   
@@ -218,14 +213,8 @@
                     url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Bridges/FeatureServer",
                     renderer: nbiRenderer,
                     id: "nbiPoints", 
-                    visible: true
+                    visible: false
                 });
-
-                // const referencePoints = new FeatureLayer ({
-                //     url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/referencepoints/FeatureServer",
-                //     visible: false,
-                //     id: "referencePoints"
-                // });
 
                 // ADD FEATURELAYERS TO THE MAP
                 map.add(roadways);
@@ -233,7 +222,6 @@
                 map.add(streams);
                 map.add(railroads);
                 map.add(nbiPoints);
-                // map.add(referencePoints);
 
 
                 // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
@@ -261,12 +249,16 @@
                     railroads.visible = railroadsLayerToggle.checked;
                 });
                   
+
+
                 // const superButton = document.getElementById("superButton");
                 // superButton.addEventListener("click", () => {
                 //     console.log(bridgeTest.id)
                 // });
 
-                // SET UP EDITABLE LAYERS
+
+
+                // SET UP EDITABLE LAYERS FOR EDITOR WIDGET
                 mapView.map.editableLayers.forEach((layer) => {
                     if (layer.type === 'feature') {
                         switch (layer.geometryType) {
@@ -399,10 +391,10 @@
                         Use the checkboxes below to toggle reference layers on and off.
                     </p>
                 </div>
-                <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" checked /> Streams </div>
-                <div id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" checked /> Roadways </div>
-                <div id="layerToggle3" class="esri-widget"> <input type="checkbox" id="nbiPoints" checked /> Bridge Points </div>
-                <span id="layerToggle4" class="esri-widget"> <input type="checkbox" id="railroads" checked /> Railroads </span>
+                <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" unchecked /> Streams </div>
+                <div id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" unchecked /> Roadways </div>
+                <div id="layerToggle3" class="esri-widget"> <input type="checkbox" id="nbiPoints" unchecked /> Bridge Points </div>
+                <span id="layerToggle4" class="esri-widget"> <input type="checkbox" id="railroads" unchecked /> Railroads </span>
                 <!-- <button id = "superButton"> Click Me! </button>
                 <div id="editorBox"></div> -->
             </div>
