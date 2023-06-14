@@ -38,7 +38,7 @@
             }
 
             #layerToggle {
-                top: 70px;
+                top: 270px;
                 left: 20px;
                 position: absolute;
                 z-index: 99;
@@ -46,7 +46,7 @@
             }
 
             #layerToggle2 {
-                top: 120px;
+                top: 320px;
                 left: 20px;
                 position: absolute;
                 z-index: 99;
@@ -54,12 +54,26 @@
             }
 
             #layerToggle3 {
-                top: 170px;
+                top: 370px;
                 left: 20px;
                 position: absolute;
                 z-index: 99;
                 padding: 10px;
             }
+
+            /* #buttonTest {
+                top: 470px;
+                left: 20 px;
+                position: absolute;
+                z-index: 99;
+                padding: 10px;
+            } */
+
+            /* #theOutput {
+                position: absolute;
+                bottom: 25px;
+                left: 5px;
+            }   */
 
 
         </style>
@@ -81,7 +95,7 @@
                     "esri/layers/WMTSLayer",
                                         
                     // WIDGETS
-                    "esri/widgets/Editor"
+                    "esri/widgets/Editor",
                 ],
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
@@ -103,13 +117,11 @@
                     ]
                 });
 
-
                 //CREATE MAP WITH IMAGERY BASEMAP
                 const map = new Map({
                     //basemap: "arcgis-imagery" // CHANGING TO IMAGERY
                     basemap : TISBasemap // NOW IT IS THE TEXAS IMAGERY SERVICE LAYER
                 });
-
 
                 // CREATE MAPVIEW
                 const mapView = new MapView({
@@ -130,8 +142,7 @@
                     id: "roadways",
                     visible: true
                 });
-
-                // BRIDGE RENDERER (SYMBOLOGY) AND BRIDGE LAYER
+                // BRIDGES
                 const bridgesRenderer = {
                     type: "simple",
                     symbol: {
@@ -144,21 +155,17 @@
                         }
                     }
                 };
-
                 const bridgeTest = new FeatureLayer({
-                    //THIS IS A TEST COPY LAYER, USING UT AUSTIN AGO
                     url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0",
                     renderer: bridgesRenderer,
                     opacity: 0.5
                 });
-
                 // STREAMS
                 const streams = new FeatureLayer ({
                     url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Streams/FeatureServer",
                     id: "streams",
                     visible: true
                 });
-
                 // BRIDGE POINTS
                 const nbiRenderer = {
                     type: "simple",
@@ -168,7 +175,6 @@
                         color: "red"
                     }
                 };
-
                 const nbiPoints = new FeatureLayer ({
                     url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Bridges/FeatureServer",
                     renderer: nbiRenderer,
@@ -176,91 +182,145 @@
                     visible: true
                 });
 
-                // ADD FEATURELAYER TO THE MAP
+                const referencePoints = new FeatureLayer ({
+                    url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/referencepoints/FeatureServer",
+                    visible: false,
+                    id: "referencePoints"
+                });
+
+                // ADD FEATURELAYERS TO THE MAP
                 map.add(roadways);
                 map.add(bridgeTest);
                 map.add(streams);
                 map.add(nbiPoints);
+                map.add(referencePoints);
 
-                // QUERY BRIDGE LAYER TO ONLY SEE THE REMAINING ONES
-                // let query = bridgeTest.createQuery();
-                // query.where = "IS_IRREG = 'TRUE'";
-                // query.returnGeometry = true;
-                // query.outFields = ["*"];
-
-                // bridgeTest.queryFeatures(query)
-                //     .then(function(response){
-                //         //DOES THIS WORK
-                //     });
 
                 // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
                 const streamsLayerToggle = document.getElementById("streams");
                 const roadwaysLayerToggle = document.getElementById("roadways");
                 const nbiLayerToggle = document.getElementById("nbiPoints");
-
                 // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOX
                 streamsLayerToggle.addEventListener("change", () => {
                     // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
                     streams.visible = streamsLayerToggle.checked;
                 });
-
                 roadwaysLayerToggle.addEventListener("change", () => {
                     // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
                     roadways.visible = roadwaysLayerToggle.checked;
                 });
-
                 nbiLayerToggle.addEventListener("change", () => {
                     // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
                     nbiPoints.visible = nbiLayerToggle.checked;
                 });
 
+                // // SET UP EDITABLE LAYERS
+                // mapView.map.editableLayers.forEach((layer) => {
+                //     if (layer.type === 'feature') {
+                //         switch (layer.geometryType) {
+                //             case "polygon":
+                //                 polygonLayer = layer;
+                //                 break;
+                //             case "polyline":
+                //                 lineLayer = layer;
+                //                 break;
+                //             case "point":
+                //                 pointLayer = layer;
+                //                 break;
+                //         }
+                //     }
+                // });
 
-                // SET UP EDITABLE LAYERS
-                mapView.map.editableLayers.forEach((layer) => {
-                    if (layer.type === 'feature') {
-                        switch (layer.geometryType) {
-                            case "polygon":
-                                polygonLayer = layer;
-                                break;
-                            case "polyline":
-                                lineLayer = layer;
-                                break;
-                            case "point":
-                                pointLayer = layer;
-                                break;
-                        }
-                    }
-                });
+                // // SET BRIDGE LAYER'S LAYERINFO
+                // const bridgeInfos = {
+                //     layer: bridgeTest,
+                //     formTemplate: { // AUTOCASTS TO FORMTEMPLATE
+                //         elements: [{ // AUTOCASTS TO FIELD ELEMENTS
+                //             type: "field",
+                //             fieldName: "IS_IRREG",
+                //             label: "Is Irregular"
+                //         }, {
+                //             type: "field",
+                //             fieldName: "IRREG_RSN",
+                //             label: "Irregular Reason"
+                //         }, {
+                //             type: "field",
+                //             fieldName: "COMMENT",
+                //             label: "Comment"
+                //         }]
+                //     }
+                // };
 
-                // SET BRIDGE LAYER'S LAYERINFO
-                const bridgeInfos = {
-                    layer: bridgeTest,
-                    formTemplate: { // AUTOCASTS TO FORMTEMPLATE
-                        elements: [{ // AUTOCASTS TO FIELD ELEMENTS
-                            type: "field",
-                            fieldName: "IS_IRREG",
-                            label: "Is Irregular"
-                        }, {
-                            type: "field",
-                            fieldName: "IRREG_RSN",
-                            label: "Irregular Reason"
-                        }, {
-                            type: "field",
-                            fieldName: "COMMENT",
-                            label: "Comment"
-                        }]
-                    }
-                };
+                // // EDITOR WIDGET
+                // const editor = new Editor({
+                //     view: mapView,
+                //     layerInfos: [bridgeInfos]
+                // });
 
-                // EDITOR WIDGET
-                const editor = new Editor({
-                    view: mapView,
-                    layerInfos: [bridgeInfos]
-                });
+                // //ADD WIDGET TO THE VIEW
+                // mapView.ui.add(editor, "bottom-left");
 
-                //ADD WIDGET TO THE VIEW
-                mapView.ui.add(editor, "bottom-left");
 
+                // QUERY REFERENCE POINTS LAYER TO ONLY SEE THE REMAINING ONES
+                // let query = referencePoints.createQuery();
+                // query.where = "STATUS = 'AVAILABLE'";
+                // query.returnGeometry = false;
+                // query.outFields = ["*"];
+        
+                
+                // LOAD MAP AND FIND REFERENCE
+                // map.on("load", function() {
+                //     findReference();
+                // });  
+
+                // FIND REFERENCE FUNCTION
+                // function findReference() {
+                //     document.getElementById("theOutput").innerHTML = "Searching for segment...";
+                //     referencePoints.queryFeatures(query)
+                //         .then(showSelectedResult(response),{
+                //             // NOT SURE WHAT TO DO WITH THIS YET
+                //         }); 
+                // }
+
+                // function showSelectedResult (results) {
+                //     var resultItems = [];
+                //     var resultCount = results.features.length;
+                    
+                //     if (resultCount<1) {
+                //         alert("All records have been QCed. Project Complete.");
+                //         return;
+                //     }
+                    
+                //     var arrayID = getRandomIntInclusive(0,resultCount-1);
+                //     var featureAttributes = results.features[arrayID].attributes;
+                //     zoomToCoordinate(featureAttributes.LONGITUDE,featureAttributes.LATITUDE); 
+                //     map.setZoom(featureAttributes.MAP_LEVEL); 
+                //     // theRecordID = featureAttributes.OBJECTID;
+                //     // theRTE_NM = featureAttributes.RTE_RB_NM;
+                //     // document.getElementById("debugDiv").innerHTML = "Map ID = " + theRecordID + " - Highway = " + theRTE_NM;
+                    
+                //     if (resultCount>0) {
+                //         //Clear searching message
+                //         document.getElementById("theOutput").innerHTML = "";
+                //     }
+                //     else {
+                //         findReference();
+                //     }
+                // }
+
+                // function zoomToCoordinate(theX,theY,theZ) {
+  	            //     var thePt = new esri.geometry.Point(theX,theY, new esri.SpatialReference({ wkid: 4269 }));
+  	            //     map.centerAndZoom(esri.geometry.geographicToWebMercator(thePt),map.getZoom());
+  	            // } 
+
+                // TESTING BUTTON 
+
+                // const testbtn = document.createElement("button");
+                // testbtn.innerText = "Test Button";
+                // mapView.ui.add(testbtn, "top-right");
+                // testbtn.addEventListener("click", () => {
+                //     console.log("clicked");
+                // })
             });
         </script>
     </head>
@@ -270,7 +330,18 @@
         <div id="viewDiv">
             <div id="sidebar" class="esri-widget">
                 <div id="text">
+                    <h1> INSTRUCTIONS </h1>
+                    <P>
+                        <li> The instructions will go here. </li>
+                        <li> Even more instructions will go here. </li>
+                        <li> Do your best, and have fun. :p </li>
+                    </P>
+                </div>
+                <div id="text">
                     <h1>TOGGLE LAYERS</h1>
+                    <p>
+                        Use the checkboxes below to toggle reference layers on and off.
+                    </p>
                 </div>
                 <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" checked /> Streams </div>
                 <div id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" checked /> Roadways </div>
