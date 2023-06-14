@@ -82,7 +82,17 @@
                 left: 5px;
             }   */
 
-
+            #layerToggle4 {
+                top: 170px;
+                right: 20px;
+                position:absolute;
+                z-index: 99;
+                background-color: white;
+                border-radius: 8px;
+                padding: 10px;
+                opacity: 0.75;
+            }
+          
         </style>
 
         <!-- JS IN A SCRIPT TAG-->
@@ -174,6 +184,27 @@
                     id: "streams",
                     visible: true
                 });
+
+
+                // RAIL ROADS RENDERER (SYMBOLOGY) AND RAIL ROADS LAYER
+                const railroadsRenderer = {
+                    type: "simple",
+                    symbol: {
+                        color: "#964B00",
+                        type: "simple-line",
+                        style: "solid",
+                        width: 1.5
+                    },
+                };
+
+                const railroads = new FeatureLayer ({
+                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Railroads/FeatureServer",
+                    renderer: railroadsRenderer,
+                    id: "railroads",
+                    visible: true
+                });
+
+                  
                 // BRIDGE POINTS
                 const nbiRenderer = {
                     type: "simple",
@@ -200,6 +231,7 @@
                 map.add(roadways);
                 map.add(bridgeTest);
                 map.add(streams);
+                map.add(railroads);
                 map.add(nbiPoints);
                 // map.add(referencePoints);
 
@@ -208,6 +240,8 @@
                 const streamsLayerToggle = document.getElementById("streams");
                 const roadwaysLayerToggle = document.getElementById("roadways");
                 const nbiLayerToggle = document.getElementById("nbiPoints");
+                const railroadsLayerToggle = document.getElementById("railroads");
+
                 // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOX
                 streamsLayerToggle.addEventListener("change", () => {
                     // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
@@ -222,10 +256,14 @@
                     nbiPoints.visible = nbiLayerToggle.checked;
                 });
 
+                railroadsLayerToggle.addEventListener("change", () => {
+                    // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
+                    railroads.visible = railroadsLayerToggle.checked;
+                });
+                  
                 // const superButton = document.getElementById("superButton");
                 // superButton.addEventListener("click", () => {
                 //     console.log(bridgeTest.id)
-
                 // });
 
                 // SET UP EDITABLE LAYERS
@@ -364,6 +402,7 @@
                 <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" checked /> Streams </div>
                 <div id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" checked /> Roadways </div>
                 <div id="layerToggle3" class="esri-widget"> <input type="checkbox" id="nbiPoints" checked /> Bridge Points </div>
+                <span id="layerToggle4" class="esri-widget"> <input type="checkbox" id="railroads" checked /> Railroads </span>
                 <!-- <button id = "superButton"> Click Me! </button>
                 <div id="editorBox"></div> -->
             </div>
