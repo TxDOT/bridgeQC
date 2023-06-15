@@ -37,45 +37,24 @@
                 padding: 3%;
             }
 
+            #toggleSet {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 4px;
+                padding: 4px;
+            }
+
             #layerToggle {
-                top: 270px;
-                left: 20px;
-                position: absolute;
-                z-index: 99;
-                padding: 10px;
-            }
-
-            #layerToggle2 {
-                top: 270px;
-                left: 120px;
-                position: absolute;
-                z-index: 99;
-                padding: 10px;
-            }
-
-            #layerToggle3 {
-                top: 320px;
-                left: 20px;
-                position: absolute;
-                z-index: 99;
-                padding: 10px;
-            }
-
-            #layerToggle4 {
-                top:320px;
-                left: 154px;
-                position: absolute;
-                z-index: 99;
-                padding: 10px;
+                padding: 5px;
             }
 
             #editorBox {
-                top: 390px;
-                left: 20px;
-                position: absolute;
-                z-index: 99;
-                width: 360px;
-                /* height: 400px; */
+                display: flex;
+                margin: 10px;
+                overflow-y: scroll;
+                max-height: 500px;
+                /* FIGURE OUT WHY IT RUNS OFF THE PAGE */
             }
 
             /* #buttonTest {
@@ -289,10 +268,6 @@
                     container: editorBox
                 });
 
-                // ADD WIDGET TO THE VIEW
-                //mapView.ui.add(editor, "bottom-left");
-
-
                 // CREATE QUERY TO ONLY SEE THE REMAINING BRIDGES
                 let queryNull = bridgeTest.createQuery();
                 queryNull.where = "IS_IRREG IS NULL";
@@ -361,23 +336,22 @@
         <div id="viewDiv">
             <div id="sidebar" class="esri-widget">
                 <div id="text">
-                    <h1> INSTRUCTIONS </h1>
-                    <P>
-                        <li> The instructions will go here. </li>
-                        <li> Even more instructions will go here. </li>
-                        <li> Do your best, and have fun. :p </li>
-                    </P>
+                    <h2> INSTRUCTIONS </h2>
+                    <P> Do your best, and have fun. :p </P>
                 </div>
                 <div id="text">
-                    <h1>TOGGLE LAYERS</h1>
-                    <p>
-                        Use the checkboxes below to toggle reference layers on and off.
-                    </p>
+                    <h2>TOGGLE LAYERS</h2>
+                    <p> Use the checkboxes below to toggle reference layers on and off.</p>
                 </div>
-                <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" unchecked /> Streams </div>
-                <div id="layerToggle2" class="esri-widget"> <input type="checkbox" id="roadways" unchecked /> Roadways </div>
-                <div id="layerToggle3" class="esri-widget"> <input type="checkbox" id="nbiPoints" unchecked /> Bridge Points </div>
-                <span id="layerToggle4" class="esri-widget"> <input type="checkbox" id="railroads" unchecked /> Railroads </span>
+                <div id = "toggleSet">
+                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="nbiPoints" unchecked /> Bridge Points </div>
+                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="roadways" unchecked /> Roads </div>
+                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" unchecked /> Streams </div>
+                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="railroads" unchecked /> Railroads </div>
+                </div>
+                <div id="text">
+                    <h2> EDIT BRIDGE </h2>
+                </div>
                 <!-- <button id = "superButton"> Click Me! </button> -->
                 <div id="editorBox"></div>
             </div>
