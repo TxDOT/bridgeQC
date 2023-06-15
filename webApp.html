@@ -75,7 +75,7 @@
                 position: absolute;
                 z-index: 99;
                 width: 360px;
-                height: 400px;
+                /* height: 400px; */
             }
 
             /* #buttonTest {
@@ -215,12 +215,7 @@
                 });
 
                 // ADD FEATURELAYERS TO THE MAP
-                map.add(roadways);
-                map.add(bridgeTest);
-                map.add(streams);
-                map.add(railroads);
-                map.add(nbiPoints);
-
+                map.addMany([roadways, bridgeTest, streams, railroads, nbiPoints]);
 
                 // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
                 const streamsLayerToggle = document.getElementById("streams");
@@ -228,26 +223,20 @@
                 const nbiLayerToggle = document.getElementById("nbiPoints");
                 const railroadsLayerToggle = document.getElementById("railroads");
 
-                // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOX
+                // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOXS AND CHANGE VISIBILITY
                 streamsLayerToggle.addEventListener("change", () => {
-                    // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
                     streams.visible = streamsLayerToggle.checked;
                 });
                 roadwaysLayerToggle.addEventListener("change", () => {
-                    // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
                     roadways.visible = roadwaysLayerToggle.checked;
                 });
                 nbiLayerToggle.addEventListener("change", () => {
-                    // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
                     nbiPoints.visible = nbiLayerToggle.checked;
                 });
-
                 railroadsLayerToggle.addEventListener("change", () => {
-                    // WHEN CHECKBOX IS UNCHECKED (TRUE), SET VISIBILITY TO TRUE
                     railroads.visible = railroadsLayerToggle.checked;
                 });
                   
-
 
                 // const superButton = document.getElementById("superButton");
                 // superButton.addEventListener("click", () => {
@@ -297,30 +286,38 @@
                 const editor = new Editor({
                     view: mapView,
                     layerInfos: [bridgeInfos],
-                    container: editorBox,
-                    // supportingWidgetDefaults: {
-                    //     : {
-                            
-                    //     }
-                    // }
+                    container: editorBox
                 });
 
                 // ADD WIDGET TO THE VIEW
                 //mapView.ui.add(editor, "bottom-left");
 
 
-                // QUERY REFERENCE POINTS LAYER TO ONLY SEE THE REMAINING ONES
-                let query = bridgeTest.createQuery();
-                query.where = "IS_IRREG IS NULL";
-                query.returnGeometry = false;
-                query.outFields = ["*"];
+                // CREATE QUERY TO ONLY SEE THE REMAINING BRIDGES
+                let queryNull = bridgeTest.createQuery();
+                queryNull.where = "IS_IRREG IS NULL";
+                queryNull.returnGeometry = true;
+                queryNull.outFields = ["*"];
+                queryNull.num = 2000; //to pull from next 2000
         
                 
                 // LOAD MAP AND FIND REFERENCE
-                // map.on("load", function() {
-                //     findReference();
-                // });  
+                mapView
+                    .when(() => {
+                        findBridge();
+                        // console.log("this message shows when it is loaded.");
+                    })
 
+                function findBridge() {
+                    bridgeTest.queryFeatures(query)
+                        .then(function(featureSet) {
+                            // console.log("layer queried");
+                            // console.log("featureSet", featureSet);
+                            // console.log(featureSet.features.length);
+                            showSelectedResult (featureSet);
+                        });
+                }
+                
                 // FIND REFERENCE FUNCTION
                 // function findReference() {
                 //     document.getElementById("theOutput").innerHTML = "Searching for segment...";
