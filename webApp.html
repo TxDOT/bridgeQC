@@ -158,6 +158,27 @@
                     visible: false
                 });
 
+                // WATER BODIES
+                /*const waterbodiesRenderer = {
+                    type: "simple",
+                    symbol: {
+                        type: "simple-fill",
+                        style: "solid",
+                        color: "#1F51FF",
+                        outline: {
+                            color: "#0437F2",
+                            width: 1
+                        }
+                    }
+                };
+
+                const waterbodies = new FeatureLayer({
+                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_NHD_Waterbodies/FeatureServer",
+                    //renderer: waterbodiesRenderer,
+                    opacity: 0.5,
+                    visible: true
+                });
+                */
 
                 // RAIL ROADS RENDERER (SYMBOLOGY) AND RAIL ROADS LAYER
                 const railroadsRenderer = {
@@ -195,6 +216,7 @@
 
                 // ADD FEATURELAYERS TO THE MAP
                 map.addMany([roadways, bridgeTest, streams, railroads, nbiPoints]);
+                //map.add(waterbodies);
 
                 // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
                 const streamsLayerToggle = document.getElementById("streams");
@@ -221,7 +243,6 @@
                 // superButton.addEventListener("click", () => {
                 //     console.log(bridgeTest.id)
                 // });
-
 
 
                 // SET UP EDITABLE LAYERS FOR EDITOR WIDGET
