@@ -57,13 +57,17 @@
                 /* FIGURE OUT WHY IT RUNS OFF THE PAGE */
             }
 
-            /* #buttonTest {
-                top: 470px;
-                left: 20 px;
-                position: absolute;
-                z-index: 99;
-                padding: 10px;
-            } */
+            #editButtonBox {
+                display: flex;
+                flex-direction:row;
+                justify-content: center;
+                gap: 4px;
+                padding: 4px;
+            }
+
+            button {
+                padding: 6px;
+            }
 
           
         </style>
@@ -286,7 +290,11 @@
                 const editor = new Editor({
                     view: mapView,
                     layerInfos: [bridgeInfos],
-                    container: editorBox
+                    container: editorBox,
+                    visibleElements:{
+                        snappingControls: false,
+                        sketchTooltipControls: false
+                    }
                 });
 
                 // CREATE QUERY TO ONLY SEE THE REMAINING BRIDGES
@@ -346,6 +354,23 @@
                 //     console.log("clicked");
                 // })
 
+                //BUTTON TO CLICK TO GO TO NEXT BRIDGE
+                // IDEALLY WOULD HAVE THIS HAPPEN AFTER HIT UPDATE BUTTON, BUT NOT SURE HOW TO DO THAT
+                const nextBridgeBtn = document.getElementById("nextBridgeBtn");
+                nextBridgeBtn.addEventListener("click", () => {
+                    console.log("next button clicked");
+                    findBridge();
+                });
+
+                // editor.viewModel.watch("submit", function(submit) {
+                //     console.log(submit);
+                // });
+
+                // editor.viewModel.watch("state", function(state) {
+                //     console.log("editor view model state", state);
+                //     console.log("workflow", editor.viewModel.activeWorkflow);
+                // });
+
 
             });
 
@@ -373,7 +398,9 @@
                 <div id="text">
                     <h2> EDIT BRIDGE </h2>
                 </div>
-                <!-- <button id = "superButton"> Click Me! </button> -->
+                <div id = "editButtonBox">
+                    <button id = "nextBridgeBtn"> Next Bridge </button>
+                </div>
                 <div id="editorBox"></div>
             </div>
         </div>
