@@ -305,58 +305,41 @@
                 mapView
                     .when(() => {
                         findBridge();
-                        // console.log("this message shows when it is loaded.");
+                        console.log("this message shows when it is loaded.");
                     })
 
                 function findBridge() {
-                    bridgeTest.queryFeatures(query)
+                    // CALL QUERY
+                    bridgeTest.queryFeatures(queryNull)
+                        // THEN FIND SELECTED BRIDGE WITHIN THE RESULTS
                         .then(function(featureSet) {
-                            // console.log("layer queried");
-                            // console.log("featureSet", featureSet);
-                            // console.log(featureSet.features.length);
-                            showSelectedResult (featureSet);
+                            showSelectedBridge(featureSet);
                         });
                 }
-                
-                // FIND REFERENCE FUNCTION
-                // function findReference() {
-                //     document.getElementById("theOutput").innerHTML = "Searching for segment...";
-                //     referencePoints.queryFeatures(query)
-                //         .then(showSelectedResult(response),{
-                //             // NOT SURE WHAT TO DO WITH THIS YET
-                //         }); 
-                // }
 
-                // function showSelectedResult (results) {
-                //     var resultItems = [];
-                //     var resultCount = results.features.length;
-                    
-                //     if (resultCount<1) {
-                //         alert("All records have been QCed. Project Complete.");
-                //         return;
-                //     }
-                    
-                //     var arrayID = getRandomIntInclusive(0,resultCount-1);
-                //     var featureAttributes = results.features[arrayID].attributes;
-                //     zoomToCoordinate(featureAttributes.LONGITUDE,featureAttributes.LATITUDE); 
-                //     map.setZoom(featureAttributes.MAP_LEVEL); 
-                //     // theRecordID = featureAttributes.OBJECTID;
-                //     // theRTE_NM = featureAttributes.RTE_RB_NM;
-                //     // document.getElementById("debugDiv").innerHTML = "Map ID = " + theRecordID + " - Highway = " + theRTE_NM;
-                    
-                //     if (resultCount>0) {
-                //         //Clear searching message
-                //         document.getElementById("theOutput").innerHTML = "";
-                //     }
-                //     else {
-                //         findReference();
-                //     }
-                // }
+                function showSelectedBridge(featureSet) {
+                    // GET THE COUNT OF BRIDGES
+                    let resultsCount = featureSet.features.length;
+                    console.log("going into showselected bridge");
 
-                // function zoomToCoordinate(theX,theY,theZ) {
-  	            //     var thePt = new esri.geometry.Point(theX,theY, new esri.SpatialReference({ wkid: 4269 }));
-  	            //     map.centerAndZoom(esri.geometry.geographicToWebMercator(thePt),map.getZoom());
-  	            // } 
+                    // IF ZERO LEFT, PROJECT DONE
+                    if (resultsCount<1) {
+                        alert("No more bridges!");
+                        return;
+                    }
+
+                    // IF 1 OR MORE BRIDGES LEFT, SELECT ONE AT RANDOM AND ZOOM TO IT
+                    let selectedID = getRandomBridge(0, resultsCount-1);
+                    let selectedBridge = featureSet.features[selectedID];
+                    mapView.goTo(selectedBridge);
+                }
+
+                function getRandomBridge(min, max) {
+                    // GETS RANDOM INTEGERE BETWEEN 0 AND THE HIGHEST ID, INCLUSIVE
+                    min = Math.ceil(min);
+                    max = Math.floor(max);
+                    return Math.floor(Math.random()* (max - min + 1) + min);
+                }
 
                 // TESTING BUTTON 
 
