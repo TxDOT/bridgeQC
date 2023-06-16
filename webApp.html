@@ -334,12 +334,13 @@
                         .then(function(featureSet) {
                             showSelectedBridge(featureSet);
                         });
+                    // NEED TO REMOVE SELECTED THINGS FROM CALCITE TREE
+                    clearTreeSelection();
                 }
 
                 function showSelectedBridge(featureSet) {
                     // GET THE COUNT OF BRIDGES
                     let resultsCount = featureSet.features.length;
-                    console.log("going into showselected bridge");
 
                     // IF ZERO LEFT, PROJECT DONE
                     if (resultsCount<1) {
@@ -362,19 +363,14 @@
                 }
 
                 function highlight(selectedBridge) {
+                    // HIGHLIGHT THE SELECTED BRIDGE
                     var highlightSelect;
-
                     mapView.whenLayerView(bridgeTest).then(function(layerView){
                         if (highlightSelect) {
                             highlightSelect.remove();
                         }
-
                         highlightSelect = layerView.highlight(selectedBridge);
                     })
-
-                    // mapView.catch((e) => {
-                    //     console.error(e);
-                    // });
                 }
 
                 // TESTING BUTTON 
@@ -386,8 +382,66 @@
                 //     console.log("clicked");
                 // })
 
-                //BUTTON TO SKIP BRIDGE
-                // IDEALLY WOULD HAVE THIS HAPPEN AFTER HIT UPDATE BUTTON, BUT NOT SURE HOW TO DO THAT
+                // editor.viewModel.watch("submit", function(submit) {
+                //     console.log(submit);
+                // });
+
+                // editor.viewModel.watch("state", function(state) {
+                //     console.log("editor view model state", state);
+                //     console.log("workflow", editor.viewModel.activeWorkflow);
+                // });
+
+                // CREATE CALCITE TREE TO EDIT SELECTED BRIDGE
+                const bridgeTree = document.getElementById("bridgeTypeOptions");
+                const regSelect = document.getElementById("regSelect");
+                const alignSelect = document.getElementById("alignSelect");
+                const compSelect = document.getElementById("compSelect");
+                const culSelect = document.getElementById("culSelect");
+                const curvSelect = document.getElementById("curvSelect");
+                const elevSelect = document.getElementById("elevSelect");
+                const newerSelect = document.getElementById("newerSelect");
+                const tinySelect = document.getElementById("tinySelect");
+                const twowaySelect = document.getElementById("twowaySelect");
+                const vegSelect = document.getElementById("vegSelect");
+                const otherSelect = document.getElementById("otherSelect");
+
+                bridgeTree.addEventListener("calciteTreeSelect", calciteTreeSelect => {
+                    if (regSelect.selected == true) {
+                        console.log("regular selected")
+                    }
+                    if (alignSelect.selected == true) {
+                        console.log("align selected")
+                    }
+                    if (compSelect.selected == true) {
+                        console.log("complex selected")
+                    }
+                    if (culSelect.selected == true) {
+                        console.log("culvert selected")
+                    }
+                    if (curvSelect.selected == true) {
+                        console.log("curved selected")
+                    }
+                    if (elevSelect.selected == true) {
+                        console.log("elevation selected")
+                    }
+                    if (newerSelect.selected == true) {
+                        console.log("newer selected")
+                    }
+                    if (tinySelect.selected == true) {
+                        console.log("tiny selected")
+                    }
+                    if (twowaySelect.selected == true) {
+                        console.log("two way selected")
+                    }
+                    if (vegSelect.selected == true) {
+                        console.log("veg selected")
+                    }
+                    if (otherSelect.selected == true) {
+                        console.log("other selected")
+                    }
+                });
+
+                // BUTTON TO SKIP BRIDGE
                 const skipBridgeBtn = document.getElementById("skipBridgeBtn");
                 skipBridgeBtn.addEventListener("click", () => {
                     console.log("skip button clicked");
@@ -398,18 +452,30 @@
                 const saveBridgeBtn = document.getElementById("saveBridgeBtn");
                 saveBridgeBtn.addEventListener("click", () => {
                     console.log("save button clicked");
-                    //saveFeatures();
-                    findBridge();
+
+                    if (bridgeTree.selectedItems.length == 0) {
+                        alert ("Make a selection before saving and going to the next bridge.")
+                    }
+                    if (bridgeTree.selectedItems.length == 1) {
+                        // saveFeatures();
+                        findBridge();
+                    }
                 })
 
-                // editor.viewModel.watch("submit", function(submit) {
-                //     console.log(submit);
-                // });
-
-                // editor.viewModel.watch("state", function(state) {
-                //     console.log("editor view model state", state);
-                //     console.log("workflow", editor.viewModel.activeWorkflow);
-                // });
+                // CLEAR TREE SELECTION
+                function clearTreeSelection() {
+                    regSelect.selected = false;
+                    alignSelect.selected = false;
+                    compSelect.selected = false;
+                    culSelect.selected = false;
+                    curvSelect.selected = false;
+                    elevSelect.selected = false;
+                    newerSelect.selected = false;
+                    tinySelect.selected = false;
+                    twowaySelect.selected = false;
+                    vegSelect.selected = false;
+                    otherSelect.selected = false;
+                }
 
 
             });
@@ -439,20 +505,20 @@
                     <h2> EDIT BRIDGE </h2>
                 </div>
                 <calcite-tree id = "bridgeTypeOptions">
-                    <calcite-tree-item>Regular Bridge</calcite-tree-item>
+                    <calcite-tree-item id = "regSelect">Regular Bridge</calcite-tree-item>
                     <calcite-tree-item>
                         Irregular Bridge
                         <calcite-tree slot="children">
-                            <calcite-tree-item>Alignment</calcite-tree-item>
-                            <calcite-tree-item>Complex</calcite-tree-item>
-                            <calcite-tree-item>Culvert</calcite-tree-item>
-                            <calcite-tree-item>Curved</calcite-tree-item>
-                            <calcite-tree-item>Elevation</calcite-tree-item>
-                            <calcite-tree-item>Newer</calcite-tree-item>
-                            <calcite-tree-item>Tiny</calcite-tree-item>
-                            <calcite-tree-item>Twoway</calcite-tree-item>
-                            <calcite-tree-item>Vegetation</calcite-tree-item>
-                            <calcite-tree-item>Other</calcite-tree-item>
+                            <calcite-tree-item id = "alignSelect">Alignment</calcite-tree-item>
+                            <calcite-tree-item id = "compSelect">Complex</calcite-tree-item>
+                            <calcite-tree-item id = "culSelect">Culvert</calcite-tree-item>
+                            <calcite-tree-item id = "curvSelect">Curved</calcite-tree-item>
+                            <calcite-tree-item id = "elevSelect">Elevation</calcite-tree-item>
+                            <calcite-tree-item id = "newerSelect">Newer</calcite-tree-item>
+                            <calcite-tree-item id = "tinySelect">Tiny</calcite-tree-item>
+                            <calcite-tree-item id = "twowaySelect">Twoway</calcite-tree-item>
+                            <calcite-tree-item id = "vegSelect">Vegetation</calcite-tree-item>
+                            <calcite-tree-item id = "otherSelect">Other</calcite-tree-item>
                         </calcite-tree>
                     </calcite-tree-item>
                 </calcite-tree>
