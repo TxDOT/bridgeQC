@@ -386,13 +386,21 @@
                 //     console.log("clicked");
                 // })
 
-                //BUTTON TO CLICK TO GO TO NEXT BRIDGE
+                //BUTTON TO SKIP BRIDGE
                 // IDEALLY WOULD HAVE THIS HAPPEN AFTER HIT UPDATE BUTTON, BUT NOT SURE HOW TO DO THAT
-                const nextBridgeBtn = document.getElementById("nextBridgeBtn");
-                nextBridgeBtn.addEventListener("click", () => {
-                    console.log("next button clicked");
+                const skipBridgeBtn = document.getElementById("skipBridgeBtn");
+                skipBridgeBtn.addEventListener("click", () => {
+                    console.log("skip button clicked");
                     findBridge();
                 });
+
+                // BUTTON TO SAVE AND GO TO NEXT BRIDGE
+                const saveBridgeBtn = document.getElementById("saveBridgeBtn");
+                saveBridgeBtn.addEventListener("click", () => {
+                    console.log("save button clicked");
+                    //saveFeatures();
+                    findBridge();
+                })
 
                 // editor.viewModel.watch("submit", function(submit) {
                 //     console.log(submit);
@@ -450,7 +458,7 @@
                 </calcite-tree>
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
-                    <button id = "nextBridgeBtn"> Skip Bridge </button>
+                    <button id = "skipBridgeBtn"> Skip Bridge </button>
                 </div>
                 
                 <!-- <div id="editorBox"></div> -->
