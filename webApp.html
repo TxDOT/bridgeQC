@@ -123,7 +123,12 @@
                     container: "viewDiv",
                     padding: {
                         left: 400 
-                    }
+                    },
+                    // highlightOptions: {
+                    //     color: [255, 255, 0, 1],
+                    //     haloOpacity: 0.9,
+                    //     fillOpacity: 0.2
+                    // }
                 });
 
                 // CONSTRUCT FEATURELAYERS
@@ -332,10 +337,11 @@
                         return;
                     }
 
-                    // IF 1 OR MORE BRIDGES LEFT, SELECT ONE AT RANDOM AND ZOOM TO IT
+                    // IF 1 OR MORE BRIDGES LEFT, PICK ONE AT RANDOM AND ZOOM TO IT AND HIGHLIGHT IT
                     let selectedID = getRandomBridge(0, resultsCount-1);
                     let selectedBridge = featureSet.features[selectedID];
                     mapView.goTo(selectedBridge);
+                    highlight(selectedBridge);
                 }
 
                 function getRandomBridge(min, max) {
@@ -343,6 +349,22 @@
                     min = Math.ceil(min);
                     max = Math.floor(max);
                     return Math.floor(Math.random()* (max - min + 1) + min);
+                }
+
+                function highlight(selectedBridge) {
+                    var highlightSelect;
+
+                    mapView.whenLayerView(bridgeTest).then(function(layerView){
+                        if (highlightSelect) {
+                            highlightSelect.remove();
+                        }
+
+                        highlightSelect = layerView.highlight(selectedBridge);
+                    })
+
+                    // mapView.catch((e) => {
+                    //     console.error(e);
+                    // });
                 }
 
                 // TESTING BUTTON 
