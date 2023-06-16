@@ -9,6 +9,11 @@
         
         <!-- SET ESRI JS API SOURCE -->
         <script src="https://js.arcgis.com/4.26/"></script>
+
+        <!-- SET CALCITE STUFF -->
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" />
+        <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
+        <script nomodule="" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.js"></script>
         
         <!-- CSS IN A STYLE TAG -->
         <style>
@@ -49,13 +54,12 @@
                 padding: 5px;
             }
 
-            #editorBox {
+            /* #editorBox {
                 display: flex;
                 margin: 10px;
                 overflow-y: scroll;
                 max-height: 500px;
-                /* FIGURE OUT WHY IT RUNS OFF THE PAGE */
-            }
+            } */
 
             #editButtonBox {
                 display: flex;
@@ -69,6 +73,12 @@
                 padding: 6px;
             }
 
+            #bridgeTypeOptions {
+                background-color: white;
+                padding: 4px;
+                border-radius: 4px;
+                margin: 12px;
+            }
           
         </style>
 
@@ -254,53 +264,53 @@
                 // });
 
 
-                // SET UP EDITABLE LAYERS FOR EDITOR WIDGET
-                mapView.map.editableLayers.forEach((layer) => {
-                    if (layer.type === 'feature') {
-                        switch (layer.geometryType) {
-                            case "polygon":
-                                polygonLayer = layer;
-                                break;
-                            case "polyline":
-                                lineLayer = layer;
-                                break;
-                            case "point":
-                                pointLayer = layer;
-                                break;
-                        }
-                    }
-                });
+                // // SET UP EDITABLE LAYERS FOR EDITOR WIDGET
+                // mapView.map.editableLayers.forEach((layer) => {
+                //     if (layer.type === 'feature') {
+                //         switch (layer.geometryType) {
+                //             case "polygon":
+                //                 polygonLayer = layer;
+                //                 break;
+                //             case "polyline":
+                //                 lineLayer = layer;
+                //                 break;
+                //             case "point":
+                //                 pointLayer = layer;
+                //                 break;
+                //         }
+                //     }
+                // });
 
-                // SET BRIDGE LAYER'S LAYERINFO
-                const bridgeInfos = {
-                    layer: bridgeTest,
-                    formTemplate: { // AUTOCASTS TO FORMTEMPLATE
-                        elements: [{ // AUTOCASTS TO FIELD ELEMENTS
-                            type: "field",
-                            fieldName: "IS_IRREG",
-                            label: "Is Irregular"
-                        }, {
-                            type: "field",
-                            fieldName: "IRREG_RSN",
-                            label: "Irregular Reason"
-                        }, {
-                            type: "field",
-                            fieldName: "COMMENT",
-                            label: "Comment"
-                        }]
-                    }
-                };
+                // // SET BRIDGE LAYER'S LAYERINFO
+                // const bridgeInfos = {
+                //     layer: bridgeTest,
+                //     formTemplate: { // AUTOCASTS TO FORMTEMPLATE
+                //         elements: [{ // AUTOCASTS TO FIELD ELEMENTS
+                //             type: "field",
+                //             fieldName: "IS_IRREG",
+                //             label: "Is Irregular"
+                //         }, {
+                //             type: "field",
+                //             fieldName: "IRREG_RSN",
+                //             label: "Irregular Reason"
+                //         }, {
+                //             type: "field",
+                //             fieldName: "COMMENT",
+                //             label: "Comment"
+                //         }]
+                //     }
+                // };
 
-                // EDITOR WIDGET
-                const editor = new Editor({
-                    view: mapView,
-                    layerInfos: [bridgeInfos],
-                    container: editorBox,
-                    visibleElements:{
-                        snappingControls: false,
-                        sketchTooltipControls: false
-                    }
-                });
+                // // EDITOR WIDGET
+                // const editor = new Editor({
+                //     view: mapView,
+                //     layerInfos: [bridgeInfos],
+                //     container: editorBox,
+                //     visibleElements:{
+                //         snappingControls: false,
+                //         sketchTooltipControls: false
+                //     }
+                // });
 
                 // CREATE QUERY TO ONLY SEE THE REMAINING BRIDGES
                 let queryNull = bridgeTest.createQuery();
@@ -420,10 +430,30 @@
                 <div id="text">
                     <h2> EDIT BRIDGE </h2>
                 </div>
+                <calcite-tree id = "bridgeTypeOptions">
+                    <calcite-tree-item>Regular Bridge</calcite-tree-item>
+                    <calcite-tree-item>
+                        Irregular Bridge
+                        <calcite-tree slot="children">
+                            <calcite-tree-item>Alignment</calcite-tree-item>
+                            <calcite-tree-item>Complex</calcite-tree-item>
+                            <calcite-tree-item>Culvert</calcite-tree-item>
+                            <calcite-tree-item>Curved</calcite-tree-item>
+                            <calcite-tree-item>Elevation</calcite-tree-item>
+                            <calcite-tree-item>Newer</calcite-tree-item>
+                            <calcite-tree-item>Tiny</calcite-tree-item>
+                            <calcite-tree-item>Twoway</calcite-tree-item>
+                            <calcite-tree-item>Vegetation</calcite-tree-item>
+                            <calcite-tree-item>Other</calcite-tree-item>
+                        </calcite-tree>
+                    </calcite-tree-item>
+                </calcite-tree>
                 <div id = "editButtonBox">
-                    <button id = "nextBridgeBtn"> Next Bridge </button>
+                    <button id="saveBridgeBtn">Save and Next Bridge</button>
+                    <button id = "nextBridgeBtn"> Skip Bridge </button>
                 </div>
-                <div id="editorBox"></div>
+                
+                <!-- <div id="editorBox"></div> -->
             </div>
         </div>
     </body>
