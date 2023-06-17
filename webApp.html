@@ -351,8 +351,14 @@
                     // IF 1 OR MORE BRIDGES LEFT, PICK ONE AT RANDOM AND ZOOM TO IT AND HIGHLIGHT IT
                     let selectedID = getRandomBridge(0, resultsCount-1);
                     let selectedBridge = featureSet.features[selectedID];
-                    mapView.goTo(selectedBridge);
+                    
+                    // ZOOM TO IT
+                    var bridgeExtent = selectedBridge.geometry.extent.clone().expand(2);
+                    mapView.goTo(bridgeExtent);
+
+                    // HIGHLIGHT IT
                     highlight(selectedBridge);
+                    mapView.catch((e) => console.log(e));
                 }
 
                 function getRandomBridge(min, max) {
