@@ -364,7 +364,7 @@
                         alert ("Make a selection before saving and going to the next bridge.")
                     }
                     else {
-                        // saveChoices();
+                        saveChoices();
                         findBridge();
                     }
                 })
@@ -374,6 +374,10 @@
                     console.log("selected items before", bridgeSelect.value);
                     bridgeSelect.value = selectYourChoice;
                     console.log("selected items after clear", bridgeSelect.value);
+                }
+
+                function saveChoices() {
+                    console.log("saving now...")
                 }
 
             });
