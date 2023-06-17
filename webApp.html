@@ -481,6 +481,7 @@
                     twowaySelect.selected = false;
                     vegSelect.selected = false;
                     otherSelect.selected = false;
+                    console.log(bridgeTree.selectedItems);
                 }
 
 
@@ -512,7 +513,7 @@
                 </div>
                 <calcite-tree id = "bridgeTypeOptions">
                     <calcite-tree-item id = "regSelect">Regular Bridge</calcite-tree-item>
-                    <calcite-tree-item>
+                    <calcite-tree-item expanded = true>
                         Irregular Bridge
                         <calcite-tree slot="children">
                             <calcite-tree-item id = "alignSelect">Alignment</calcite-tree-item>
@@ -527,7 +528,8 @@
                             <calcite-tree-item id = "otherSelect">Other</calcite-tree-item>
                         </calcite-tree>
                     </calcite-tree-item>
-                </calcite-tree>
+                </calcite-tree>                    
+                <!-- <calcite-input id="commentInput" placeholder="Enter your comment"></calcite-input> -->
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
