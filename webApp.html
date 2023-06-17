@@ -481,8 +481,12 @@
                     twowaySelect.selected = false;
                     vegSelect.selected = false;
                     otherSelect.selected = false;
-                    console.log(bridgeTree.selectedItems);
+                    console.log("reg selected?", regSelect.selected);
+                    console.log("selected items after clear", bridgeTree.selectedItems);
+
                 }
+
+                // const selectTest = document.getElementById("selectTest");
 
 
             });
@@ -534,6 +538,24 @@
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
                 </div>
+
+                <!-- <calcite-label>
+                    Select your choice
+                    <calcite-select id = "selectTest">
+                        <calcite-option-group label="Industries">
+                            <calcite-option value="healthcare">Healthcare</calcite-option>
+                            <calcite-option value="manufacturing" selected>
+                                Manufacturing
+                            </calcite-option>
+                            <calcite-option value="public-safety">Public Safety</calcite-option>
+                        </calcite-option-group>
+                        <calcite-option-group label="Geography">
+                            <calcite-option value="mountains">Mountains</calcite-option>
+                            <calcite-option value="rivers">Rivers</calcite-option>
+                            <calcite-option value="lakes">Lakes</calcite-option>
+                        </calcite-option-group>
+                    </calcite-select>
+                </calcite-label> -->
                 
                 <!-- <div id="editorBox"></div> -->
             </div>
