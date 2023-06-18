@@ -255,18 +255,23 @@
                 mapView
                     .when(() => {
                         findBridge();
-                        console.log("this message shows when it is loaded.");
                     })
 
                 function findBridge() {
-                    // CALL QUERY
-                    bridgeTest.queryFeatures(queryNull)
+                    // NEED TO REMOVE SELECTED THINGS FROM CALCITE TREE IF ANYTHING IS SELECTED
+                    if (bridgeSelect.value != selectYourChoice) {
+                        console.log("something is seleced so clearing")
+                        clearSelection();
+                    }
+
+                    // THEN CALL QUERY TO FIND NEW BRIDGE
+                    return bridgeTest.queryFeatures(queryNull)
                         // THEN FIND SELECTED BRIDGE WITHIN THE RESULTS
                         .then(function(featureSet) {
-                            showSelectedBridge(featureSet);
+                            let selectedBridge = showSelectedBridge(featureSet);
+                            console.log("selected bridge within .then of query", selectedBridge);
+                            return selectedBridge;
                         });
-                    // NEED TO REMOVE SELECTED THINGS FROM CALCITE TREE
-                    clearSelection();
                 }
 
                 function showSelectedBridge(featureSet) {
@@ -289,6 +294,10 @@
 
                     // HIGHLIGHT IT
                     highlight(selectedBridge);
+
+                    // RETURN SELECTED BRIDGE SO THAT IT CAN BE USED LATER TO SAVE EDITS
+                    console.log("returning Selected Bridge in show selected function", selectedBridge)
+                    return selectedBridge;
                 }
 
                 function getRandomBridge(min, max) {
@@ -364,20 +373,21 @@
                         alert ("Make a selection before saving and going to the next bridge.")
                     }
                     else {
-                        saveChoices();
+                        // saveChoices(selectedBridgeVar);
                         findBridge();
                     }
                 })
 
                 // CLEAR TREE SELECTION
                 function clearSelection() {
-                    console.log("selected items before", bridgeSelect.value);
+                    console.log("selected items before clear", bridgeSelect.value);
                     bridgeSelect.value = selectYourChoice;
                     console.log("selected items after clear", bridgeSelect.value);
                 }
 
-                function saveChoices() {
-                    console.log("saving now...")
+                function saveChoices(selectedBridgeVar) {
+                    console.log("saving now...");
+                    console.log(selectedBridgeVar);
                 }
 
             });
