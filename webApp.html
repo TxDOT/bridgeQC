@@ -252,10 +252,9 @@
                 queryNull.num = 2000; //to pull from next 2000
                 
                 // LOAD MAP AND FIND REFERENCE
-                mapView
-                    .when(() => {
-                        findBridge();
-                    })
+                mapView.when(function() {
+                    findBridge(); // selectedBridge gets returned here
+                });
 
                 function findBridge() {
                     // NEED TO REMOVE SELECTED THINGS FROM CALCITE TREE IF ANYTHING IS SELECTED
@@ -361,7 +360,7 @@
                 const skipBridgeBtn = document.getElementById("skipBridgeBtn");
                 skipBridgeBtn.addEventListener("click", () => {
                     console.log("skip button clicked");
-                    findBridge();
+                    findBridge(); // selected bridge gets returned here
                 });
 
                 // BUTTON TO SAVE AND GO TO NEXT BRIDGE
@@ -373,8 +372,8 @@
                         alert ("Make a selection before saving and going to the next bridge.")
                     }
                     else {
-                        // saveChoices(selectedBridgeVar);
-                        findBridge();
+                        // saveChoices(previousBridge);
+                        findBridge(); // selected bridge gets returned here
                     }
                 })
 
@@ -388,6 +387,15 @@
                 function saveChoices(selectedBridgeVar) {
                     console.log("saving now...");
                     console.log(selectedBridgeVar);
+
+                    // let editFeatures;
+
+                    // if (bridgeSelect.value == regSelect) {
+                    //     selectedBridge.attributes.IS_IRREG = 
+                    // }
+
+                    // bridgeTest.applyEdits
+                    
                 }
 
             });
