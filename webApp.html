@@ -253,13 +253,13 @@
                 
                 // LOAD MAP AND FIND REFERENCE
                 mapView.when(function() {
-                    findBridge(); // selectedBridge gets returned here
+                    return findBridge(); // selectedBridge gets returned here ... not sure how to save it
                 });
 
                 function findBridge() {
                     // NEED TO REMOVE SELECTED THINGS FROM CALCITE TREE IF ANYTHING IS SELECTED
                     if (bridgeSelect.value != selectYourChoice) {
-                        console.log("something is seleced so clearing")
+                        // console.log("something is selected so clearing")
                         clearSelection();
                     }
 
@@ -268,7 +268,7 @@
                         // THEN FIND SELECTED BRIDGE WITHIN THE RESULTS
                         .then(function(featureSet) {
                             let selectedBridge = showSelectedBridge(featureSet);
-                            console.log("selected bridge within .then of query", selectedBridge);
+                            // console.log("selected bridge within .then of query", selectedBridge);
                             return selectedBridge;
                         });
                 }
@@ -295,7 +295,7 @@
                     highlight(selectedBridge);
 
                     // RETURN SELECTED BRIDGE SO THAT IT CAN BE USED LATER TO SAVE EDITS
-                    console.log("returning Selected Bridge in show selected function", selectedBridge)
+                    // console.log("returning Selected Bridge in show selected function", selectedBridge)
                     return selectedBridge;
                 }
 
@@ -320,73 +320,76 @@
                 // CREATE CALCITE TREE TO EDIT SELECTED BRIDGE
                 const bridgeSelect = document.getElementById("selectTest");
 
-                bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
-                    if (regSelect.selected == true) {
-                        console.log("regular selected")
-                    }
-                    if (alignSelect.selected == true) {
-                        console.log("align selected")
-                    }
-                    if (compSelect.selected == true) {
-                        console.log("complex selected")
-                    }
-                    if (culSelect.selected == true) {
-                        console.log("culvert selected")
-                    }
-                    if (curvSelect.selected == true) {
-                        console.log("curved selected")
-                    }
-                    if (elevSelect.selected == true) {
-                        console.log("elevation selected")
-                    }
-                    if (newerSelect.selected == true) {
-                        console.log("newer selected")
-                    }
-                    if (tinySelect.selected == true) {
-                        console.log("tiny selected")
-                    }
-                    if (twowaySelect.selected == true) {
-                        console.log("two way selected")
-                    }
-                    if (vegSelect.selected == true) {
-                        console.log("veg selected")
-                    }
-                    if (otherSelect.selected == true) {
-                        console.log("other selected")
-                    }
-                });
+                // bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
+                //     if (regSelect.selected == true) {
+                //         console.log("regular selected")
+                //     }
+                //     if (alignSelect.selected == true) {
+                //         console.log("align selected")
+                //     }
+                //     if (compSelect.selected == true) {
+                //         console.log("complex selected")
+                //     }
+                //     if (culSelect.selected == true) {
+                //         console.log("culvert selected")
+                //     }
+                //     if (curvSelect.selected == true) {
+                //         console.log("curved selected")
+                //     }
+                //     if (elevSelect.selected == true) {
+                //         console.log("elevation selected")
+                //     }
+                //     if (newerSelect.selected == true) {
+                //         console.log("newer selected")
+                //     }
+                //     if (tinySelect.selected == true) {
+                //         console.log("tiny selected")
+                //     }
+                //     if (twowaySelect.selected == true) {
+                //         console.log("two way selected")
+                //     }
+                //     if (vegSelect.selected == true) {
+                //         console.log("veg selected")
+                //     }
+                //     if (otherSelect.selected == true) {
+                //         console.log("other selected")
+                //     }
+                // });
+
+                // declare new bridge variable
+                let specBridge;
 
                 // BUTTON TO SKIP BRIDGE
                 const skipBridgeBtn = document.getElementById("skipBridgeBtn");
                 skipBridgeBtn.addEventListener("click", () => {
-                    console.log("skip button clicked");
-                    findBridge(); // selected bridge gets returned here
+                    // console.log("skip button clicked");
+                    specBridge = findBridge(); // selected bridge gets returned here
                 });
 
                 // BUTTON TO SAVE AND GO TO NEXT BRIDGE
                 const saveBridgeBtn = document.getElementById("saveBridgeBtn");
                 saveBridgeBtn.addEventListener("click", () => {
-                    console.log("save button clicked");
+                    // console.log("save button clicked");
 
                     if (bridgeSelect.value == selectYourChoice) {
                         alert ("Make a selection before saving and going to the next bridge.")
                     }
                     else {
-                        // saveChoices(previousBridge);
-                        findBridge(); // selected bridge gets returned here
+                        saveChoices(specBridge);
+                        specBridge = findBridge(); // selected bridge gets returned here
                     }
                 })
 
                 // CLEAR TREE SELECTION
                 function clearSelection() {
-                    console.log("selected items before clear", bridgeSelect.value);
+                    // console.log("selected items before clear", bridgeSelect.value);
                     bridgeSelect.value = selectYourChoice;
-                    console.log("selected items after clear", bridgeSelect.value);
+                    // console.log("selected items after clear", bridgeSelect.value);
                 }
 
-                function saveChoices(selectedBridgeVar) {
+                function saveChoices(specBridge) {
                     console.log("saving now...");
-                    console.log(selectedBridgeVar);
+                    console.log("this is the specBridge being saved", specBridge);
 
                     // let editFeatures;
 
