@@ -250,10 +250,13 @@
                 queryNull.returnGeometry = true;
                 queryNull.outFields = ["*"];
                 queryNull.num = 2000; //to pull from next 2000
+
+                // declare new bridge variable. Variable is always populated with the currently selected bridge
+                let specBridge;
                 
                 // LOAD MAP AND FIND REFERENCE
                 mapView.when(function() {
-                    return findBridge(); // selectedBridge gets returned here ... not sure how to save it
+                    specBridge = findBridge(); // selectedBridge gets returned here ... not sure how to save it
                 });
 
                 function findBridge() {
@@ -355,9 +358,6 @@
                 //         console.log("other selected")
                 //     }
                 // });
-
-                // declare new bridge variable
-                let specBridge;
 
                 // BUTTON TO SKIP BRIDGE
                 const skipBridgeBtn = document.getElementById("skipBridgeBtn");
