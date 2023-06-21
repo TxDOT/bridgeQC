@@ -398,6 +398,15 @@
                     
                 }
 
+                /* JUMP TO GOOGLE MAPS FUNCTION
+                function jumpToGoogle() {
+                    var ctr = map.extent.getCenter();
+                    var lat = ctr.getLatitude();
+                    var lon = ctr.getLongitude();
+                    //var level = map.getLevel();
+                     window.open("https://www.google.com/maps/@?api=1&map_action=pano&viewpoint="+lat+","+lon);
+                }
+                */
             });
 
         </script>
@@ -468,6 +477,7 @@
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
+                    <!-- <button id="btnGoogle" onclick="jumpToGoogle()">Jump to Google</button> -->
                 </div>
 
                 <!-- <div id="editorBox"></div> -->
