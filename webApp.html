@@ -377,6 +377,13 @@
                     }
                 })
 
+                // JUMP TO GOOGLE BUTTON
+                const btnGoogle = document.getElementById("btnGoogle");
+                btnGoogle.addEventListener("click", () => {
+
+                    jumpToGoogle(); // 
+                });
+
                 // CLEAR TREE SELECTION
                 function clearSelection() {
                     console.log("selected items before clear", bridgeSelect.value);
@@ -398,14 +405,18 @@
                     
                 }
 
-                /*JUMP TO GOOGLE MAPS FUNCTION
+                //JUMP TO GOOGLE MAPS FUNCTION
                 function jumpToGoogle() {
-                    var ctr = map.extent.getCenter();
-                    var lat = ctr.getLatitude();
-                    var lon = ctr.getLongitude();
-                    //var level = map.getLevel();
-                        window.open("https://www.google.com/maps/@?api=1&map_action=pano&viewpoint="+lat+","+lon);
-                }*/
+                    let ctr = mapView.get('center');
+                    let lat = ctr.latitude;
+                    let lon = ctr.longitude;
+                    let zoom = Math.round(Math.log(591657550.500000 /(mapView.scale/2))/Math.log(2))-1;
+                    let baseUrl = "https://www.google.com/maps/@";
+                    window.open(baseUrl + lat + "," + lon + "," + zoom + "z");
+                    console.log(ctr)
+                }
+
+        
                 
             });
 
@@ -477,7 +488,7 @@
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
-                    <!-- <button id="btnGoogle" onclick="jumpToGoogle()">Jump to Google</button> -->
+                    <button id="btnGoogle">Jump to Google</button>
                 </div>
 
                 <!-- <div id="editorBox"></div> -->
