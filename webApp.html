@@ -93,10 +93,11 @@
                                         
                     // WIDGETS
                     "esri/widgets/Editor",
+                    "esri/widgets/CoordinateConversion",
                 ],
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
-                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, Editor) {
+                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, Editor, CoordinateConversion) {
 
                 // HAVE TO HAVE API KEY TO ACCESS ARCGIS SERVICES
                 esriConfig.apiKey = "AAPK47940bdbad24479c8e5cfc3285632cf0D6SI_0gce6ZC0zx7iGkSeVP7k66w2b23CD8OKRR1jRMFulXcBwmgjXjgUHmhXMNS";
@@ -128,6 +129,8 @@
                         left: 400 
                     }
                 });
+
+                
 
                 // CONSTRUCT FEATURELAYERS
 
@@ -416,6 +419,13 @@
                     console.log(ctr)
                 }
 
+                // CREATE COORDINATE WIDGET
+                const ccWidget = new CoordinateConversion({
+                    view: mapView
+                });
+
+                // ADD COORDINATE WIDGET TO MAP
+                mapView.ui.add(ccWidget, "top-right");
         
                 
             });
