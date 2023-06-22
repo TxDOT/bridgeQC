@@ -391,10 +391,19 @@
                     console.log("saving now...");
                     console.log("this is the specBridge being saved", specBridge);
 
+                    // console.log("these are the fields", specBridge.attributes.IS_IRREG);
+
+                    // console.log(bridgeSelect.value == regSelect);
+
+                    // if (regSelect.selected == true) {
+                    //     console.log("regular selected");
+                    //     specBridge.attributes.IS_IRREG = false;
+                    //     console.log("attribute", specBridge.attributes.IS_IRREG);
+                    // }
                     // let editFeatures;
 
                     // if (bridgeSelect.value == regSelect) {
-                    //     selectedBridge.attributes.IS_IRREG = 
+                    //     
                     // }
 
                     // bridgeTest.applyEdits
@@ -427,31 +436,11 @@
                 <div id="text">
                     <h2> EDIT BRIDGE </h2>
                 </div>
-                <!-- <calcite-tree id = "bridgeTypeOptions">
-                    <calcite-tree-item id = "regSelect">Regular Bridge</calcite-tree-item>
-                    <calcite-tree-item expanded = true>
-                        Irregular Bridge
-                        <calcite-tree slot="children">
-                            <calcite-tree-item id = "alignSelect">Alignment</calcite-tree-item>
-                            <calcite-tree-item id = "compSelect">Complex</calcite-tree-item>
-                            <calcite-tree-item id = "culSelect">Culvert</calcite-tree-item>
-                            <calcite-tree-item id = "curvSelect">Curved</calcite-tree-item>
-                            <calcite-tree-item id = "elevSelect">Elevation</calcite-tree-item>
-                            <calcite-tree-item id = "newerSelect">Newer</calcite-tree-item>
-                            <calcite-tree-item id = "tinySelect">Tiny</calcite-tree-item>
-                            <calcite-tree-item id = "twowaySelect">Twoway</calcite-tree-item>
-                            <calcite-tree-item id = "vegSelect">Vegetation</calcite-tree-item>
-                            <calcite-tree-item id = "otherSelect">Other</calcite-tree-item>
-                        </calcite-tree>
-                    </calcite-tree-item>
-                </calcite-tree>                     -->
-                <!-- <calcite-input id="commentInput" placeholder="Enter your comment"></calcite-input> -->
-
                 <calcite-label>
                     <calcite-select id = "selectTest">
                         <calcite-option id = "selectYourChoice" value = "selectYourChoice" Selected> Select Your Choice </calcite-option>
                         <calcite-option-group label="Regular Bridge">
-                            <calcite-option id = "regSelect" value = "regSelect"> Regular Bridge</calcite-option>
+                            <calcite-option id = "regSelect" value ="regSelect"> Regular Bridge</calcite-option>
                         </calcite-option-group>
                         <calcite-option-group label="Irregular Bridge">
                             <calcite-option id = "alignSelect" value="alignSelect">Alignment</calcite-option>
@@ -467,13 +456,10 @@
                         </calcite-option-group>
                     </calcite-select>
                 </calcite-label>
-                
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
                 </div>
-
-                <!-- <div id="editorBox"></div> -->
             </div>
         </div>
     </body>
