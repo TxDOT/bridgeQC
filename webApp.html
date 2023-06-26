@@ -254,12 +254,12 @@
                 queryNull.outFields = ["*"];
                 queryNull.num = 2000; //to pull from next 2000
 
-                // declare new bridge variable. Variable is always populated with the currently selected bridge
-                let specBridge;
+                // declare new bridge ID variable. Variable is always populated with the currently selected bridge ID
+                let specBridgeID;
                 
                 // LOAD MAP AND FIND REFERENCE
                 mapView.when(function() {
-                    specBridge = findBridge(); // selectedBridge gets returned here ... not sure how to save it
+                    specBridgeID = findBridge(); // selectedBridgeID gets returned here ... not sure how to save it
                 });
 
                 function findBridge() {
@@ -273,9 +273,8 @@
                     return bridgeTest.queryFeatures(queryNull)
                         // THEN FIND SELECTED BRIDGE WITHIN THE RESULTS
                         .then(function(featureSet) {
-                            let selectedBridge = showSelectedBridge(featureSet);
-                            // console.log("selected bridge within .then of query", selectedBridge);
-                            return selectedBridge;
+                            let selectedBridgeID = showSelectedBridge(featureSet);
+                            return selectedBridgeID;
                         });
                 }
 
@@ -292,6 +291,8 @@
                     // IF 1 OR MORE BRIDGES LEFT, PICK ONE AT RANDOM AND ZOOM TO IT AND HIGHLIGHT IT
                     let selectedID = getRandomBridge(0, resultsCount-1);
                     let selectedBridge = featureSet.features[selectedID];
+                    let selectedBridgeID = selectedBridge.attributes.OBJECTID;
+                    console.log("this is the selected bridge ID", selectedBridgeID);
                     
                     // ZOOM TO IT
                     var bridgeExtent = selectedBridge.geometry.extent.clone().expand(2);
@@ -300,9 +301,8 @@
                     // HIGHLIGHT IT
                     highlight(selectedBridge);
 
-                    // RETURN SELECTED BRIDGE SO THAT IT CAN BE USED LATER TO SAVE EDITS
-                    // console.log("returning Selected Bridge in show selected function", selectedBridge)
-                    return selectedBridge;
+                    // RETURN SELECTED BRIDGE ID SO THAT IT CAN BE USED LATER TO SAVE EDITS
+                    return selectedBridgeID;
                 }
 
                 function getRandomBridge(min, max) {
@@ -381,7 +381,7 @@
                 const skipBridgeBtn = document.getElementById("skipBridgeBtn");
                 skipBridgeBtn.addEventListener("click", () => {
                     // console.log("skip button clicked");
-                    specBridge = findBridge(); // selected bridge gets returned here
+                    specBridgeID = findBridge(); // selected bridge gets returned here
                 });
 
                 // BUTTON TO SAVE AND GO TO NEXT BRIDGE
@@ -393,8 +393,7 @@
                         alert ("Make a selection before saving and going to the next bridge.")
                     }
                     else {
-                        saveChoices(specBridge);
-                        specBridge = findBridge(); // selected bridge gets returned here
+                        saveChoices(specBridgeID);
                     }
                 })
 
@@ -406,32 +405,81 @@
 
                 // CLEAR TREE SELECTION
                 function clearSelection() {
-                    console.log("selected items before clear", bridgeSelect.value);
+                    // console.log("selected items before clear", bridgeSelect.value);
                     bridgeSelect.value = selectYourChoice;
-                    selectYourChoice.selected == true;
-                    console.log("selected items after clear", bridgeSelect.value);
+                    selectYourChoice.selected = true;
+                    // console.log("selected items after clear", bridgeSelect.value);
                 }
 
-                function saveChoices(specBridge) {
-                    console.log("saving now...");
-                    console.log("this is the specBridge being saved", specBridge);
+                function saveChoices(specBridgeID) {
+                    console.log("this is the specBridge being saved", specBridgeID);
 
-                    // console.log("these are the fields", specBridge.attributes.IS_IRREG);
+                    var xmlhttp;
+                    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp = new XMLHttpRequest();
+                    }
+                    else { // code for IE6, IE5
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xmlhttp.onreadystatechange=function() {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            specBridgeID = findBridge(); // selected bridge ID gets returned here
+                        }
+                    }
 
-                    // console.log(bridgeSelect.value == regSelect);
+                    //Service URL
+                    var serviceURL = "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0/updateFeatures?f=json&features=";
 
-                    // if (regSelect.selected == true) {
-                    //     console.log("regular selected");
-                    //     // specBridge.attributes.IS_IRREG = false;
-                    //     console.log("attribute", specBridge.attributes.IS_IRREG);
-                    // }
-                    // let editFeatures;
+                    var isIrregValue;
+                    var irregReasonValue;
 
-                    // if (bridgeSelect.value == regSelect) {
-                    //     
-                    // }
+                    if (regSelect.selected == true) {
+                        isIrregValue = "0";
+                    }
+                    if (alignSelect.selected == true) {
+                        isIrregValue = "1";
+                        irregReasonValue = "9";
+                    }
+                    if (compSelect.selected == true) {
+                        isIrregValue = "1";
+                        irregReasonValue = "1";
+                    }
+                    if (culSelect.selected == true) {
+                        isIrregValue = "1";
+                        irregReasonValue = "7";
+                    }
+                    if (curvSelect.selected == true) {
+                        isIrregValue = "1";
+                        irregReasonValue = "2";
+                    }
+                    if (elevSelect.selected == true) {
+                        isIrregValue = "1";
+                        irregReasonValue = "6";
+                    }
+                    if (newerSelect.selected == true) {
+                        isIrregValue = "1";
+                        irregReasonValue = "8";
+                    }
+                    if (tinySelect.selected == true) {
+                        isIrregValue = "1";
+                        irregReasonValue = "5";
+                    }
+                    if (twowaySelect.selected == true) {
+                        isIrregValue = "1";
+                        irregReasonValue = "3";
+                    }
+                    if (vegSelect.selected == true) {
+                        isIrregValue = "1";
+                        irregReasonValue = "4";
+                    }
+                    if (otherSelect.selected == true) {
+                        isIrregValue = "1";
+                        irregReasonValue = "10";
+                    }
 
-                    // bridgeTest.applyEdits
+                    serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
+                    xmlhttp.open("POST",serviceURL,true);
+                    xmlhttp.send();  
                     
                 }
 
