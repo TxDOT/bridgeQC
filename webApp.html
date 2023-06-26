@@ -256,10 +256,11 @@
 
                 // declare new bridge ID variable. Variable is always populated with the currently selected bridge ID
                 let specBridgeID;
-                
+                console.log('global', specBridgeID)
                 // LOAD MAP AND FIND REFERENCE
-                mapView.when(function() {
-                    specBridgeID = findBridge(); // selectedBridgeID gets returned here ... not sure how to save it
+                mapView.when(async function() {
+                    specBridgeID = await findBridge(); // selectedBridgeID gets returned here ... not sure how to save it
+                    console.log('when', specBridgeID)
                 });
 
                 function findBridge() {
@@ -339,6 +340,7 @@
                 const otherSelect = document.getElementById("otherSelect");
 
                 bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
+                    console.log(specBridgeID)
                     if (regSelect.selected == true) {
                         console.log("regular selected")
                     }
@@ -379,9 +381,9 @@
 
                 // BUTTON TO SKIP BRIDGE
                 const skipBridgeBtn = document.getElementById("skipBridgeBtn");
-                skipBridgeBtn.addEventListener("click", () => {
+                skipBridgeBtn.addEventListener("click", async () => {
                     // console.log("skip button clicked");
-                    specBridgeID = findBridge(); // selected bridge gets returned here
+                    specBridgeID = await findBridge(); // selected bridge gets returned here
                 });
 
                 // BUTTON TO SAVE AND GO TO NEXT BRIDGE
@@ -393,7 +395,7 @@
                         alert ("Make a selection before saving and going to the next bridge.")
                     }
                     else {
-                        saveChoices(specBridgeID);
+                        saveChoices();
                     }
                 })
 
@@ -411,7 +413,7 @@
                     // console.log("selected items after clear", bridgeSelect.value);
                 }
 
-                function saveChoices(specBridgeID) {
+                function saveChoices() {
                     console.log("this is the specBridge being saved", specBridgeID);
 
                     var xmlhttp;
@@ -421,9 +423,11 @@
                     else { // code for IE6, IE5
                         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
                     }
-                    xmlhttp.onreadystatechange=function() {
+                    xmlhttp.onreadystatechange=async function() {
                         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                            specBridgeID = findBridge(); // selected bridge ID gets returned here
+                            console.log('success, finding the next one!')
+                            specBridgeID = await findBridge(); // selected bridge ID gets returned here
+                            console.log('here it is', specBridgeID)
                         }
                     }
 
