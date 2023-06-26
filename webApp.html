@@ -228,12 +228,17 @@
                 map.addMany([roadways, bridgeTest, streams, railroads, nbiPoints]);
 
                 // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
+                const bridgeLayerToggle = document.getElementById("bridgeTest");
                 const streamsLayerToggle = document.getElementById("streams");
                 const roadwaysLayerToggle = document.getElementById("roadways");
                 const nbiLayerToggle = document.getElementById("nbiPoints");
                 const railroadsLayerToggle = document.getElementById("railroads");
 
+
                 // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOXS AND CHANGE VISIBILITY
+                bridgeLayerToggle.addEventListener("change", () =>{
+                    bridgeTest.visible = bridgeLayerToggle.checked;
+                });
                 streamsLayerToggle.addEventListener("change", () => {
                     streams.visible = streamsLayerToggle.checked;
                 });
@@ -246,7 +251,7 @@
                 railroadsLayerToggle.addEventListener("change", () => {
                     railroads.visible = railroadsLayerToggle.checked;
                 });
-
+                
                 // CREATE QUERY TO ONLY SEE THE REMAINING BRIDGES
                 let queryNull = bridgeTest.createQuery();
                 queryNull.where = "IS_IRREG IS NULL";
@@ -458,6 +463,7 @@
                     <p> Use the checkboxes below to toggle reference layers on and off.</p>
                 </div>
                 <div id = "toggleSet">
+                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="bridgeTest" checked /> Bridge Hulls </div>
                     <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="nbiPoints" unchecked /> Bridge Points </div>
                     <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="roadways" unchecked /> Roads </div>
                     <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" unchecked /> Streams </div>
