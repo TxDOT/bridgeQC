@@ -130,8 +130,6 @@
                     }
                 });
 
-                
-
                 // CONSTRUCT FEATURELAYERS
 
                 //ROADWAYS
@@ -167,28 +165,6 @@
                     id: "streams",
                     visible: false
                 });
-
-                // WATER BODIES
-                /*const waterbodiesRenderer = {
-                    type: "simple",
-                    symbol: {
-                        type: "simple-fill",
-                        style: "solid",
-                        color: "#1F51FF",
-                        outline: {
-                            color: "#0437F2",
-                            width: 1
-                        }
-                    }
-                };
-
-                const waterbodies = new FeatureLayer({
-                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_NHD_Waterbodies/FeatureServer",
-                    //renderer: waterbodiesRenderer,
-                    opacity: 0.5,
-                    visible: true
-                });
-                */
 
                 // RAIL ROADS RENDERER (SYMBOLOGY) AND RAIL ROADS LAYER
                 const railroadsRenderer = {
@@ -252,14 +228,14 @@
                 queryNull.where = "IS_IRREG IS NULL";
                 queryNull.returnGeometry = true;
                 queryNull.outFields = ["*"];
-                queryNull.num = 2000; //to pull from next 2000
+                queryNull.num = 2000; // TO PULL FROM NEXT 2000
 
-                // declare new bridge ID variable. Variable is always populated with the currently selected bridge ID
+                // DECLARE NEW BRIDGE ID VARIABLE. VARIABLE IS ALWASY POPULATED WITH CURRENTLY SELECTED BRIDGE OBJECT ID
                 let specBridgeID;
                 
                 // LOAD MAP AND FIND REFERENCE
                 mapView.when(function() {
-                    specBridgeID = findBridge(); // selectedBridgeID gets returned here ... not sure how to save it
+                    specBridgeID = findBridge(); // SELECTED BRIDGE OBJECT ID GETS RETURNED HERE
                 });
 
                 function findBridge() {
@@ -393,6 +369,7 @@
                         alert ("Make a selection before saving and going to the next bridge.")
                     }
                     else {
+                        console.log(specBridgeID);
                         saveChoices(specBridgeID);
                     }
                 })
@@ -411,6 +388,7 @@
                     // console.log("selected items after clear", bridgeSelect.value);
                 }
 
+                // SAVE CHOICES FUNCTION 
                 function saveChoices(specBridgeID) {
                     console.log("this is the specBridge being saved", specBridgeID);
 
@@ -427,7 +405,7 @@
                         }
                     }
 
-                    //Service URL
+                    //SERVICE URL
                     var serviceURL = "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0/updateFeatures?f=json&features=";
 
                     var isIrregValue;
