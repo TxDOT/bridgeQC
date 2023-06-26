@@ -253,16 +253,19 @@
                 queryNull.returnGeometry = true;
                 queryNull.outFields = ["*"];
                 queryNull.num = 2000; //to pull from next 2000
+
+                // declare new bridge variable. Variable is always populated with the currently selected bridge
+                let specBridge;
                 
                 // LOAD MAP AND FIND REFERENCE
                 mapView.when(function() {
-                    findBridge(); // selectedBridge gets returned here
+                    specBridge = findBridge(); // selectedBridge gets returned here ... not sure how to save it
                 });
 
                 function findBridge() {
                     // NEED TO REMOVE SELECTED THINGS FROM CALCITE TREE IF ANYTHING IS SELECTED
                     if (bridgeSelect.value != selectYourChoice) {
-                        console.log("something is seleced so clearing")
+                        // console.log("something is selected so clearing")
                         clearSelection();
                     }
 
@@ -271,7 +274,7 @@
                         // THEN FIND SELECTED BRIDGE WITHIN THE RESULTS
                         .then(function(featureSet) {
                             let selectedBridge = showSelectedBridge(featureSet);
-                            console.log("selected bridge within .then of query", selectedBridge);
+                            // console.log("selected bridge within .then of query", selectedBridge);
                             return selectedBridge;
                         });
                 }
@@ -298,7 +301,7 @@
                     highlight(selectedBridge);
 
                     // RETURN SELECTED BRIDGE SO THAT IT CAN BE USED LATER TO SAVE EDITS
-                    console.log("returning Selected Bridge in show selected function", selectedBridge)
+                    // console.log("returning Selected Bridge in show selected function", selectedBridge)
                     return selectedBridge;
                 }
 
@@ -323,60 +326,60 @@
                 // CREATE CALCITE TREE TO EDIT SELECTED BRIDGE
                 const bridgeSelect = document.getElementById("selectTest");
 
-                bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
-                    if (regSelect.selected == true) {
-                        console.log("regular selected")
-                    }
-                    if (alignSelect.selected == true) {
-                        console.log("align selected")
-                    }
-                    if (compSelect.selected == true) {
-                        console.log("complex selected")
-                    }
-                    if (culSelect.selected == true) {
-                        console.log("culvert selected")
-                    }
-                    if (curvSelect.selected == true) {
-                        console.log("curved selected")
-                    }
-                    if (elevSelect.selected == true) {
-                        console.log("elevation selected")
-                    }
-                    if (newerSelect.selected == true) {
-                        console.log("newer selected")
-                    }
-                    if (tinySelect.selected == true) {
-                        console.log("tiny selected")
-                    }
-                    if (twowaySelect.selected == true) {
-                        console.log("two way selected")
-                    }
-                    if (vegSelect.selected == true) {
-                        console.log("veg selected")
-                    }
-                    if (otherSelect.selected == true) {
-                        console.log("other selected")
-                    }
-                });
+                // bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
+                //     if (regSelect.selected == true) {
+                //         console.log("regular selected")
+                //     }
+                //     if (alignSelect.selected == true) {
+                //         console.log("align selected")
+                //     }
+                //     if (compSelect.selected == true) {
+                //         console.log("complex selected")
+                //     }
+                //     if (culSelect.selected == true) {
+                //         console.log("culvert selected")
+                //     }
+                //     if (curvSelect.selected == true) {
+                //         console.log("curved selected")
+                //     }
+                //     if (elevSelect.selected == true) {
+                //         console.log("elevation selected")
+                //     }
+                //     if (newerSelect.selected == true) {
+                //         console.log("newer selected")
+                //     }
+                //     if (tinySelect.selected == true) {
+                //         console.log("tiny selected")
+                //     }
+                //     if (twowaySelect.selected == true) {
+                //         console.log("two way selected")
+                //     }
+                //     if (vegSelect.selected == true) {
+                //         console.log("veg selected")
+                //     }
+                //     if (otherSelect.selected == true) {
+                //         console.log("other selected")
+                //     }
+                // });
 
                 // BUTTON TO SKIP BRIDGE
                 const skipBridgeBtn = document.getElementById("skipBridgeBtn");
                 skipBridgeBtn.addEventListener("click", () => {
-                    console.log("skip button clicked");
-                    findBridge(); // selected bridge gets returned here
+                    // console.log("skip button clicked");
+                    specBridge = findBridge(); // selected bridge gets returned here
                 });
 
                 // BUTTON TO SAVE AND GO TO NEXT BRIDGE
                 const saveBridgeBtn = document.getElementById("saveBridgeBtn");
                 saveBridgeBtn.addEventListener("click", () => {
-                    console.log("save button clicked");
+                    // console.log("save button clicked");
 
                     if (bridgeSelect.value == selectYourChoice) {
                         alert ("Make a selection before saving and going to the next bridge.")
                     }
                     else {
-                        // saveChoices(previousBridge);
-                        findBridge(); // selected bridge gets returned here
+                        saveChoices(specBridge);
+                        specBridge = findBridge(); // selected bridge gets returned here
                     }
                 })
 
@@ -389,19 +392,28 @@
 
                 // CLEAR TREE SELECTION
                 function clearSelection() {
-                    console.log("selected items before clear", bridgeSelect.value);
+                    // console.log("selected items before clear", bridgeSelect.value);
                     bridgeSelect.value = selectYourChoice;
-                    console.log("selected items after clear", bridgeSelect.value);
+                    // console.log("selected items after clear", bridgeSelect.value);
                 }
 
-                function saveChoices(selectedBridgeVar) {
+                function saveChoices(specBridge) {
                     console.log("saving now...");
-                    console.log(selectedBridgeVar);
+                    console.log("this is the specBridge being saved", specBridge);
 
+                    // console.log("these are the fields", specBridge.attributes.IS_IRREG);
+
+                    // console.log(bridgeSelect.value == regSelect);
+
+                    // if (regSelect.selected == true) {
+                    //     console.log("regular selected");
+                    //     specBridge.attributes.IS_IRREG = false;
+                    //     console.log("attribute", specBridge.attributes.IS_IRREG);
+                    // }
                     // let editFeatures;
 
                     // if (bridgeSelect.value == regSelect) {
-                    //     selectedBridge.attributes.IS_IRREG = 
+                    //     
                     // }
 
                     // bridgeTest.applyEdits
@@ -454,31 +466,11 @@
                 <div id="text">
                     <h2> EDIT BRIDGE </h2>
                 </div>
-                <!-- <calcite-tree id = "bridgeTypeOptions">
-                    <calcite-tree-item id = "regSelect">Regular Bridge</calcite-tree-item>
-                    <calcite-tree-item expanded = true>
-                        Irregular Bridge
-                        <calcite-tree slot="children">
-                            <calcite-tree-item id = "alignSelect">Alignment</calcite-tree-item>
-                            <calcite-tree-item id = "compSelect">Complex</calcite-tree-item>
-                            <calcite-tree-item id = "culSelect">Culvert</calcite-tree-item>
-                            <calcite-tree-item id = "curvSelect">Curved</calcite-tree-item>
-                            <calcite-tree-item id = "elevSelect">Elevation</calcite-tree-item>
-                            <calcite-tree-item id = "newerSelect">Newer</calcite-tree-item>
-                            <calcite-tree-item id = "tinySelect">Tiny</calcite-tree-item>
-                            <calcite-tree-item id = "twowaySelect">Twoway</calcite-tree-item>
-                            <calcite-tree-item id = "vegSelect">Vegetation</calcite-tree-item>
-                            <calcite-tree-item id = "otherSelect">Other</calcite-tree-item>
-                        </calcite-tree>
-                    </calcite-tree-item>
-                </calcite-tree>                     -->
-                <!-- <calcite-input id="commentInput" placeholder="Enter your comment"></calcite-input> -->
-
                 <calcite-label>
                     <calcite-select id = "selectTest">
                         <calcite-option id = "selectYourChoice" value = "selectYourChoice" Selected> Select Your Choice </calcite-option>
                         <calcite-option-group label="Regular Bridge">
-                            <calcite-option id = "regSelect" value = "regSelect"> Regular Bridge</calcite-option>
+                            <calcite-option id = "regSelect" value ="regSelect"> Regular Bridge</calcite-option>
                         </calcite-option-group>
                         <calcite-option-group label="Irregular Bridge">
                             <calcite-option id = "alignSelect" value="alignSelect">Alignment</calcite-option>
@@ -494,14 +486,11 @@
                         </calcite-option-group>
                     </calcite-select>
                 </calcite-label>
-                
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
                     <button id="btnGoogle">Jump to Google</button>
                 </div>
-
-                <!-- <div id="editorBox"></div> -->
             </div>
         </div>
     </body>
