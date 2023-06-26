@@ -325,42 +325,57 @@
 
                 // CREATE CALCITE TREE TO EDIT SELECTED BRIDGE
                 const bridgeSelect = document.getElementById("selectTest");
+                const selectYourChoice = document.getElementById("selectYourChoice");
+                const regSelect = document.getElementById("regSelect");
+                const alignSelect = document.getElementById("alignSelect");
+                const compSelect = document.getElementById("compSelect");
+                const culSelect = document.getElementById("culSelect");
+                const curvSelect = document.getElementById("curvSelect");
+                const elevSelect = document.getElementById("elevSelect");
+                const newerSelect = document.getElementById("newerSelect");
+                const tinySelect = document.getElementById("tinySelect");
+                const twowaySelect = document.getElementById("twowaySelect");
+                const vegSelect = document.getElementById("vegSelect");
+                const otherSelect = document.getElementById("otherSelect");
 
-                // bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
-                //     if (regSelect.selected == true) {
-                //         console.log("regular selected")
-                //     }
-                //     if (alignSelect.selected == true) {
-                //         console.log("align selected")
-                //     }
-                //     if (compSelect.selected == true) {
-                //         console.log("complex selected")
-                //     }
-                //     if (culSelect.selected == true) {
-                //         console.log("culvert selected")
-                //     }
-                //     if (curvSelect.selected == true) {
-                //         console.log("curved selected")
-                //     }
-                //     if (elevSelect.selected == true) {
-                //         console.log("elevation selected")
-                //     }
-                //     if (newerSelect.selected == true) {
-                //         console.log("newer selected")
-                //     }
-                //     if (tinySelect.selected == true) {
-                //         console.log("tiny selected")
-                //     }
-                //     if (twowaySelect.selected == true) {
-                //         console.log("two way selected")
-                //     }
-                //     if (vegSelect.selected == true) {
-                //         console.log("veg selected")
-                //     }
-                //     if (otherSelect.selected == true) {
-                //         console.log("other selected")
-                //     }
-                // });
+                bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
+                    if (regSelect.selected == true) {
+                        console.log("regular selected")
+                    }
+                    if (alignSelect.selected == true) {
+                        console.log("align selected")
+                    }
+                    if (compSelect.selected == true) {
+                        console.log("complex selected")
+                    }
+                    if (culSelect.selected == true) {
+                        console.log("culvert selected")
+                    }
+                    if (curvSelect.selected == true) {
+                        console.log("curved selected")
+                    }
+                    if (elevSelect.selected == true) {
+                        console.log("elevation selected")
+                    }
+                    if (newerSelect.selected == true) {
+                        console.log("newer selected")
+                    }
+                    if (tinySelect.selected == true) {
+                        console.log("tiny selected")
+                    }
+                    if (twowaySelect.selected == true) {
+                        console.log("two way selected")
+                    }
+                    if (vegSelect.selected == true) {
+                        console.log("veg selected")
+                    }
+                    if (otherSelect.selected == true) {
+                        console.log("other selected")
+                    }
+                    if (selectYourChoice.selected == true) {
+                        console.log("reset select your choice selected")
+                    }
+                });
 
                 // BUTTON TO SKIP BRIDGE
                 const skipBridgeBtn = document.getElementById("skipBridgeBtn");
@@ -374,7 +389,7 @@
                 saveBridgeBtn.addEventListener("click", () => {
                     // console.log("save button clicked");
 
-                    if (bridgeSelect.value == selectYourChoice) {
+                    if (bridgeSelect.value == selectYourChoice || selectYourChoice.selected == true) {
                         alert ("Make a selection before saving and going to the next bridge.")
                     }
                     else {
@@ -386,15 +401,15 @@
                 // JUMP TO GOOGLE BUTTON
                 const btnGoogle = document.getElementById("btnGoogle");
                 btnGoogle.addEventListener("click", () => {
-
                     jumpToGoogle(); // 
                 });
 
                 // CLEAR TREE SELECTION
                 function clearSelection() {
-                    // console.log("selected items before clear", bridgeSelect.value);
+                    console.log("selected items before clear", bridgeSelect.value);
                     bridgeSelect.value = selectYourChoice;
-                    // console.log("selected items after clear", bridgeSelect.value);
+                    selectYourChoice.selected == true;
+                    console.log("selected items after clear", bridgeSelect.value);
                 }
 
                 function saveChoices(specBridge) {
