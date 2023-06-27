@@ -111,11 +111,19 @@
                 // OAUTH OBJECT AND REGISTER WITH IDENTITY MANAGER
                 // var info = new OAuthInfo ({
                 //     appId: "91H8RXSUHGiUTCi9", // registered app id
-                //     portalUrl: "https://maps.txdot.gov/portal/sharing/rest/generateToken",
                 //     flowType: "auto",
                 //     popup: false
                 // });
                 // esriId.registerOAuthInfos([info]);
+                // esriId.checkSignInStatus("https://txdot.maps.arcgis.com/sharing")
+                //     .then(()=> {
+                //         handleSignedInI()
+                //     })
+                //     .catch((err) => {
+                //         console.warn("logged out", err)
+                //         return;
+                //     })
+                
 
                 // CHECK TO SEE IF SIGNED IN WITH ACCESS ALREADY
                 // esriId.checkSignInStatus(info.portalUrl + "/sharing").then(() => {
@@ -187,8 +195,8 @@
                     }
                 };
                 const bridgeTest = new FeatureLayer({
-                    url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0", // test
-                    // url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0", // real
+                    // url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0", // test
+                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0", // real
                     renderer: bridgesRenderer,
                     opacity: 0.5,
                     definitionExpression: "IS_IRREG IS NULL"
