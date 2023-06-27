@@ -96,10 +96,10 @@
                     "esri/widgets/CoordinateConversion",
 
                     // // OAUTH
-                    // "esri/portal/Portal",
-                    // "esri/identity/OAuthInfo",
-                    // "esri/identity/IdentityManager",
-                    // "esri/portal/PortalQueryParams"
+                    "esri/portal/Portal",
+                    "esri/identity/OAuthInfo",
+                    "esri/identity/IdentityManager",
+                    "esri/portal/PortalQueryParams"
                 ],
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
@@ -109,13 +109,14 @@
                 esriConfig.apiKey = "AAPK47940bdbad24479c8e5cfc3285632cf0D6SI_0gce6ZC0zx7iGkSeVP7k66w2b23CD8OKRR1jRMFulXcBwmgjXjgUHmhXMNS";
 
                 // OAUTH OBJECT AND REGISTER WITH IDENTITY MANAGER
-                // var info = new OAuthInfo ({
-                //     appId: "91H8RXSUHGiUTCi9", // registered app id
-                //     flowType: "auto",
-                //     popup: false
-                // });
-                // esriId.registerOAuthInfos([info]);
-                // esriId.checkSignInStatus("https://txdot.maps.arcgis.com/sharing")
+                var oauthinfo = new OAuthInfo ({
+                    appId: "91H8RXSUHGiUTCi9", // registered app id
+                    flowType: "auto",
+                    popup: false
+                });
+                esriId.registerOAuthInfos([oauthinfo]);
+
+                // esriId.checkSignInStatus("https://txdot.maps.arcgis.com/sharing/rest/oauth2/authorize")
                 //     .then(()=> {
                 //         handleSignedInI()
                 //     })
@@ -123,26 +124,8 @@
                 //         console.warn("logged out", err)
                 //         return;
                 //     })
-                
 
-                // CHECK TO SEE IF SIGNED IN WITH ACCESS ALREADY
-                // esriId.checkSignInStatus(info.portalUrl + "/sharing").then(() => {
-                //     displayItems();
-                //     }).catch(() => {
-                //         // Anonymous view
-                //         anonPanelElement.style.display = "block";
-                //         personalPanelElement.style.display = "none";
-                //     });
 
-                // // REDIRECT TO SIGN IN BACK
-                // document.getElementById("sign-in").addEventListener("click", () => {
-                //     // user will be redirected to OAuth sign-in page
-                //     esriId.getCredential((info.portalUrl + "/sharing"), {
-                //         oAuthPopupConfirmation: false
-                //     }).then(function() {
-                //         loadMap();
-                //     });
-                // });
 
                 // CREATE WMTS BASEMAP FOR TEXAS 6 INCH IMAGERY
                 const TISBasemap = new Basemap({
