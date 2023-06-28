@@ -169,17 +169,15 @@
                     popup: false
                 });
                 esriId.registerOAuthInfos([oauthinfo]);
-                esriId.getCredential(oauthinfo.portalUrl + "/sharing");
 
                 esriId.checkSignInStatus(oauthinfo.portalUrl + "/sharing").then((response) => {
                     console.log("success!", response);
-                    console.log(esriId);
+                    //console.log(esriId);
                     displayItems();
                     }).catch((error) => {
                         console.log("failure!", error);
                     });
-
-
+                esriId.getCredential(oauthinfo.portalUrl + "/sharing");
 
                 function displayItems() {
 
@@ -507,7 +505,7 @@
                             }
                         }
 
-                        //SERVICE URL
+                        //SERVICE URL - NEED TO UPDATE THIS EVENTUALLY, BEFORE ACTUALLY USING APP ON REAL LAYER
                         var serviceURL = "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0/updateFeatures?f=json&features=";
 
                         var isIrregValue;
@@ -567,10 +565,11 @@
                         //serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
                         serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT': \'" + commentToSave +"\'}}";
 
-                        //console.log(serviceURL);
+                        console.log(serviceURL);
 
-                        xmlhttp.open("POST",serviceURL,true);
-                        xmlhttp.send();  
+                        // UNCOMMENT THE NEXT TWO LINES WHEN READY TO POST CHANGES
+                        //xmlhttp.open("POST",serviceURL,true);
+                        //xmlhttp.send();  
 
                     }
 
@@ -585,19 +584,18 @@
                         console.log(ctr)
                     }
 
-                // CREATE COORDINATE WIDGET
-                const ccWidget = new CoordinateConversion({
-                    view: mapView,
-                    container: coordinateBox,
-                    multipleConversions: false,
-                });
+                    // CREATE COORDINATE WIDGET
+                    const ccWidget = new CoordinateConversion({
+                        view: mapView,
+                        container: coordinateBox,
+                        multipleConversions: false,
+                    });
 
-                ccWidget.visibleElements = {
-                    settingsButton: false,
-                    captureButton: false
-                };
+                    ccWidget.visibleElements = {
+                        settingsButton: false,
+                        captureButton: false
+                    };
 
-        
                 }
                 
              });
@@ -613,7 +611,6 @@
                     <h2> INSTRUCTIONS </h2>
                     <P> Do your best, and have fun. :p </P>
                 </div>
-                <span id="sign-in" class="action">Sign In</span> and view your ArcGIS Online items.
                 <div id="text">
                     <h2>REFERENCE INFORMATION</h2>
                     <p> Use the checkboxes below to toggle reference layers on and off.</p>
