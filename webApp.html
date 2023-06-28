@@ -148,425 +148,442 @@
                     // WIDGETS
                     "esri/widgets/Editor",
                     "esri/widgets/CoordinateConversion",
+
+                    // // OAUTH
+                    "esri/portal/Portal",
+                    "esri/identity/OAuthInfo",
+                    "esri/identity/IdentityManager",
+                    "esri/portal/PortalQueryParams"
                 ],
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
-                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, Editor, CoordinateConversion) {
+                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, Editor, CoordinateConversion, Portal, OAuthInfo, esriId, PortalQueryParams) {
 
                 // HAVE TO HAVE API KEY TO ACCESS ARCGIS SERVICES
                 esriConfig.apiKey = "AAPK47940bdbad24479c8e5cfc3285632cf0D6SI_0gce6ZC0zx7iGkSeVP7k66w2b23CD8OKRR1jRMFulXcBwmgjXjgUHmhXMNS";
 
-                // CREATE WMTS BASEMAP FOR TEXAS 6 INCH IMAGERY
-                const TISBasemap = new Basemap({
-                    baseLayers: [
-                        new WMTSLayer({
-                            url: "https://txgi.tnris.org/login/path/food-paul-zebra-shirt/wmts/1.0.0/WMTSCapabilities.xml",
-                            activeLayer: {
-                                id: "texas"
+                // OAUTH OBJECT AND REGISTER WITH IDENTITY MANAGER
+                var oauthinfo = new OAuthInfo ({
+                    appId: "91H8RXSUHGiUTCi9", // registered app id
+                    // flowType: "implicit",
+                    popup: false
+                });
+                esriId.registerOAuthInfos([oauthinfo]);
+                esriId.getCredential(oauthinfo.portalUrl + "/sharing");
+
+                esriId.checkSignInStatus(oauthinfo.portalUrl + "/sharing").then((response) => {
+                    console.log("success!", response);
+                    console.log(esriId);
+                    displayItems();
+                    }).catch((error) => {
+                        console.log("failure!", error);
+                    });
+
+
+
+                function displayItems() {
+
+                    // CREATE WMTS BASEMAP FOR TEXAS 6 INCH IMAGERY
+                    const TISBasemap = new Basemap({
+                        baseLayers: [
+                            new WMTSLayer({
+                                url: "https://txgi.tnris.org/login/path/food-paul-zebra-shirt/wmts/1.0.0/WMTSCapabilities.xml",
+                                activeLayer: {
+                                    id: "texas"
+                                }
+                            })  
+                        ]
+                    });
+
+                    //CREATE MAP WITH IMAGERY BASEMAP
+                    const map = new Map({
+                        basemap : TISBasemap 
+                    });
+
+                    // CREATE MAPVIEW
+                    const mapView = new MapView({
+                        map: map,
+                        center: [-100.341389, 31.132222],
+                        zoom: 6,
+                        container: "viewDiv",
+                        padding: {
+                            left: 400 
+                        }
+                    });
+
+                    // CONSTRUCT FEATURELAYERS
+
+                    //ROADWAYS
+                    const roadways = new FeatureLayer({
+                        url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer/0",
+                        id: "roadways",
+                        visible: false
+                    });
+
+                    // BRIDGES RENDERER AND LAYER
+                    const bridgesRenderer = {
+                        type: "simple",
+                        symbol: {
+                            type: "simple-fill",
+                            style: "solid",
+                            color: "#73B2FF",
+                            outline: {
+                                color: "#5E5E5E",
+                                width: 1
                             }
-                        })  
-                    ]
-                });
-
-                //CREATE MAP WITH IMAGERY BASEMAP
-                const map = new Map({
-                    basemap : TISBasemap 
-                });
-
-                // CREATE MAPVIEW
-                const mapView = new MapView({
-                    map: map,
-                    center: [-100.341389, 31.132222],
-                    zoom: 6,
-                    container: "viewDiv",
-                    padding: {
-                        left: 400 
-                    }
-                });
-
-                // CONSTRUCT FEATURELAYERS
-
-                //ROADWAYS
-                const roadways = new FeatureLayer({
-                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer/0",
-                    id: "roadways",
-                    visible: false
-                });
-
-                // BRIDGES RENDERER AND LAYER
-                const bridgesRenderer = {
-                    type: "simple",
-                    symbol: {
-                        type: "simple-fill",
-                        style: "solid",
-                        color: "#73B2FF",
-                        outline: {
-                            color: "#5E5E5E",
-                            width: 1
                         }
+                    };
+                    const bridgeTest = new FeatureLayer({
+                        // url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0", // test
+                        url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0", // real
+                        renderer: bridgesRenderer,
+                        opacity: 0.5,
+                        definitionExpression: "IS_IRREG IS NULL"
+                    });
+
+                    // STREAMS
+                    const streams = new FeatureLayer ({
+                        url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Streams/FeatureServer",
+                        id: "streams",
+                        visible: false
+                    });
+
+                    // RAIL ROADS RENDERER (SYMBOLOGY) AND RAIL ROADS LAYER
+                    const railroadsRenderer = {
+                        type: "simple",
+                        symbol: {
+                            color: "#964B00",
+                            type: "simple-line",
+                            style: "solid",
+                            width: 1.5
+                        },
+                    };
+                    const railroads = new FeatureLayer ({
+                        url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Railroads/FeatureServer",
+                        renderer: railroadsRenderer,
+                        id: "railroads",
+                        visible: false
+                    });
+
+                    
+                    // BRIDGE POINTS
+                    const nbiRenderer = {
+                        type: "simple",
+                        symbol: {
+                            type: "simple-marker",
+                            size: 5,
+                            color: "red"
+                        }
+                    };
+                    const nbiPoints = new FeatureLayer ({
+                        url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Bridges/FeatureServer",
+                        renderer: nbiRenderer,
+                        id: "nbiPoints", 
+                        visible: false
+                    });
+
+                    // ADD FEATURELAYERS TO THE MAP
+                    map.addMany([roadways, bridgeTest, streams, railroads, nbiPoints]);
+
+                    // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
+                    const bridgeLayerToggle = document.getElementById("bridgeTest");
+                    const streamsLayerToggle = document.getElementById("streams");
+                    const roadwaysLayerToggle = document.getElementById("roadways");
+                    const nbiLayerToggle = document.getElementById("nbiPoints");
+                    const railroadsLayerToggle = document.getElementById("railroads");
+
+
+                    // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOXS AND CHANGE VISIBILITY
+                    bridgeLayerToggle.addEventListener("change", () =>{
+                        bridgeTest.visible = bridgeLayerToggle.checked;
+                    });
+                    streamsLayerToggle.addEventListener("change", () => {
+                        streams.visible = streamsLayerToggle.checked;
+                    });
+                    roadwaysLayerToggle.addEventListener("change", () => {
+                        roadways.visible = roadwaysLayerToggle.checked;
+                    });
+                    nbiLayerToggle.addEventListener("change", () => {
+                        nbiPoints.visible = nbiLayerToggle.checked;
+                    });
+                    railroadsLayerToggle.addEventListener("change", () => {
+                        railroads.visible = railroadsLayerToggle.checked;
+                    });
+                    
+                    // CREATE QUERY TO ONLY SEE THE REMAINING BRIDGES
+                    let queryNull = bridgeTest.createQuery();
+                    queryNull.where = "IS_IRREG IS NULL";
+                    queryNull.returnGeometry = true;
+                    queryNull.outFields = ["*"];
+                    queryNull.num = 2000; // TO PULL FROM NEXT 2000
+
+                    // DECLARE NEW BRIDGE ID VARIABLE. VARIABLE IS ALWASY POPULATED WITH CURRENTLY SELECTED BRIDGE OBJECT ID
+                    let specBridgeID;
+                    console.log('global', specBridgeID)
+                    
+                    // LOAD MAP AND FIND REFERENCE
+                    mapView.when(async function() {
+                        specBridgeID = await findBridge(); // selectedBridgeID gets returned here ... not sure how to save it
+                        console.log('when', specBridgeID)
+                    });
+
+                    function findBridge() {
+                        // NEED TO REMOVE SELECTED THINGS FROM CALCITE TREE IF ANYTHING IS SELECTED
+                        if (bridgeSelect.value != selectYourChoice) {
+                            // console.log("something is selected so clearing")
+                            clearSelection();
+                        }
+
+                        // THEN CALL QUERY TO FIND NEW BRIDGE
+                        return bridgeTest.queryFeatures(queryNull)
+                            // THEN FIND SELECTED BRIDGE WITHIN THE RESULTS
+                            .then(function(featureSet) {
+                                let selectedBridgeID = showSelectedBridge(featureSet);
+                                return selectedBridgeID;
+                            });
                     }
-                };
-                const bridgeTest = new FeatureLayer({
-                    url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0",
-                    renderer: bridgesRenderer,
-                    opacity: 0.5,
-                    definitionExpression: "IS_IRREG IS NULL"
-                });
 
-                // STREAMS
-                const streams = new FeatureLayer ({
-                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Streams/FeatureServer",
-                    id: "streams",
-                    visible: false
-                });
+                    function showSelectedBridge(featureSet) {
+                        // GET THE COUNT OF BRIDGES
+                        let resultsCount = featureSet.features.length;
 
-                // RAIL ROADS RENDERER (SYMBOLOGY) AND RAIL ROADS LAYER
-                const railroadsRenderer = {
-                    type: "simple",
-                    symbol: {
-                        color: "#964B00",
-                        type: "simple-line",
-                        style: "solid",
-                        width: 1.5
-                    },
-                };
-                const railroads = new FeatureLayer ({
-                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Railroads/FeatureServer",
-                    renderer: railroadsRenderer,
-                    id: "railroads",
-                    visible: false
-                });
+                        // IF ZERO LEFT, PROJECT DONE
+                        if (resultsCount<1) {
+                            alert("No more bridges!");
+                            return;
+                        }
 
+                        // IF 1 OR MORE BRIDGES LEFT, PICK ONE AT RANDOM AND ZOOM TO IT AND HIGHLIGHT IT
+                        let selectedID = getRandomBridge(0, resultsCount-1);
+                        let selectedBridge = featureSet.features[selectedID];
+                        let selectedBridgeID = selectedBridge.attributes.OBJECTID;
+                        console.log("this is the selected bridge ID", selectedBridgeID);
+                        
+                        // ZOOM TO IT
+                        var bridgeExtent = selectedBridge.geometry.extent.clone().expand(2);
+                        mapView.goTo(bridgeExtent);
+
+                        // HIGHLIGHT IT
+                        highlight(selectedBridge);
+
+                        // RETURN SELECTED BRIDGE ID SO THAT IT CAN BE USED LATER TO SAVE EDITS
+                        return selectedBridgeID;
+                    }
+
+                    function getRandomBridge(min, max) {
+                        // GETS RANDOM INTEGERE BETWEEN 0 AND THE HIGHEST ID, INCLUSIVE
+                        min = Math.ceil(min);
+                        max = Math.floor(max);
+                        return Math.floor(Math.random()* (max - min + 1) + min);
+                    }
+
+                    function highlight(selectedBridge) {
+                        // HIGHLIGHT THE SELECTED BRIDGE
+                        var highlightSelect;
+                        mapView.whenLayerView(bridgeTest).then(function(layerView){
+                            if (highlightSelect) {
+                                highlightSelect.remove();
+                            }
+                            highlightSelect = layerView.highlight(selectedBridge);
+                        })
+                    }
+
+                    // CREATE CALCITE TREE AND OPTIONS TO EDIT SELECTED BRIDGE
+                    const bridgeSelect = document.getElementById("selectTest");
+                    const selectYourChoice = document.getElementById("selectYourChoice");
+                    const regSelect = document.getElementById("regSelect");
+                    const alignSelect = document.getElementById("alignSelect");
+                    const compSelect = document.getElementById("compSelect");
+                    const culSelect = document.getElementById("culSelect");
+                    const curvSelect = document.getElementById("curvSelect");
+                    const elevSelect = document.getElementById("elevSelect");
+                    const newerSelect = document.getElementById("newerSelect");
+                    const tinySelect = document.getElementById("tinySelect");
+                    const twowaySelect = document.getElementById("twowaySelect");
+                    const vegSelect = document.getElementById("vegSelect");
+                    const otherSelect = document.getElementById("otherSelect");
                   
-                // BRIDGE POINTS
-                const nbiRenderer = {
-                    type: "simple",
-                    symbol: {
-                        type: "simple-marker",
-                        size: 5,
-                        color: "red"
-                    }
-                };
-                const nbiPoints = new FeatureLayer ({
-                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Bridges/FeatureServer",
-                    renderer: nbiRenderer,
-                    id: "nbiPoints", 
-                    visible: false
-                });
+                    const commentBox = document.getElementById("commentBox");
+                    commentBox.disabled = true;
 
-                // ADD FEATURELAYERS TO THE MAP
-                map.addMany([roadways, bridgeTest, streams, railroads, nbiPoints]);
-
-                // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
-                const bridgeLayerToggle = document.getElementById("bridgeTest");
-                const streamsLayerToggle = document.getElementById("streams");
-                const roadwaysLayerToggle = document.getElementById("roadways");
-                const nbiLayerToggle = document.getElementById("nbiPoints");
-                const railroadsLayerToggle = document.getElementById("railroads");
-
-
-                // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOXS AND CHANGE VISIBILITY
-                bridgeLayerToggle.addEventListener("change", () =>{
-                    bridgeTest.visible = bridgeLayerToggle.checked;
-                });
-                streamsLayerToggle.addEventListener("change", () => {
-                    streams.visible = streamsLayerToggle.checked;
-                });
-                roadwaysLayerToggle.addEventListener("change", () => {
-                    roadways.visible = roadwaysLayerToggle.checked;
-                });
-                nbiLayerToggle.addEventListener("change", () => {
-                    nbiPoints.visible = nbiLayerToggle.checked;
-                });
-                railroadsLayerToggle.addEventListener("change", () => {
-                    railroads.visible = railroadsLayerToggle.checked;
-                });
-                
-                // CREATE QUERY TO ONLY SEE THE REMAINING BRIDGES
-                let queryNull = bridgeTest.createQuery();
-                queryNull.where = "IS_IRREG IS NULL";
-                queryNull.returnGeometry = true;
-                queryNull.outFields = ["*"];
-                queryNull.num = 2000; // TO PULL FROM NEXT 2000
-
-                // DECLARE NEW BRIDGE ID VARIABLE. VARIABLE IS ALWASY POPULATED WITH CURRENTLY SELECTED BRIDGE OBJECT ID
-                let specBridgeID;
-                console.log('global', specBridgeID)
-                
-                // LOAD MAP AND FIND REFERENCE
-                mapView.when(async function() {
-                    specBridgeID = await findBridge(); // selectedBridgeID gets returned here ... not sure how to save it
-                    console.log('when', specBridgeID)
-                });
-
-                function findBridge() {
-                    // NEED TO REMOVE SELECTED THINGS FROM CALCITE TREE IF ANYTHING IS SELECTED
-                    if (bridgeSelect.value != selectYourChoice) {
-                        // console.log("something is selected so clearing")
-                        clearSelection();
-                    }
-
-                    // THEN CALL QUERY TO FIND NEW BRIDGE
-                    return bridgeTest.queryFeatures(queryNull)
-                        // THEN FIND SELECTED BRIDGE WITHIN THE RESULTS
-                        .then(function(featureSet) {
-                            let selectedBridgeID = showSelectedBridge(featureSet);
-                            return selectedBridgeID;
-                        });
-                }
-
-                function showSelectedBridge(featureSet) {
-                    // GET THE COUNT OF BRIDGES
-                    let resultsCount = featureSet.features.length;
-
-                    // IF ZERO LEFT, PROJECT DONE
-                    if (resultsCount<1) {
-                        alert("No more bridges!");
-                        return;
-                    }
-
-                    // IF 1 OR MORE BRIDGES LEFT, PICK ONE AT RANDOM AND ZOOM TO IT AND HIGHLIGHT IT
-                    let selectedID = getRandomBridge(0, resultsCount-1);
-                    let selectedBridge = featureSet.features[selectedID];
-                    let selectedBridgeID = selectedBridge.attributes.OBJECTID;
-                    console.log("this is the selected bridge ID", selectedBridgeID);
-                    
-                    // ZOOM TO IT
-                    var bridgeExtent = selectedBridge.geometry.extent.clone().expand(2);
-                    mapView.goTo(bridgeExtent);
-
-                    // HIGHLIGHT IT
-                    highlight(selectedBridge);
-
-                    // RETURN SELECTED BRIDGE ID SO THAT IT CAN BE USED LATER TO SAVE EDITS
-                    return selectedBridgeID;
-                }
-
-                function getRandomBridge(min, max) {
-                    // GETS RANDOM INTEGERE BETWEEN 0 AND THE HIGHEST ID, INCLUSIVE
-                    min = Math.ceil(min);
-                    max = Math.floor(max);
-                    return Math.floor(Math.random()* (max - min + 1) + min);
-                }
-
-                function highlight(selectedBridge) {
-                    // HIGHLIGHT THE SELECTED BRIDGE
-                    var highlightSelect;
-                    mapView.whenLayerView(bridgeTest).then(function(layerView){
-                        if (highlightSelect) {
-                            highlightSelect.remove();
+                    bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
+                        console.log(specBridgeID)
+                        if (regSelect.selected == true) {
+                            console.log("regular selected");
+                            commentBox.disabled = false;
                         }
-                        highlightSelect = layerView.highlight(selectedBridge);
+                        if (alignSelect.selected == true) {
+                            console.log("align selected");
+                            commentBox.disabled = false;
+                        }
+                        if (compSelect.selected == true) {
+                            console.log("complex selected");
+                            commentBox.disabled = false;
+                        }
+                        if (culSelect.selected == true) {
+                            console.log("culvert selected");
+                            commentBox.disabled = false;
+                        }
+                        if (curvSelect.selected == true) {
+                            console.log("curved selected");
+                            commentBox.disabled = false;
+                        }
+                        if (elevSelect.selected == true) {
+                            console.log("elevation selected");
+                            commentBox.disabled = false;
+                        }
+                        if (newerSelect.selected == true) {
+                            console.log("newer selected");
+                            commentBox.disabled = false;
+                        }
+                        if (tinySelect.selected == true) {
+                            console.log("tiny selected");
+                            commentBox.disabled = false;
+                        }
+                        if (twowaySelect.selected == true) {
+                            console.log("two way selected");
+                            commentBox.disabled = false;
+                        }
+                        if (vegSelect.selected == true) {
+                            console.log("veg selected");
+                            commentBox.disabled = false;
+                        }
+                        if (otherSelect.selected == true) {
+                            console.log("other selected");
+                            commentBox.disabled = false;
+                        }
+                        if (selectYourChoice.selected == true) {
+                            console.log("reset select your choice selected");
+                            commentBox.disabled = true;
+                        }
+                        console.log("comment", commentBox.value);
+                    });
+
+                    // BUTTON TO SKIP BRIDGE
+                    const skipBridgeBtn = document.getElementById("skipBridgeBtn");
+                    skipBridgeBtn.addEventListener("click", async () => {
+                        // console.log("skip button clicked");
+                        specBridgeID = await findBridge(); // selected bridge gets returned here
+                    });
+
+                    // BUTTON TO SAVE AND GO TO NEXT BRIDGE
+                    const saveBridgeBtn = document.getElementById("saveBridgeBtn");
+                    saveBridgeBtn.addEventListener("click", () => {
+                        // console.log("save button clicked");
+
+                        if (bridgeSelect.value == selectYourChoice || selectYourChoice.selected == true) {
+                            alert ("Make a selection before saving and going to the next bridge.")
+                        }
+                        else {
+                            saveChoices();
+                        }
                     })
-                }
 
-                // CREATE CALCITE TREE AND OPTIONS TO EDIT SELECTED BRIDGE
-                const bridgeSelect = document.getElementById("selectTest");
-                const selectYourChoice = document.getElementById("selectYourChoice");
-                const regSelect = document.getElementById("regSelect");
-                const alignSelect = document.getElementById("alignSelect");
-                const compSelect = document.getElementById("compSelect");
-                const culSelect = document.getElementById("culSelect");
-                const curvSelect = document.getElementById("curvSelect");
-                const elevSelect = document.getElementById("elevSelect");
-                const newerSelect = document.getElementById("newerSelect");
-                const tinySelect = document.getElementById("tinySelect");
-                const twowaySelect = document.getElementById("twowaySelect");
-                const vegSelect = document.getElementById("vegSelect");
-                const otherSelect = document.getElementById("otherSelect");
-
-                const commentBox = document.getElementById("commentBox");
-                commentBox.disabled = true;
-
-                // commentBox.addEventListener("click", () => {
-                //     if (bridgeSelect.value == selectYourChoice || selectYourChoice.selected == true) {
-                //         alert ("Make a selection before adding a comment.")
-                //         // commentBox.disabled = true;
-                //     }
-                // })
-
-                bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
-                    console.log(specBridgeID)
-                    if (regSelect.selected == true) {
-                        console.log("regular selected");
-                        commentBox.disabled = false;
-                    }
-                    if (alignSelect.selected == true) {
-                        console.log("align selected");
-                        commentBox.disabled = false;
-                    }
-                    if (compSelect.selected == true) {
-                        console.log("complex selected");
-                        commentBox.disabled = false;
-                    }
-                    if (culSelect.selected == true) {
-                        console.log("culvert selected");
-                        commentBox.disabled = false;
-                    }
-                    if (curvSelect.selected == true) {
-                        console.log("curved selected");
-                        commentBox.disabled = false;
-                    }
-                    if (elevSelect.selected == true) {
-                        console.log("elevation selected");
-                        commentBox.disabled = false;
-                    }
-                    if (newerSelect.selected == true) {
-                        console.log("newer selected");
-                        commentBox.disabled = false;
-                    }
-                    if (tinySelect.selected == true) {
-                        console.log("tiny selected");
-                        commentBox.disabled = false;
-                    }
-                    if (twowaySelect.selected == true) {
-                        console.log("two way selected");
-                        commentBox.disabled = false;
-                    }
-                    if (vegSelect.selected == true) {
-                        console.log("veg selected");
-                        commentBox.disabled = false;
-                    }
-                    if (otherSelect.selected == true) {
-                        console.log("other selected");
-                        commentBox.disabled = false;
-                    }
-                    if (selectYourChoice.selected == true) {
-                        console.log("reset select your choice selected");
+                    // CLEAR TREE SELECTION AND INPUT BOX
+                    function clearSelection() {
+                        // console.log("selected items before clear", bridgeSelect.value);
+                        bridgeSelect.value = selectYourChoice;
+                        selectYourChoice.selected = true;
+                        commentBox.value = "";
                         commentBox.disabled = true;
+                        // console.log("selected items after clear", bridgeSelect.value);
                     }
-                    console.log("comment", commentBox.value);
-                });
 
-                // BUTTON TO SKIP BRIDGE
-                const skipBridgeBtn = document.getElementById("skipBridgeBtn");
-                skipBridgeBtn.addEventListener("click", async () => {
-                    // console.log("skip button clicked");
-                    specBridgeID = await findBridge(); // selected bridge gets returned here
-                });
+                    function saveChoices() {
+                        console.log("this is the specBridge being saved", specBridgeID);
 
-                // BUTTON TO SAVE AND GO TO NEXT BRIDGE
-                const saveBridgeBtn = document.getElementById("saveBridgeBtn");
-                saveBridgeBtn.addEventListener("click", () => {
-                    // console.log("save button clicked");
-
-                    if (bridgeSelect.value == selectYourChoice || selectYourChoice.selected == true) {
-                        alert ("Make a selection before saving and going to the next bridge.")
-                    }
-                    else {
-                        saveChoices();
-                    }
-                })
-
-                // JUMP TO GOOGLE BUTTON
-                const btnGoogle = document.getElementById("btnGoogle");
-                btnGoogle.addEventListener("click", () => {
-                    jumpToGoogle(); // 
-                });
-
-                // CLEAR TREE SELECTION AND INPUT BOX
-                function clearSelection() {
-                    // console.log("selected items before clear", bridgeSelect.value);
-                    bridgeSelect.value = selectYourChoice;
-                    selectYourChoice.selected = true;
-                    commentBox.value = ""
-                    // console.log("selected items after clear", bridgeSelect.value);
-                }
-
-                function saveChoices() {
-                    console.log("this is the specBridge being saved", specBridgeID);
-
-                    var xmlhttp;
-                    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
-                        xmlhttp = new XMLHttpRequest();
-                    }
-                    else { // code for IE6, IE5
-                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                    }
-                    xmlhttp.onreadystatechange=async function() {
-                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                            console.log('success, finding the next one!');
-                            specBridgeID = await findBridge(); // selected bridge ID gets returned here
-                            console.log('here it is', specBridgeID)
+                        var xmlhttp;
+                        if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+                            xmlhttp = new XMLHttpRequest();
                         }
+                        else { // code for IE6, IE5
+                            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                        }
+                        xmlhttp.onreadystatechange=async function() {
+                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                console.log('success, finding the next one!')
+                                specBridgeID = await findBridge(); // selected bridge ID gets returned here
+                                console.log('here it is', specBridgeID)
+                            }
+                        }
+
+                        //SERVICE URL
+                        var serviceURL = "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0/updateFeatures?f=json&features=";
+
+                        var isIrregValue;
+                        var irregReasonValue;
+                        var commentToSave;
+
+                        if (regSelect.selected == true) {
+                            isIrregValue = "0";
+                        }
+                        if (alignSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "9";
+                        }
+                        if (compSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "1";
+                        }
+                        if (culSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "7";
+                        }
+                        if (curvSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "2";
+                        }
+                        if (elevSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "6";
+                        }
+                        if (newerSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "8";
+                        }
+                        if (tinySelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "5";
+                        }
+                        if (twowaySelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "3";
+                        }
+                        if (vegSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "4";
+                        }
+                        if (otherSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "10";
+                        }
+
+
+                        if (commentBox.value != "") {
+                            commentToSave = String(commentBox.value);
+                        }
+                        //console.log("comment to save", commentToSave);
+
+                        //serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
+                        serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT': \'" + commentToSave +"\'}}";
+
+                        //console.log(serviceURL);
+
+                        xmlhttp.open("POST",serviceURL,true);
+                        xmlhttp.send();  
+
                     }
 
-                    //SERVICE URL
-                    var serviceURL = "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0/updateFeatures?f=json&features=";
-
-                    var isIrregValue;
-                    var irregReasonValue;
-                    var commentToSave;
-
-                    if (regSelect.selected == true) {
-                        isIrregValue = "0";
+                    //JUMP TO GOOGLE MAPS FUNCTION
+                    function jumpToGoogle() {
+                        let ctr = mapView.get('center');
+                        let lat = ctr.latitude;
+                        let lon = ctr.longitude;
+                        let zoom = Math.round(Math.log(591657550.500000 /(mapView.scale/2))/Math.log(2))-1;
+                        let baseUrl = "https://www.google.com/maps/@";
+                        window.open(baseUrl + lat + "," + lon + "," + zoom + "z");
+                        console.log(ctr)
                     }
-                    if (alignSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "9";
-                    }
-                    if (compSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "1";
-                    }
-                    if (culSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "7";
-                    }
-                    if (curvSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "2";
-                    }
-                    if (elevSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "6";
-                    }
-                    if (newerSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "8";
-                    }
-                    if (tinySelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "5";
-                    }
-                    if (twowaySelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "3";
-                    }
-                    if (vegSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "4";
-                    }
-                    if (otherSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "10";
-                    }
-
-                    if (commentBox.value != "") {
-                        commentToSave = String(commentBox.value);
-                    }
-                    //console.log("comment to save", commentToSave);
-
-                    //serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
-                    serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT': \'" + commentToSave +"\'}}";
-
-                    //console.log(serviceURL);
-
-                    xmlhttp.open("POST",serviceURL,true);
-                    xmlhttp.send();  
-                    
-                }
-
-                //JUMP TO GOOGLE MAPS FUNCTION
-                function jumpToGoogle() {
-                    let ctr = mapView.get('center');
-                    let lat = ctr.latitude;
-                    let lon = ctr.longitude;
-                    let zoom = Math.round(Math.log(591657550.500000 /(mapView.scale/2))/Math.log(2))-1;
-                    let baseUrl = "https://www.google.com/maps/@";
-                    window.open(baseUrl + lat + "," + lon + "," + zoom + "z");
-                    console.log(ctr)
-                }
 
                 // CREATE COORDINATE WIDGET
                 const ccWidget = new CoordinateConversion({
@@ -579,9 +596,11 @@
                     settingsButton: false,
                     captureButton: false
                 };
+
         
+                }
                 
-            });
+             });
 
         </script>
     </head>
@@ -594,6 +613,7 @@
                     <h2> INSTRUCTIONS </h2>
                     <P> Do your best, and have fun. :p </P>
                 </div>
+                <span id="sign-in" class="action">Sign In</span> and view your ArcGIS Online items.
                 <div id="text">
                     <h2>REFERENCE INFORMATION</h2>
                     <p> Use the checkboxes below to toggle reference layers on and off.</p>
