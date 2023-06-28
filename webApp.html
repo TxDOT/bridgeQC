@@ -169,6 +169,7 @@
                     popup: false
                 });
                 esriId.registerOAuthInfos([oauthinfo]);
+                esriId.getCredential(oauthinfo.portalUrl + "/sharing");
 
                 esriId.checkSignInStatus(oauthinfo.portalUrl + "/sharing").then((response) => {
                     console.log("success!", response);
@@ -177,7 +178,6 @@
                     }).catch((error) => {
                         console.log("failure!", error);
                     });
-                esriId.getCredential(oauthinfo.portalUrl + "/sharing");
 
                 function displayItems() {
 
