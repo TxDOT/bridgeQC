@@ -485,7 +485,7 @@
                     }
                     xmlhttp.onreadystatechange=async function() {
                         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                            console.log('success, finding the next one!')
+                            console.log('success, finding the next one!');
                             specBridgeID = await findBridge(); // selected bridge ID gets returned here
                             console.log('here it is', specBridgeID)
                         }
@@ -496,6 +496,7 @@
 
                     var isIrregValue;
                     var irregReasonValue;
+                    var commentToSave;
 
                     if (regSelect.selected == true) {
                         isIrregValue = "0";
@@ -542,12 +543,12 @@
                     }
 
                     if (commentBox.value != "") {
-                        let commentToSave = commentBox.value;
-                        console.log("comment to save", commentToSave);
+                        commentToSave = commentBox.value;
                     }
+                    console.log("comment to save", commentToSave);
 
-                    //serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
-                    serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT':" + commentToSave +"}}";
+                    serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
+                    //serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT':" + commentToSave +"}}";
 
                     xmlhttp.open("POST",serviceURL,true);
                     xmlhttp.send();  
@@ -634,7 +635,7 @@
                         </calcite-option-group>
                     </calcite-select>
                 </calcite-label>
-                <calcite-input-text class = "custom-example-theme" placeholder = "Enter any comments here after categorizing bridge." id = "commentBox" clearable = true></calcite-input-text>
+                <calcite-input-text class = "custom-example-theme" placeholder = "Enter any comments here after categorizing bridge." id = "commentBox" clearable = true max-length=40></calcite-input-text>
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
