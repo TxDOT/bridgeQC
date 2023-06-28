@@ -39,19 +39,25 @@
 
             #text {
                 color: white;
-                padding: 3%;
+                padding-left: 3%;
+                padding-right: 3%;
+                font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
             }
 
             #toggleSet {
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
-                gap: 4px;
+                gap: 10px;
                 padding: 4px;
             }
 
             #layerToggle {
                 padding: 5px;
+                border-radius: 4px;
+                font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+                font-size: 14px;
+                color: black;
             }
 
             #editButtonBox {
@@ -64,6 +70,12 @@
 
             button {
                 padding: 6px;
+                border-radius: 4px;
+                border-style: none;
+                font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+                font-size: 14px;
+                color: black;
+                cursor: pointer;
             }
 
             #selectTest {
@@ -71,8 +83,40 @@
                 padding: 4px;
                 border-radius: 4px;
                 margin: 12px;
+                font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+                font-size: 14px;
+                color: black;
             }
-          
+
+            #coordinateBox {
+                display: flex;
+                border-radius: 4px;
+                padding: 4px;
+                flex-direction: row;
+                width: 220px;
+                font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+                font-size: 14px;
+                color: black;
+            }
+
+            #bigcoordinateBox {
+                display: flex;
+                flex-direction: row;
+                margin: 12px;
+                gap: 4px;
+                justify-content: center;
+            }
+
+            .custom-example-theme {
+                --calcite-ui-text-1: #000000;
+                --calcite-ui-text-2: #000000;
+                --calcite-ui-text-3: #000000; 
+            }
+
+            .esri-select {
+                color: black;
+            }
+
         </style>
 
         <!-- JS IN A SCRIPT TAG-->
@@ -482,11 +526,15 @@
 
                 // CREATE COORDINATE WIDGET
                 const ccWidget = new CoordinateConversion({
-                    view: mapView
+                    view: mapView,
+                    container: coordinateBox,
+                    multipleConversions: false,
                 });
 
-                // ADD COORDINATE WIDGET TO MAP
-                mapView.ui.add(ccWidget, "top-right");
+                ccWidget.visibleElements = {
+                    settingsButton: false,
+                    captureButton: false
+                };
         
                 
             });
@@ -503,21 +551,30 @@
                     <P> Do your best, and have fun. :p </P>
                 </div>
                 <div id="text">
-                    <h2>TOGGLE LAYERS</h2>
+                    <h2>REFERENCE INFORMATION</h2>
                     <p> Use the checkboxes below to toggle reference layers on and off.</p>
                 </div>
                 <div id = "toggleSet">
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="bridgeTest" checked /> Bridge Hulls </div>
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="nbiPoints" unchecked /> Bridge Points </div>
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="roadways" unchecked /> Roads </div>
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" unchecked /> Streams </div>
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="railroads" unchecked /> Railroads </div>
+                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="bridgeTest" checked style="cursor:pointer;"/> Bridge Hulls </div>
+                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="nbiPoints" unchecked style="cursor:pointer;"/> Bridge Points </div>
+                </div>
+                <div id = "toggleSet">
+                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="roadways" unchecked style="cursor:pointer;"/> Roads </div>
+                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" unchecked style="cursor:pointer;"/> Streams </div>
+                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="railroads" unchecked style="cursor:pointer;"/> Railroads </div>
+                </div>
+                <div id="text">
+                    <p>Use the buttons below to get coordinate information or to jump to google. </p>
+                </div>
+                <div id = "bigcoordinateBox">
+                    <div id = "coordinateBox" class="esri-coordinate-conversion" > </div>
+                    <button id="btnGoogle"> Jump to Google</button>
                 </div>
                 <div id="text">
                     <h2> EDIT BRIDGE </h2>
                 </div>
-                <calcite-label>
-                    <calcite-select id = "selectTest">
+                <calcite-label class = "custom-example-theme">
+                    <calcite-select class = "custom-example-theme" id = "selectTest">
                         <calcite-option id = "selectYourChoice" value = "selectYourChoice" Selected> Select Your Choice </calcite-option>
                         <calcite-option-group label="Regular Bridge">
                             <calcite-option id = "regSelect" value ="regSelect"> Regular Bridge</calcite-option>
@@ -539,10 +596,9 @@
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
-                    <button id="btnGoogle">Jump to Google</button>
                 </div>
+
             </div>
         </div>
     </body>
 </html>
-
