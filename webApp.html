@@ -543,12 +543,14 @@
                     }
 
                     if (commentBox.value != "") {
-                        commentToSave = commentBox.value;
+                        commentToSave = String(commentBox.value);
                     }
-                    console.log("comment to save", commentToSave);
+                    //console.log("comment to save", commentToSave);
 
-                    serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
-                    //serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT':" + commentToSave +"}}";
+                    //serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
+                    serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT': \'" + commentToSave +"\'}}";
+
+                    //console.log(serviceURL);
 
                     xmlhttp.open("POST",serviceURL,true);
                     xmlhttp.send();  
