@@ -375,44 +375,67 @@
                 const vegSelect = document.getElementById("vegSelect");
                 const otherSelect = document.getElementById("otherSelect");
 
+                const commentBox = document.getElementById("commentBox");
+                commentBox.disabled = true;
+
+                // commentBox.addEventListener("click", () => {
+                //     if (bridgeSelect.value == selectYourChoice || selectYourChoice.selected == true) {
+                //         alert ("Make a selection before adding a comment.")
+                //         // commentBox.disabled = true;
+                //     }
+                // })
+
                 bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
                     console.log(specBridgeID)
                     if (regSelect.selected == true) {
-                        console.log("regular selected")
+                        console.log("regular selected");
+                        commentBox.disabled = false;
                     }
                     if (alignSelect.selected == true) {
-                        console.log("align selected")
+                        console.log("align selected");
+                        commentBox.disabled = false;
                     }
                     if (compSelect.selected == true) {
-                        console.log("complex selected")
+                        console.log("complex selected");
+                        commentBox.disabled = false;
                     }
                     if (culSelect.selected == true) {
-                        console.log("culvert selected")
+                        console.log("culvert selected");
+                        commentBox.disabled = false;
                     }
                     if (curvSelect.selected == true) {
-                        console.log("curved selected")
+                        console.log("curved selected");
+                        commentBox.disabled = false;
                     }
                     if (elevSelect.selected == true) {
-                        console.log("elevation selected")
+                        console.log("elevation selected");
+                        commentBox.disabled = false;
                     }
                     if (newerSelect.selected == true) {
-                        console.log("newer selected")
+                        console.log("newer selected");
+                        commentBox.disabled = false;
                     }
                     if (tinySelect.selected == true) {
-                        console.log("tiny selected")
+                        console.log("tiny selected");
+                        commentBox.disabled = false;
                     }
                     if (twowaySelect.selected == true) {
-                        console.log("two way selected")
+                        console.log("two way selected");
+                        commentBox.disabled = false;
                     }
                     if (vegSelect.selected == true) {
-                        console.log("veg selected")
+                        console.log("veg selected");
+                        commentBox.disabled = false;
                     }
                     if (otherSelect.selected == true) {
-                        console.log("other selected")
+                        console.log("other selected");
+                        commentBox.disabled = false;
                     }
                     if (selectYourChoice.selected == true) {
-                        console.log("reset select your choice selected")
+                        console.log("reset select your choice selected");
+                        commentBox.disabled = true;
                     }
+                    console.log("comment", commentBox.value);
                 });
 
                 // BUTTON TO SKIP BRIDGE
@@ -441,11 +464,12 @@
                     jumpToGoogle(); // 
                 });
 
-                // CLEAR TREE SELECTION
+                // CLEAR TREE SELECTION AND INPUT BOX
                 function clearSelection() {
                     // console.log("selected items before clear", bridgeSelect.value);
                     bridgeSelect.value = selectYourChoice;
                     selectYourChoice.selected = true;
+                    commentBox.value = ""
                     // console.log("selected items after clear", bridgeSelect.value);
                 }
 
@@ -517,7 +541,14 @@
                         irregReasonValue = "10";
                     }
 
-                    serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
+                    if (commentBox.value != "") {
+                        let commentToSave = commentBox.value;
+                        console.log("comment to save", commentToSave);
+                    }
+
+                    //serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
+                    serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT':" + commentToSave +"}}";
+
                     xmlhttp.open("POST",serviceURL,true);
                     xmlhttp.send();  
                     
@@ -603,7 +634,7 @@
                         </calcite-option-group>
                     </calcite-select>
                 </calcite-label>
-                <calcite-input-text class = "custom-example-theme" placeholder = "Enter any comments here." id = commentBox></calcite-input-text>
+                <calcite-input-text class = "custom-example-theme" placeholder = "Enter any comments here after categorizing bridge." id = "commentBox" clearable = true></calcite-input-text>
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
