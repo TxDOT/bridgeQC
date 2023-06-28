@@ -117,6 +117,16 @@
                 color: black;
             }
 
+            #commentBox {
+                background-color: white;
+                padding: 4px;
+                border-radius: 4px;
+                margin: 12px;
+                font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+                font-size: 14px;
+                color: black;
+            }
+
         </style>
 
         <!-- JS IN A SCRIPT TAG-->
@@ -593,6 +603,7 @@
                         </calcite-option-group>
                     </calcite-select>
                 </calcite-label>
+                <calcite-input-text class = "custom-example-theme" placeholder = "Enter any comments here." id = commentBox></calcite-input-text>
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
