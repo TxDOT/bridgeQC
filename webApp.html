@@ -182,25 +182,47 @@
                 var oauthinfo = new OAuthInfo ({
                     appId: "91H8RXSUHGiUTCi9", // registered app id
                     // flowType: "implicit",
-                    popup: false
+                    popup: false,
+                    // expiration: 10080
                 });
                 esriId.registerOAuthInfos([oauthinfo]);
                 esriId.getCredential(oauthinfo.portalUrl + "/sharing");
 
-                esriId.checkSignInStatus(oauthinfo.portalUrl + "/sharing").then((response) => {
-                    console.log("success!", response);
-                    //console.log(esriId);
-                    displayItems();
+                let tokenneeded;
+
+                esriId.checkSignInStatus("https://txdot.maps.arcgis.com/sharing").then((response) => {
+                    console.log("success! you are logged in", response);
+                    
+                    tokenneeded = response.token;
+                    console.log("token in check sign in", tokenneeded)
+
+                    handleSignedIn();
+
                     }).catch((error) => {
-                        console.log("failure!", error);
+                        console.log("failure! you are not logged in", error);
                     });
 
                 document.getElementById("signoutButton").addEventListener("click", () => {
                     esriId.destroyCredentials();
                     window.location.reload();
-                    });
+                });
 
-                function displayItems() {
+                function handleSignedIn() {
+
+                    // const portal = new Portal();
+                    // portal.authMode = "immediate";
+                    // portal.load().then(async(response) => {
+                    //     console.log("portal", portal);
+                    //     console.log("portal load response", response);
+                    //     console.log("portal user", portal.user)
+                    //     // const queryParams = new PortalQueryParams({
+                    //     //     query: "owner"
+                    //     // });
+                    // }).catch((err) => {
+                    //     console.log("portal error", err);
+                    // });
+
+
 
                     // CREATE WMTS BASEMAP FOR TEXAS 6 INCH IMAGERY
                     const TISBasemap = new Basemap({
@@ -255,9 +277,10 @@
                     const bridgeTest = new FeatureLayer({
                         // url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0", // test
                         url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0", // real
+                        //url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0?token=" + tokenneeded, // real with token
                         renderer: bridgesRenderer,
                         opacity: 0.5,
-                        definitionExpression: "IS_IRREG IS NULL"
+                        definitionExpression: "IS_IRREG IS NULL",
                     });
 
                     // STREAMS
