@@ -127,6 +127,22 @@
                 color: black;
             }
 
+            #signoutBox {
+                display: flex;
+                justify-content: center;
+            }
+
+            #signoutButton {
+                padding: 6px;
+                border-radius: 4px;
+                border-style: none;
+                font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+                font-size: 14px;
+                color: white;
+                cursor: pointer;
+                background-color: black;
+            }
+
         </style>
 
         <!-- JS IN A SCRIPT TAG-->
@@ -177,6 +193,11 @@
                     displayItems();
                     }).catch((error) => {
                         console.log("failure!", error);
+                    });
+
+                document.getElementById("signoutButton").addEventListener("click", () => {
+                    esriId.destroyCredentials();
+                    window.location.reload();
                     });
 
                 function displayItems() {
@@ -658,6 +679,9 @@
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
+                </div>
+                <div id = "signoutBox">
+                    <button id = "signoutButton"> Sign Out</span>
                 </div>
 
             </div>
