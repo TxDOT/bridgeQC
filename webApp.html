@@ -149,17 +149,18 @@
                     // WIDGETS
                     "esri/widgets/Editor",
                     "esri/widgets/CoordinateConversion",
-                    "esri/widgets/BasemapToggle",
 
-                    // // OAUTH
+                    // OAUTH
                     "esri/portal/Portal",
                     "esri/identity/OAuthInfo",
                     "esri/identity/IdentityManager",
-                    "esri/portal/PortalQueryParams"
+                    "esri/portal/PortalQueryParams",
+
+                    "esri/widgets/BasemapToggle",
                 ],
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
-                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, VectorTileLayer, Editor, CoordinateConversion, Portal, OAuthInfo, esriId, PortalQueryParams) {
+                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, VectorTileLayer, Editor, CoordinateConversion, Portal, OAuthInfo, esriId, PortalQueryParams, BasemapToggle) {
 
                 // HAVE TO HAVE API KEY TO ACCESS ARCGIS SERVICES
                 esriConfig.apiKey = "AAPK47940bdbad24479c8e5cfc3285632cf0D6SI_0gce6ZC0zx7iGkSeVP7k66w2b23CD8OKRR1jRMFulXcBwmgjXjgUHmhXMNS";
@@ -170,8 +171,8 @@
                     appId: "91H8RXSUHGiUTCi9", // registered app id
                     // flowType: "implicit",
                     popup: false
-
                 });
+
                 esriId.registerOAuthInfos([oauthinfo]);
                 esriId.getCredential(oauthinfo.portalUrl + "/sharing");
 
@@ -181,7 +182,7 @@
                     displayItems();
                     }).catch((error) => {
                         console.log("failure!", error);
-                    });
+                });
 
                 function displayItems() {
 
@@ -254,8 +255,8 @@
                         }
                     };
                     const bridgeTest = new FeatureLayer({
-                        // url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0", // test
-                        url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0", // real
+                        url: "https://services1.arcgis.com/7DRakJXKPEhwv0fM/arcgis/rest/services/bridgehull_testcopy/FeatureServer/0", // test
+                        //url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0", // real
                         renderer: bridgesRenderer,
                         opacity: 0.5,
                         definitionExpression: "IS_IRREG IS NULL"
