@@ -160,37 +160,41 @@
                     "esri/layers/FeatureLayer",
                     "esri/layers/TileLayer",
                     "esri/layers/WMTSLayer",
+                    "esri/layers/VectorTileLayer",
                                         
                     // WIDGETS
                     "esri/widgets/Editor",
                     "esri/widgets/CoordinateConversion",
 
-                    // // OAUTH
+                    // OAUTH
                     "esri/portal/Portal",
                     "esri/identity/OAuthInfo",
                     "esri/identity/IdentityManager",
-                    "esri/portal/PortalQueryParams"
+                    "esri/portal/PortalQueryParams",
+
+                    "esri/widgets/BasemapToggle",
                 ],
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
-                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, Editor, CoordinateConversion, Portal, OAuthInfo, esriId, PortalQueryParams) {
+                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, VectorTileLayer, Editor, CoordinateConversion, Portal, OAuthInfo, esriId, PortalQueryParams, BasemapToggle) {
 
                 // HAVE TO HAVE API KEY TO ACCESS ARCGIS SERVICES
                 // esriConfig.apiKey = "AAPK47940bdbad24479c8e5cfc3285632cf0D6SI_0gce6ZC0zx7iGkSeVP7k66w2b23CD8OKRR1jRMFulXcBwmgjXjgUHmhXMNS";
+
 
                 // OAUTH OBJECT AND REGISTER WITH IDENTITY MANAGER
                 var oauthinfo = new OAuthInfo ({
                     appId: "kCTficluQkq9ohaF", // registered app id
                     popup: false,
                 });
+
                 esriId.registerOAuthInfos([oauthinfo]);
                 esriId.getCredential(oauthinfo.portalUrl + "/sharing");
-
 
                 esriId.checkSignInStatus("https://txdot.maps.arcgis.com/sharing").then((response) => {
                     console.log("success! you are logged in", response);
                     console.log("oauth object", oauthinfo);
-
+                  
                     }).catch((error) => {
                         console.log("failure! you are not logged in", error);
                 });
@@ -213,6 +217,15 @@
                     ]
                 });
 
+                  // CREATE WMTS BASEMAP FOR TXDOT VECTOR TILE BASEMAP
+                const VectorBasemap = new Basemap({
+                    baseLayers: [
+                        new VectorTileLayer({
+                            url:"https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer"
+                        })
+                    ]
+                });
+
                 //CREATE MAP WITH IMAGERY BASEMAP
                 const map = new Map({
                     basemap : TISBasemap 
@@ -228,6 +241,15 @@
                         left: 400 
                     }
                 });
+
+                // CREATE BASEMAP TOGGLE WIDGET
+                const basemapToggle = new BasemapToggle({
+                    view: mapView,
+                    nextBasemap: VectorBasemap
+                });
+
+                // ADD BASEMAP TOGGLE TO MAP
+                mapView.ui.add(basemapToggle,"bottom-right");
 
                 // CONSTRUCT FEATURELAYERS
 
@@ -282,8 +304,7 @@
                     id: "railroads",
                     visible: false
                 });
-
-                    
+  
                 // BRIDGE POINTS
                 const nbiRenderer = {
                     type: "simple",
