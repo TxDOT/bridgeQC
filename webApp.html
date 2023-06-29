@@ -90,14 +90,16 @@
                     "esri/layers/FeatureLayer",
                     "esri/layers/TileLayer",
                     "esri/layers/WMTSLayer",
+                    "esri/layers/VectorTileLayer",
                                         
                     // WIDGETS
                     "esri/widgets/Editor",
                     "esri/widgets/CoordinateConversion",
+                    "esri/widgets/BasemapToggle",
                 ],
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
-                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, Editor, CoordinateConversion) {
+                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, VectorTileLayer, Editor, CoordinateConversion, BasemapToggle) {
 
                 // HAVE TO HAVE API KEY TO ACCESS ARCGIS SERVICES
                 esriConfig.apiKey = "AAPK47940bdbad24479c8e5cfc3285632cf0D6SI_0gce6ZC0zx7iGkSeVP7k66w2b23CD8OKRR1jRMFulXcBwmgjXjgUHmhXMNS";
@@ -114,11 +116,21 @@
                     ]
                 });
 
+                // CREATE WMTS BASEMAP FOR TXDOT VECTOR TILE BASEMAP
+                const VectorBasemap = new Basemap({
+                    baseLayers: [
+                        new VectorTileLayer({
+                            url:"https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer"
+                        })
+                    ]
+                });
+
                 //CREATE MAP WITH IMAGERY BASEMAP
                 const map = new Map({
                     basemap : TISBasemap 
                 });
 
+      
                 // CREATE MAPVIEW
                 const mapView = new MapView({
                     map: map,
@@ -129,6 +141,17 @@
                         left: 400 
                     }
                 });
+
+                // CREATE BASEMAP TOGGLE WIDGET
+                const basemapToggle = new BasemapToggle({
+                    view: mapView,
+                    nextBasemap: VectorBasemap
+                });
+
+                // ADD BASEMAP TOGGLE TO MAP
+                mapView.ui.add(basemapToggle,"bottom-right");               
+
+
 
                 // CONSTRUCT FEATURELAYERS
 
@@ -487,6 +510,8 @@
 
                 // ADD COORDINATE WIDGET TO MAP
                 mapView.ui.add(ccWidget, "top-right");
+
+                
         
                 
             });
