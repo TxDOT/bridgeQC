@@ -191,9 +191,14 @@
                 esriId.registerOAuthInfos([oauthinfo]);
                 esriId.getCredential(oauthinfo.portalUrl + "/sharing");
 
+                let tokenneeded;
+
                 esriId.checkSignInStatus("https://txdot.maps.arcgis.com/sharing").then((response) => {
-                    console.log("success! you are logged in", response);
-                    console.log("oauth object", oauthinfo);
+                    //console.log("success! you are logged in", response);
+                    //console.log("oauth object", oauthinfo);
+
+                    tokenneeded = response.token;
+                    console.log("token in check sign in", tokenneeded);
                   
                     }).catch((error) => {
                         console.log("failure! you are not logged in", error);
@@ -358,12 +363,11 @@
 
                 // DECLARE NEW BRIDGE ID VARIABLE. VARIABLE IS ALWASY POPULATED WITH CURRENTLY SELECTED BRIDGE OBJECT ID
                 let specBridgeID;
-                console.log('global', specBridgeID)
                 
                 // LOAD MAP AND FIND REFERENCE
                 mapView.when(async function() {
                     specBridgeID = await findBridge(); // selectedBridgeID gets returned here ... not sure how to save it
-                    console.log('when', specBridgeID)
+                    //console.log('when', specBridgeID)
                 });
 
                 function findBridge() {
@@ -447,7 +451,7 @@
                 commentBox.disabled = true;
 
                 bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
-                    console.log(specBridgeID)
+                    //console.log(specBridgeID)
                     if (regSelect.selected == true) {
                         console.log("regular selected");
                         commentBox.disabled = true;
@@ -496,7 +500,7 @@
                         console.log("reset select your choice selected");
                         commentBox.disabled = true;
                     }
-                    console.log("comment", commentBox.value);
+                    //console.log("comment", commentBox.value);
                 });
 
                 // BUTTON TO SKIP BRIDGE
@@ -547,8 +551,10 @@
                         }
                     }
 
+                    //console.log("token at save", tokenneeded);
+
                     //SERVICE URL - NEED TO UPDATE THIS EVENTUALLY, BEFORE ACTUALLY USING APP ON REAL LAYER
-                    var serviceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0/updateFeatures?f=json&features=";
+                    var serviceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0/updateFeatures?token=" + tokenneeded + "&f=json&features=";
 
                     var isIrregValue;
                     var irregReasonValue;
@@ -610,17 +616,14 @@
                         }
                     }
 
-                    console.log("isirreg?", isIrregValue);
-                    console.log("irregRsn", irregReasonValue);
-                    console.log("comment to save", commentToSave);
+                    // console.log("isirreg?", isIrregValue);
+                    // console.log("irregRsn", irregReasonValue);
+                    // console.log("comment to save", commentToSave);
 
-                    //serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
-                    //serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT': \'" + commentToSave +"\'}}";
+                    //console.log(serviceURL);
 
-                    console.log(serviceURL);
-
-                    //xmlhttp.open("POST",serviceURL,true);
-                    //xmlhttp.send();  
+                    xmlhttp.open("POST",serviceURL,true);
+                    xmlhttp.send();  
 
                 }
 
