@@ -191,9 +191,14 @@
                 esriId.registerOAuthInfos([oauthinfo]);
                 esriId.getCredential(oauthinfo.portalUrl + "/sharing");
 
+                let tokenneeded;
+
                 esriId.checkSignInStatus("https://txdot.maps.arcgis.com/sharing").then((response) => {
-                    console.log("success! you are logged in", response);
-                    console.log("oauth object", oauthinfo);
+                    //console.log("success! you are logged in", response);
+                    //console.log("oauth object", oauthinfo);
+
+                    tokenneeded = response.token;
+                    console.log("token in check sign in", tokenneeded);
                   
                     }).catch((error) => {
                         console.log("failure! you are not logged in", error);
@@ -358,12 +363,11 @@
 
                 // DECLARE NEW BRIDGE ID VARIABLE. VARIABLE IS ALWASY POPULATED WITH CURRENTLY SELECTED BRIDGE OBJECT ID
                 let specBridgeID;
-                console.log('global', specBridgeID)
                 
                 // LOAD MAP AND FIND REFERENCE
                 mapView.when(async function() {
                     specBridgeID = await findBridge(); // selectedBridgeID gets returned here ... not sure how to save it
-                    console.log('when', specBridgeID)
+                    //console.log('when', specBridgeID)
                 });
 
                 function findBridge() {
@@ -447,10 +451,10 @@
                 commentBox.disabled = true;
 
                 bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
-                    console.log(specBridgeID)
+                    //console.log(specBridgeID)
                     if (regSelect.selected == true) {
                         console.log("regular selected");
-                        commentBox.disabled = false;
+                        commentBox.disabled = true;
                     }
                     if (alignSelect.selected == true) {
                         console.log("align selected");
@@ -496,7 +500,7 @@
                         console.log("reset select your choice selected");
                         commentBox.disabled = true;
                     }
-                    console.log("comment", commentBox.value);
+                    //console.log("comment", commentBox.value);
                 });
 
                 // BUTTON TO SKIP BRIDGE
@@ -547,8 +551,10 @@
                         }
                     }
 
+                    //console.log("token at save", tokenneeded);
+
                     //SERVICE URL - NEED TO UPDATE THIS EVENTUALLY, BEFORE ACTUALLY USING APP ON REAL LAYER
-                    var serviceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0/updateFeatures?f=json&features=";
+                    var serviceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0/updateFeatures?token=" + tokenneeded + "&f=json&features=";
 
                     var isIrregValue;
                     var irregReasonValue;
@@ -556,58 +562,66 @@
 
                     if (regSelect.selected == true) {
                         isIrregValue = "0";
+                        serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + "}}";
                     }
-                    if (alignSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "9";
-                    }
-                    if (compSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "1";
-                    }
-                    if (culSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "7";
-                    }
-                    if (curvSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "2";
-                    }
-                    if (elevSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "6";
-                    }
-                    if (newerSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "8";
-                    }
-                    if (tinySelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "5";
-                    }
-                    if (twowaySelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "3";
-                    }
-                    if (vegSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "4";
-                    }
-                    if (otherSelect.selected == true) {
-                        isIrregValue = "1";
-                        irregReasonValue = "10";
+                    else {
+                        if (alignSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "9";
+                        }
+                        if (compSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "1";
+                        }
+                        if (culSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "7";
+                        }
+                        if (curvSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "2";
+                        }
+                        if (elevSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "6";
+                        }
+                        if (newerSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "8";
+                        }
+                        if (tinySelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "5";
+                        }
+                        if (twowaySelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "3";
+                        }
+                        if (vegSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "4";
+                        }
+                        if (otherSelect.selected == true) {
+                            isIrregValue = "1";
+                            irregReasonValue = "10";
+                        }
+
+                        if (commentBox.value != "") {
+                            commentToSave = commentBox.value;
+                            serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT': \'" + commentToSave +"\'}}";
+                        }
+                        else {
+                            console.log("else after comment to save value", commentToSave);
+                            serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + "}}";
+                        }
                     }
 
-                    if (commentBox.value != "") {
-                        commentToSave = commentBox.value;
-                    } 
+                    // console.log("isirreg?", isIrregValue);
+                    // console.log("irregRsn", irregReasonValue);
+                    // console.log("comment to save", commentToSave);
 
-                    //serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue +"}}";
-                    serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT': \'" + commentToSave +"\'}}";
+                    //console.log(serviceURL);
 
-                    console.log(serviceURL);
-
-                    // UNCOMMENT THE NEXT TWO LINES WHEN READY TO POST CHANGES
                     xmlhttp.open("POST",serviceURL,true);
                     xmlhttp.send();  
 
@@ -698,7 +712,7 @@
                         </calcite-option-group>
                     </calcite-select>
                 </calcite-label>
-                <calcite-input-text class = "custom-example-theme" placeholder = "Enter any comments here after categorizing bridge." id = "commentBox" clearable = true max-length=40></calcite-input-text>
+                <calcite-input-text class = "custom-example-theme" placeholder = "Enter any comments here after marking as irregular." id = "commentBox" clearable = true max-length=40></calcite-input-text>
                 <div id = "editButtonBox">
                     <button id="saveBridgeBtn">Save and Next Bridge</button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
