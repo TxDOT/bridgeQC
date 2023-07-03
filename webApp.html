@@ -1,19 +1,19 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <meta name = "viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
         <title> Intern Bridge QAQC WebApp</title>
 
         <!-- SET ESRI CSS SOURCE -->
-        <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css"/>
+        <link rel = "stylesheet" href = "https://js.arcgis.com/4.26/esri/themes/light/main.css"/>
         
         <!-- SET ESRI JS API SOURCE -->
-        <script src="https://js.arcgis.com/4.26/"></script>
+        <script src = "https://js.arcgis.com/4.26/"></script>
 
         <!-- SET CALCITE STUFF -->
-        <link rel="stylesheet" type="text/css" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" />
-        <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
-        <script nomodule="" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.js"></script>
+        <link rel = "stylesheet" type = "text/css" href = "https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" />
+        <script type = "module" src = "https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
+        <script nomodule = "" src = "https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.js"></script>
         
         <!-- CSS IN A STYLE TAG -->
         <style>
@@ -107,7 +107,7 @@
                 justify-content: center;
             }
 
-            .custom-example-theme {
+            .custom-theme {
                 --calcite-ui-text-1: #000000;
                 --calcite-ui-text-2: #000000;
                 --calcite-ui-text-3: #000000; 
@@ -177,9 +177,6 @@
 
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
                 function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, VectorTileLayer, Editor, CoordinateConversion, Portal, OAuthInfo, esriId, PortalQueryParams, BasemapToggle) {
-
-                // HAVE TO HAVE API KEY TO ACCESS ARCGIS SERVICES
-                // esriConfig.apiKey = "AAPK47940bdbad24479c8e5cfc3285632cf0D6SI_0gce6ZC0zx7iGkSeVP7k66w2b23CD8OKRR1jRMFulXcBwmgjXjgUHmhXMNS";
 
 
                 // OAUTH OBJECT AND REGISTER WITH IDENTITY MANAGER
@@ -543,7 +540,7 @@
                     else { // code for IE6, IE5
                         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
                     }
-                    xmlhttp.onreadystatechange=async function() {
+                    xmlhttp.onreadystatechange = async function() {
                         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                             console.log('success, finding the next one!')
                             specBridgeID = await findBridge(); // selected bridge ID gets returned here
@@ -616,12 +613,6 @@
                         }
                     }
 
-                    // console.log("isirreg?", isIrregValue);
-                    // console.log("irregRsn", irregReasonValue);
-                    // console.log("comment to save", commentToSave);
-
-                    //console.log(serviceURL);
-
                     xmlhttp.open("POST",serviceURL,true);
                     xmlhttp.send();  
 
@@ -663,9 +654,9 @@
 
     <!--- AFTER THE HEAD COMES THE BODY WITHIN THE HTML BRACES-->
     <body>
-        <div id="viewDiv">
-            <div id="sidebar" class="esri-widget">
-                <div id="text">
+        <div id = "viewDiv">
+            <div id = "sidebar" class = "esri-widget">
+                <div id = "text">
                     <h2> INSTRUCTIONS </h2>
                     <li> Verify Bridge Polygon is highlighted on-screen </li>
                     <li> Toggle references on/off as needed for QAQC </li>
@@ -675,58 +666,57 @@
                     <li> Utilize "Skip Bridge" if unable to determine regularity </li>
                     <li> Sign out when finished with QAQC session </li>
                 </div>
-                <div id="text">
+                <div id =" text">
                     <h2>REFERENCE INFORMATION</h2>
                     <p> Use the checkboxes below to toggle reference layers on and off.</p>
                 </div>
-                <div id = "toggleSet">
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="bridgeTest" checked style="cursor:pointer;"/> Bridge Hulls </div>
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="nbiPoints" unchecked style="cursor:pointer;"/> Bridge Points </div>
+                <div id = "toggleSetA">
+                    <div id = "layerToggle" class="esri-widget"> <input type = "checkbox" id = "bridgeTest" checked style = "cursor:pointer;"/> Bridge Hulls </div>
+                    <div id = "layerToggle" class="esri-widget"> <input type = "checkbox" id = "nbiPoints" unchecked style = "cursor:pointer;"/> Bridge Points </div>
                 </div>
-                <div id = "toggleSet">
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="roadways" unchecked style="cursor:pointer;"/> Roads </div>
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" unchecked style="cursor:pointer;"/> Streams </div>
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="railroads" unchecked style="cursor:pointer;"/> Railroads </div>
+                <div id = "toggleSetB">
+                    <div id = "layerToggle" class = "esri-widget"> <input type = "checkbox" id = "roadways" unchecked style = "cursor:pointer;"/> Roads </div>
+                    <div id = "layerToggle" class = "esri-widget"> <input type = "checkbox" id = "streams" unchecked style = "cursor:pointer;"/> Streams </div>
+                    <div id = "layerToggle" class = "esri-widget"> <input type = "checkbox" id = "railroads" unchecked style = "cursor:pointer;"/> Railroads </div>
                 </div>
-                <div id="text">
-                    <p>Use the buttons below to get coordinate information or to jump to google. </p>
+                <div id = "text">
+                    <p>Use the buttons below to get coordinate information or to jump to google.</p>
                 </div>
                 <div id = "bigcoordinateBox">
-                    <div id = "coordinateBox" class="esri-coordinate-conversion" > </div>
-                    <button id="btnGoogle"> Jump to Google</button>
+                    <div id = "coordinateBox" class = "esri-coordinate-conversion" > </div>
+                    <button id = "btnGoogle"> Jump to Google </button>
                 </div>
-                <div id="text">
+                <div id = "text">
                     <h2> EDIT BRIDGE </h2>
                 </div>
-                <calcite-label class = "custom-example-theme">
-                    <calcite-select class = "custom-example-theme" id = "selectTest">
+                <calcite-label class = "custom-theme">
+                    <calcite-select class = "custom-theme" id = "selectTest">
                         <calcite-option id = "selectYourChoice" value = "selectYourChoice" Selected> Select Your Choice </calcite-option>
                         <calcite-option-group label="Regular Bridge">
-                            <calcite-option id = "regSelect" value ="regSelect"> Regular Bridge</calcite-option>
+                            <calcite-option id = "regSelect" value = "regSelect"> Regular Bridge </calcite-option>
                         </calcite-option-group>
-                        <calcite-option-group label="Irregular Bridge">
-                            <calcite-option id = "alignSelect" value="alignSelect">Alignment</calcite-option>
-                            <calcite-option id = "compSelect" value="compSelect">Complex</calcite-option>
-                            <calcite-option id = "culSelect" value="culSelect">Culvert</calcite-option>
-                            <calcite-option id = "curvSelect" value="curvSelect">Curved</calcite-option>
-                            <calcite-option id = "elevSelect" value="elevSelect">Elevation</calcite-option>
-                            <calcite-option id = "newerSelect" value="newerSelect">Newer</calcite-option>
-                            <calcite-option id = "tinySelect" value="tinySelect">Tiny</calcite-option>
-                            <calcite-option id = "twowaySelect" value="twowaySelect">Twoway</calcite-option>
-                            <calcite-option id = "vegSelect" value="vegSelect">Vegetation</calcite-option>
-                            <calcite-option id = "otherSelect" value="otherSelect">Other</calcite-option>
+                        <calcite-option-group label = "Irregular Bridge">
+                            <calcite-option id = "alignSelect" value = "alignSelect"> Alignment </calcite-option>
+                            <calcite-option id = "compSelect" value = "compSelect"> Complex </calcite-option>
+                            <calcite-option id = "culSelect" value = "culSelect"> Culvert </calcite-option>
+                            <calcite-option id = "curvSelect" value = "curvSelect"> Curved </calcite-option>
+                            <calcite-option id = "elevSelect" value = "elevSelect"> Elevation </calcite-option>
+                            <calcite-option id = "newerSelect" value = "newerSelect"> Newer </calcite-option>
+                            <calcite-option id = "tinySelect" value = "tinySelect"> Tiny </calcite-option>
+                            <calcite-option id = "twowaySelect" value = "twowaySelect"> Twoway </calcite-option>
+                            <calcite-option id = "vegSelect" value = "vegSelect"> Vegetation </calcite-option>
+                            <calcite-option id = "otherSelect" value = "otherSelect"> Other </calcite-option>
                         </calcite-option-group>
                     </calcite-select>
                 </calcite-label>
-                <calcite-input-text class = "custom-example-theme" placeholder = "Enter any comments here after marking as irregular." id = "commentBox" clearable = true max-length=40></calcite-input-text>
+                <calcite-input-text class = "custom-theme" placeholder = "Enter any comments here after marking as irregular." id = "commentBox" clearable = true max-length = 40></calcite-input-text>
                 <div id = "editButtonBox">
-                    <button id="saveBridgeBtn">Save and Next Bridge</button>
+                    <button id = "saveBridgeBtn"> Save and Next Bridge </button>
                     <button id = "skipBridgeBtn"> Skip Bridge </button>
                 </div>
                 <div id = "signoutBox">
-                    <button id = "signoutButton"> Sign Out</span>
+                    <button id = "signoutButton"> Sign Out </button>
                 </div>
-
             </div>
         </div>
     </body>
