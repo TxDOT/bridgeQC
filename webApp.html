@@ -503,6 +503,13 @@
                     }
                 })
 
+                // BUTTON THAT LINKS TO USER GUIDE
+                const userGuideButton = document.getElementById("userGuideButton");
+                userGuideButton.addEventListener("click", () => {
+                    window.open("https://txdot.sharepoint.com/:b:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/BridgeApp_HelpDoc_v2.pdf?csf=1&web=1&e=lVFs6Z");
+                })
+              
+
                 // CLEAR TREE SELECTION AND COMMENT BOX
                 function clearSelection() {
                     bridgeSelect.value = selectYourChoice;
@@ -682,6 +689,7 @@
                 <buttonBox>
                     <button id = "saveBridgeButton">Save and Next Bridge</button>
                     <button id = "skipBridgeButton">Skip Bridge</button>
+                    <button id = "userGuideButton">User Guide</button>
                 </buttonBox>
                 <buttonBox>
                     <button class = "signOut" id = "signoutButton">Sign Out</button>
