@@ -135,8 +135,6 @@
                 font-size: 14px;
                 color: black; 
             }
-
-            
         </style>
 
         <!-- JS IN A SCRIPT TAG-->
@@ -197,7 +195,7 @@
                 });
 
                 // CREATE WMTS BASEMAP FOR TEXAS 6 INCH IMAGERY
-                const TISBasemap = new Basemap({
+                const tisBasemap = new Basemap({
                     baseLayers: [
                         new WMTSLayer({
                             url: "https://txgi.tnris.org/login/path/food-paul-zebra-shirt/wmts/1.0.0/WMTSCapabilities.xml",
@@ -209,7 +207,7 @@
                 });
 
                   // CREATE WMTS BASEMAP FOR TXDOT VECTOR TILE BASEMAP
-                const VectorBasemap = new Basemap({
+                const vectorBasemap = new Basemap({
                     baseLayers: [
                         new VectorTileLayer({
                             url:"https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer"
@@ -219,7 +217,7 @@
 
                 //CREATE MAP WITH IMAGERY BASEMAP
                 const map = new Map({
-                    basemap : TISBasemap 
+                    basemap : tisBasemap 
                 });
 
                 // CREATE MAPVIEW
@@ -236,7 +234,7 @@
                 // CREATE BASEMAP TOGGLE WIDGET
                 const basemapToggle = new BasemapToggle({
                     view: mapView,
-                    nextBasemap: VectorBasemap
+                    nextBasemap: vectorBasemap
                 });
 
                 // ADD BASEMAP TOGGLE TO MAP
@@ -432,7 +430,7 @@
                 commentBox.disabled = true; // DISABLE UNTIL QC OPTION SELECTED
                 commentBox.clearable = true; // MAKE CLEARABLE
                 commentBox.placeholder = "Enter any comments here after marking as irregular."; // ADD PLACEHOLDER TEXT
-                commentBox.maxLength = 40;
+                commentBox.maxLength = 40; // SET MAX LENGTH
 
                 // CREATE EVENT LISTENER TO WATCH FOR QC SELECTION AND CHANGE COMMENT BOX TO ENABLED
                 bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
@@ -627,7 +625,6 @@
                 };    
 
             });
-
         </script>
     </head>
 
