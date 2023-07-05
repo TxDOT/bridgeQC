@@ -5,15 +5,15 @@
         <title> Intern Bridge QAQC WebApp</title>
 
         <!-- SET ESRI CSS SOURCE -->
-        <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css"/>
+        <link rel = "stylesheet" href = "https://js.arcgis.com/4.26/esri/themes/light/main.css"/>
         
         <!-- SET ESRI JS API SOURCE -->
-        <script src="https://js.arcgis.com/4.26/"></script>
+        <script src = "https://js.arcgis.com/4.26/"></script>
 
         <!-- SET CALCITE STUFF -->
-        <link rel="stylesheet" type="text/css" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" />
-        <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
-        <script nomodule="" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.js"></script>
+        <link rel = "stylesheet" type = "text/css" href = "https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" />
+        <script type = "module" src = "https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
+        <script nomodule = "" src = "https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.js"></script>
         
         <!-- CSS IN A STYLE TAG -->
         <style>
@@ -192,8 +192,8 @@
 
                 // OAUTH OBJECT AND REGISTER WITH IDENTITY MANAGER
                 var oauthinfo = new OAuthInfo ({
-                    appId: "kCTficluQkq9ohaF", // registered app id
-                    popup: false,
+                    appId: "kCTficluQkq9ohaF", // REGISTERED APP ID
+                    popup: false
                 });
                 esriId.registerOAuthInfos([oauthinfo]);
                 esriId.getCredential(oauthinfo.portalUrl + "/sharing");
