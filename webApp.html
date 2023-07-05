@@ -26,6 +26,7 @@
                 width: 100%;
                 float: right;
             }
+
             #sidebar {
                 z-index: 99;
                 position: absolute;
@@ -35,26 +36,29 @@
                 width: 420px;
                 background: rgba(0, 0, 0, 0.5);
             }
+
             text {
                 color: white;
                 padding: 2px;
             }
+
             li {
                 position: relative;
                 left: 12px;
             }
+            
             h2 {
                 position: relative;
                 margin-block-start: 8px;
                 margin-block-end: 8px;
                 left: 12px;
             }
+
             p {
                 position: relative;
                 margin: 8px;
                 left: 12px;
             }
-
 
             button {
                 padding: 6px;
@@ -65,9 +69,11 @@
                 color: black;
                 cursor: pointer;
             }
+
             .layerToggle {
                 padding: 5px;
             }
+
             .signOut{
                 color: white;
                 background-color: black;
@@ -77,15 +83,7 @@
                 cursor: pointer;
             }
 
-            toggleSet {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                gap: 10px;
-                padding: 4px;
-            }
-
-            #editButtonBox {
+            buttonBox {
                 display: flex;
                 flex-direction:row;
                 justify-content: center;
@@ -93,14 +91,8 @@
                 padding: 4px;
             }
 
-            #selectTest {
-                background-color: white;
-                padding: 4px;
-                border-radius: 4px;
-                margin: 12px;
-                font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
-                font-size: 14px;
-                color: black;
+            .toggleSet {
+                gap: 10px;
             }
 
             #coordinateBox {
@@ -114,12 +106,14 @@
                 color: black;
             }
 
-            #bigcoordinateBox {
-                display: flex;
-                flex-direction: row;
+            #selectDropDown {
+                background-color: white;
+                padding: 4px;
+                border-radius: 4px;
                 margin: 12px;
-                gap: 4px;
-                justify-content: center;
+                font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-size: 14px;
+                color: black;
             }
 
             .customTheme {
@@ -139,16 +133,10 @@
                 margin: 12px;
                 font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
                 font-size: 14px;
-                color: black;
+                color: black; 
             }
 
-            #signoutBox {
-                display: flex;
-                justify-content: center;
-            }
-
-
-
+            
         </style>
 
         <!-- JS IN A SCRIPT TAG-->
@@ -425,7 +413,7 @@
                 }
 
                 // CREATE CALCITE TREE AND OPTIONS TO EDIT SELECTED BRIDGE
-                const bridgeSelect = document.getElementById("selectTest");
+                const bridgeSelect = document.getElementById("selectDropDown");
                 const selectYourChoice = document.getElementById("selectYourChoice");
                 const regSelect = document.getElementById("regSelect");
                 const alignSelect = document.getElementById("alignSelect");
@@ -439,9 +427,12 @@
                 const vegSelect = document.getElementById("vegSelect");
                 const otherSelect = document.getElementById("otherSelect");
                 
-                // CREATE COMMENT BOX
+                // CREATE COMMENT BOX AND ATTRIBUTES
                 const commentBox = document.getElementById("commentBox");
                 commentBox.disabled = true; // DISABLE UNTIL QC OPTION SELECTED
+                commentBox.clearable = true; // MAKE CLEARABLE
+                commentBox.placeholder = "Enter any comments here after marking as irregular."; // ADD PLACEHOLDER TEXT
+                commentBox.maxLength = 40;
 
                 // CREATE EVENT LISTENER TO WATCH FOR QC SELECTION AND CHANGE COMMENT BOX TO ENABLED
                 bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
@@ -654,24 +645,24 @@
                 <text>
                     <h2>REFERENCE INFORMATION</h2>
                 </text>
-                <toggleSet>
+                <buttonBox class = "toggleSet">
                     <button class = "esri-widget layerToggle"> <input type = "checkbox" id = "bridges" checked/>Bridge Hulls</button>
                     <button class = "esri-widget layerToggle"> <input type = "checkbox" id = "nbiPoints" unchecked/>Bridge Points</button>
-                </toggleSet>
-                <toggleSet>
+                </buttonBox>
+                <buttonBox class = "toggleSet">
                     <button class = "esri-widget layerToggle"> <input type = "checkbox" id = "roadways" unchecked/>Roads</button>
                     <button class = "esri-widget layerToggle"> <input type = "checkbox" id = "streams" unchecked/>Streams</button>
                     <button class = "esri-widget layerToggle"> <input type = "checkbox" id = "railroads" unchecked/>Railroads</button>
-                </toggleSet>
-                <div id = "bigcoordinateBox">
+                </buttonBox>
+                <buttonBox>
                     <div id = "coordinateBox" class = "esri-coordinate-conversion"> </div>
                     <button id = "googleButton">Jump to Google</button>
-                </div>
+                </buttonBox>
                 <text>
                     <h2> EDIT BRIDGE </h2>
                 </text>
                 <calcite-label class = "customTheme">
-                    <calcite-select class = "customTheme" id = "selectTest">
+                    <calcite-select id = "selectDropDown">
                         <calcite-option id = "selectYourChoice" value = "selectYourChoice" Selected> Select Your Choice </calcite-option>
                         <calcite-option-group label = "Regular Bridge">
                             <calcite-option id = "regSelect" value ="regSelect"> Regular Bridge</calcite-option>
@@ -690,14 +681,14 @@
                         </calcite-option-group>
                     </calcite-select>
                 </calcite-label>
-                <calcite-input-text class = "customTheme" placeholder = "Enter any comments here after marking as irregular." id = "commentBox" clearable = true max-length = 40></calcite-input-text>
-                <div id = "editButtonBox">
+                <calcite-input-text class = "customTheme" id = "commentBox"></calcite-input-text>
+                <buttonBox>
                     <button id = "saveBridgeButton">Save and Next Bridge</button>
                     <button id = "skipBridgeButton">Skip Bridge</button>
-                </div>
-                <div id = "signoutBox">
+                </buttonBox>
+                <buttonBox>
                     <button class = "signOut" id = "signoutButton">Sign Out</button>
-                </div>
+                </buttonBox>
             </div>
         </div>
     </body>
