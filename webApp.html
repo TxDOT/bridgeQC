@@ -198,12 +198,12 @@
                 esriId.getCredential(oauthinfo.portalUrl + "/sharing");
 
                 // SET UP TOKEN VARIABLE TO USE WHEN PUSHING EDITS LATER
-                let tokenneeded;
+                let tokenNeeded;
 
                 // CHECK SIGN IN STATUS AND SET TOKEN
                 esriId.checkSignInStatus("https://txdot.maps.arcgis.com/sharing").then((response) => {
-                    tokenneeded = response.token;
-                    console.log("token in check sign in", tokenneeded);
+                    tokenNeeded = response.token;
+                    console.log("token in check sign in", tokenNeeded);
                     }).catch((error) => {
                         console.log("failure! you are not logged in", error);
                 });
