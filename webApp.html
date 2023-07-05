@@ -189,7 +189,6 @@
                 //LOAD MODULES INTO FUNCTION FOR USE IN THE APP
                 function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, VectorTileLayer, Editor, CoordinateConversion, Portal, OAuthInfo, esriId, PortalQueryParams, BasemapToggle) {
 
-
                 // OAUTH OBJECT AND REGISTER WITH IDENTITY MANAGER
                 var oauthinfo = new OAuthInfo ({
                     appId: "kCTficluQkq9ohaF", // REGISTERED APP ID
@@ -197,12 +196,19 @@
                 });
                 esriId.registerOAuthInfos([oauthinfo]);
                 esriId.getCredential(oauthinfo.portalUrl + "/sharing");
-                let tokenNeeded;
+
+                // SET UP TOKEN VARIABLE TO USE WHEN PUSHING EDITS LATER
+                let tokenneeded;
+
+                // CHECK SIGN IN STATUS AND SET TOKEN
                 esriId.checkSignInStatus("https://txdot.maps.arcgis.com/sharing").then((response) => {
-                    tokenNeeded = response.token;
+                    tokenneeded = response.token;
+                    console.log("token in check sign in", tokenneeded);
                     }).catch((error) => {
                         console.log("failure! you are not logged in", error);
                 });
+
+                // SIGN OUT BUTTON
                 document.getElementById("signoutButton").addEventListener("click", () => {
                     esriId.destroyCredentials();
                     window.location.reload();
@@ -256,7 +262,7 @@
 
                 // CONSTRUCT FEATURELAYERS
 
-                //ROADWAYS
+                // ROADWAYS
                 const roadways = new FeatureLayer({
                     url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer/0",
                     id: "roadways",
@@ -307,7 +313,7 @@
                     visible: false
                 });
   
-                // BRIDGE POINTS
+                // BRIDGE POINTS RENDERER AND LAYER
                 const nbiRenderer = {
                     type: "simple",
                     symbol: {
@@ -332,7 +338,6 @@
                 const roadwaysLayerToggle = document.getElementById("roadways");
                 const nbiLayerToggle = document.getElementById("nbiPoints");
                 const railroadsLayerToggle = document.getElementById("railroads");
-
 
                 // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOXS AND CHANGE VISIBILITY
                 bridgeLayerToggle.addEventListener("change", () =>{
@@ -441,8 +446,9 @@
                 const otherSelect = document.getElementById("otherSelect");
                 
                 const commentBox = document.getElementById("commentBox");
-                commentBox.disabled = true;
+                commentBox.disabled = true; // DISABLE UNTIL QC OPTION SELECTED
 
+                // CREATE EVENT LISTENER TO WATCH FOR QC SELECTION AND CHANGE COMMENT BOX TO ENABLED
                 bridgeSelect.addEventListener("calciteSelectChange", calciteSelectChange => {
                     if (regSelect.selected == true) {
                         console.log("regular selected");
@@ -503,6 +509,8 @@
                 // BUTTON TO SAVE AND GO TO NEXT BRIDGE
                 const saveBridgeButton = document.getElementById("saveBridgeButton");
                 saveBridgeButton.addEventListener("click", () => {
+
+                    // CHECK TO MAKE SURE THERE IS SOMETHING TO SAVE
                     if (bridgeSelect.value == selectYourChoice || selectYourChoice.selected == true) {
                         alert ("Make a selection before saving and going to the next bridge.");
                     }
@@ -511,7 +519,7 @@
                     }
                 })
 
-                // CLEAR TREE SELECTION AND INPUT BOX
+                // CLEAR TREE SELECTION AND COMMENT BOX
                 function clearSelection() {
                     bridgeSelect.value = selectYourChoice;
                     selectYourChoice.selected = true;
@@ -523,16 +531,16 @@
                 function saveChoices() {
                     console.log("this is the specBridge being saved", specBridgeID);
                     var xmlhttp;
-                    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+                    if (window.XMLHttpRequest) { // CODE FOR 1E7+, FIREFOX, CHROME, OPERA, SAFARI
                         xmlhttp = new XMLHttpRequest();
                     }
-                    else { // code for IE6, IE5
+                    else { // CODE FOR IE6, IE5
                         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
                     }
                     xmlhttp.onreadystatechange=async function() {
                         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                             console.log('success, finding the next one!')
-                            specBridgeID = await findBridge(); // selected bridge ID gets returned here
+                            specBridgeID = await findBridge(); // SELECTED BRIDGE ID GETS RETURNED HERE
                             console.log('here it is', specBridgeID)
                         }
                     }
@@ -540,7 +548,7 @@
                     // SERVICE URL
                     var serviceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0/updateFeatures?token=" + tokenNeeded + "&f=json&features=";
 
-                    // VARIABLES FOR ATTRIBUTES THAT MIGHT CHANGE
+                    // VARIABLES TO SAVE QC INPUTS FROM USER
                     var isIrregValue;
                     var irregReasonValue;
                     var commentToSave;
@@ -600,12 +608,12 @@
                         }
                     }
 
-                    // POST ATTRIBUTE CHANGES
-                    xmlhttp.open("POST", serviceURL, true);
+                    // POSTING EDITS TO LAYER
+                    xmlhttp.open("POST",serviceURL,true);
                     xmlhttp.send();  
                 }
 
-                //JUMP TO GOOGLE MAPS FUNCTION
+                // JUMP TO GOOGLE MAPS FUNCTION
                 function jumpToGoogle() {
                     let ctr = mapView.get('center');
                     let lat = ctr.latitude;
