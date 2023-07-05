@@ -5,15 +5,15 @@
         <title> Intern Bridge QAQC WebApp</title>
 
         <!-- SET ESRI CSS SOURCE -->
-        <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css"/>
+        <link rel = "stylesheet" href = "https://js.arcgis.com/4.26/esri/themes/light/main.css"/>
         
         <!-- SET ESRI JS API SOURCE -->
-        <script src="https://js.arcgis.com/4.26/"></script>
+        <script src = "https://js.arcgis.com/4.26/"></script>
 
         <!-- SET CALCITE STUFF -->
-        <link rel="stylesheet" type="text/css" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" />
-        <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
-        <script nomodule="" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.js"></script>
+        <link rel = "stylesheet" type = "text/css" href = "https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" />
+        <script type = "module" src = "https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
+        <script nomodule = "" src = "https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.js"></script>
         
         <!-- CSS IN A STYLE TAG -->
         <style>
@@ -26,7 +26,6 @@
                 width: 100%;
                 float: right;
             }
-
             #sidebar {
                 z-index: 99;
                 position: absolute;
@@ -36,28 +35,41 @@
                 width: 400px;
                 background: rgba(0, 0, 0, 0.5);
             }
-
-            #text {
+            text {
                 color: white;
                 padding-left: 3%;
                 padding-right: 3%;
-                font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
-            }
-
-            #toggleSet {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                gap: 10px;
                 padding: 4px;
             }
-
-            #layerToggle {
+            li {
+                position: relative;
+                left: 12px;
+            }
+            h2 {
+                position: relative;
+                margin-block-start: 8px;
+                margin-block-end: 8px;
+                left: 8px;
+            }
+            p {
+                position: relative;
+                margin-block-start: 8px;
+                margin-block-end: 8px;
+                margin: 8px;
+            }
+            layerToggle {
                 padding: 5px;
                 border-radius: 4px;
                 font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
                 font-size: 14px;
                 color: black;
+            }
+            toggleSet {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 10px;
+                padding: 4px;
             }
 
             #editButtonBox {
@@ -171,7 +183,6 @@
                     "esri/identity/OAuthInfo",
                     "esri/identity/IdentityManager",
                     "esri/portal/PortalQueryParams",
-
                     "esri/widgets/BasemapToggle",
                 ],
 
@@ -180,8 +191,8 @@
 
                 // OAUTH OBJECT AND REGISTER WITH IDENTITY MANAGER
                 var oauthinfo = new OAuthInfo ({
-                    appId: "kCTficluQkq9ohaF", // registered app id
-                    popup: false,
+                    appId: "kCTficluQkq9ohaF", // REGISTERED APP ID
+                    popup: false
                 });
                 esriId.registerOAuthInfos([oauthinfo]);
                 esriId.getCredential(oauthinfo.portalUrl + "/sharing");
@@ -202,7 +213,6 @@
                     esriId.destroyCredentials();
                     window.location.reload();
                 });
-
 
                 // CREATE WMTS BASEMAP FOR TEXAS 6 INCH IMAGERY
                 const TISBasemap = new Basemap({
@@ -272,8 +282,8 @@
                         }
                     }
                 };
-                const bridgeTest = new FeatureLayer({
-                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0", // real
+                const bridges = new FeatureLayer({
+                    url: "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0",
                     renderer: bridgesRenderer,
                     opacity: 0.5,
                     definitionExpression: "IS_IRREG IS NULL"
@@ -320,10 +330,10 @@
                 });
 
                 // ADD FEATURELAYERS TO THE MAP
-                map.addMany([roadways, bridgeTest, streams, railroads, nbiPoints]);
+                map.addMany([roadways, bridges, streams, railroads, nbiPoints]);
 
-                // CREATE VARIABLES REFERENCING THE CHECKBOX NODES
-                const bridgeLayerToggle = document.getElementById("bridgeTest");
+                // CREATE VARIABLE REFERENCING THE CHECKBOX NODE 
+                const bridgeLayerToggle = document.getElementById("bridges");
                 const streamsLayerToggle = document.getElementById("streams");
                 const roadwaysLayerToggle = document.getElementById("roadways");
                 const nbiLayerToggle = document.getElementById("nbiPoints");
@@ -331,7 +341,7 @@
 
                 // LISTEN TO THE CHANGE EVENT FOR THE CHECKBOXS AND CHANGE VISIBILITY
                 bridgeLayerToggle.addEventListener("change", () =>{
-                    bridgeTest.visible = bridgeLayerToggle.checked;
+                    bridges.visible = bridgeLayerToggle.checked;
                 });
                 streamsLayerToggle.addEventListener("change", () => {
                     streams.visible = streamsLayerToggle.checked;
@@ -347,7 +357,7 @@
                 });
                 
                 // CREATE QUERY TO ONLY SEE THE REMAINING BRIDGES
-                let queryNull = bridgeTest.createQuery();
+                let queryNull = bridges.createQuery();
                 queryNull.where = "IS_IRREG IS NULL";
                 queryNull.returnGeometry = true;
                 queryNull.outFields = ["*"];
@@ -368,7 +378,7 @@
                     }
 
                     // THEN CALL QUERY TO FIND NEW BRIDGE
-                    return bridgeTest.queryFeatures(queryNull)
+                    return bridges.queryFeatures(queryNull)
                         // THEN FIND SELECTED BRIDGE WITHIN THE RESULTS
                         .then(function(featureSet) {
                             let selectedBridgeID = showSelectedBridge(featureSet);
@@ -411,9 +421,8 @@
                 }
 
                 function highlight(selectedBridge) {
-                    // HIGHLIGHT THE SELECTED BRIDGE
                     var highlightSelect;
-                    mapView.whenLayerView(bridgeTest).then(function(layerView){
+                    mapView.whenLayerView(bridges).then(function(layerView){
                         if (highlightSelect) {
                             highlightSelect.remove();
                         }
@@ -492,18 +501,18 @@
                 });
 
                 // BUTTON TO SKIP BRIDGE
-                const skipBridgeBtn = document.getElementById("skipBridgeBtn");
-                skipBridgeBtn.addEventListener("click", async () => {
+                const skipBridgeButton = document.getElementById("skipBridgeButton");
+                skipBridgeButton.addEventListener("click", async () => {
                     specBridgeID = await findBridge();
                 });
 
                 // BUTTON TO SAVE AND GO TO NEXT BRIDGE
-                const saveBridgeBtn = document.getElementById("saveBridgeBtn");
-                saveBridgeBtn.addEventListener("click", () => {
+                const saveBridgeButton = document.getElementById("saveBridgeButton");
+                saveBridgeButton.addEventListener("click", () => {
 
                     // CHECK TO MAKE SURE THERE IS SOMETHING TO SAVE
                     if (bridgeSelect.value == selectYourChoice || selectYourChoice.selected == true) {
-                        alert ("Make a selection before saving and going to the next bridge.")
+                        alert ("Make a selection before saving and going to the next bridge.");
                     }
                     else {
                         saveChoices();
@@ -518,9 +527,9 @@
                     commentBox.disabled = true;
                 }
 
+                // SAVE CHOICES USER MAKES AND POST TO LAYER
                 function saveChoices() {
                     console.log("this is the specBridge being saved", specBridgeID);
-
                     var xmlhttp;
                     if (window.XMLHttpRequest) { // CODE FOR 1E7+, FIREFOX, CHROME, OPERA, SAFARI
                         xmlhttp = new XMLHttpRequest();
@@ -537,7 +546,7 @@
                     }
 
                     // SERVICE URL
-                    var serviceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0/updateFeatures?token=" + tokenneeded + "&f=json&features=";
+                    var serviceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0/updateFeatures?token=" + tokenNeeded + "&f=json&features=";
 
                     // VARIABLES TO SAVE QC INPUTS FROM USER
                     var isIrregValue;
@@ -589,7 +598,6 @@
                             isIrregValue = "1";
                             irregReasonValue = "10";
                         }
-
                         if (commentBox.value != "") {
                             commentToSave = commentBox.value;
                             serviceURL += "{'attributes': {'OBJECTID':" + specBridgeID + ",'IS_IRREG':" + isIrregValue + ", 'IRREG_RSN':" + irregReasonValue + ", 'COMMENT': \'" + commentToSave +"\'}}";
@@ -613,12 +621,11 @@
                     let zoom = Math.round(Math.log(591657550.500000 /(mapView.scale/2))/Math.log(2))-1;
                     let baseUrl = "https://www.google.com/maps/@";
                     window.open(baseUrl + lat + "," + lon + "," + zoom + "z");
-                    console.log(ctr)
                 }
 
                 // JUMP TO GOOGLE BUTTON
-                const btnGoogle = document.getElementById("btnGoogle");
-                btnGoogle.addEventListener("click", () => {
+                const googleButton = document.getElementById("googleButton");
+                googleButton.addEventListener("click", () => {
                     jumpToGoogle(); // 
                 });
 
@@ -642,39 +649,36 @@
     <body>
         <div id="viewDiv">
             <div id="sidebar" class="esri-widget">
-                <div id="text">
-                    <h2> INSTRUCTIONS </h2>
-                    <li> Verify Bridge Polygon is highlighted on-screen </li>
-                    <li> Toggle references on/off as needed for QAQC </li>
-                    <li> Make selection from "EDIT BRIDGE" dropdown </li>
-                    <li> Provide comment when appropriate</li>
-                    <li> Click "Save and Next Bridge" when QAQC is complete</li>
-                    <li> Utilize "Skip Bridge" if unable to determine regularity </li>
-                    <li> Sign out when finished with QAQC session </li>
-                </div>
-                <div id="text">
+                <text>
+                    <h2>INSTRUCTIONS</h2>
+                    <li>Verify bridge polygon is highlighted on-screen.</li>
+                    <li>Toggle references on/off as needed for QAQC.</li>
+                    <li>Make selection from "EDIT BRIDGE" dropdown, and provide comment when appropriate.</li>
+                    <li>Click "Save and Next Bridge" when QAQC is complete, or utilize "Skip Bridge" if unable to determine regularity.</li>
+                </text>
+                <text>
                     <h2>REFERENCE INFORMATION</h2>
-                    <p> Use the checkboxes below to toggle reference layers on and off.</p>
-                </div>
-                <div id = "toggleSet">
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="bridgeTest" checked style="cursor:pointer;"/> Bridge Hulls </div>
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="nbiPoints" unchecked style="cursor:pointer;"/> Bridge Points </div>
-                </div>
-                <div id = "toggleSet">
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="roadways" unchecked style="cursor:pointer;"/> Roads </div>
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="streams" unchecked style="cursor:pointer;"/> Streams </div>
-                    <div id="layerToggle" class="esri-widget"> <input type="checkbox" id="railroads" unchecked style="cursor:pointer;"/> Railroads </div>
-                </div>
-                <div id="text">
-                    <p>Use the buttons below to get coordinate information or to jump to google. </p>
-                </div>
+                    <p>Use the checkboxes below to toggle reference layers on and off.</p>
+                </text>
+                <toggleSet>
+                    <layerToggle class="esri-widget"> <input type="checkbox" id="bridges" checked style="cursor:pointer;"/>Bridge Hulls</layerToggle>
+                    <layerToggle class="esri-widget"> <input type="checkbox" id="nbiPoints" unchecked style="cursor:pointer;"/>Bridge Points</layerToggle>
+                </toggleSet>
+                <toggleSet>
+                    <layerToggle class="esri-widget"> <input type="checkbox" id="roadways" unchecked style="cursor:pointer;"/>Roads</layerToggle>
+                    <layerToggle class="esri-widget"> <input type="checkbox" id="streams" unchecked style="cursor:pointer;"/>Streams</layerToggle>
+                    <layerToggle class="esri-widget"> <input type="checkbox" id="railroads" unchecked style="cursor:pointer;"/>Railroads</layerToggle>
+                </toggleSet>
+                <text>
+                    <p>Use the buttons below to get coordinate information or to jump to google.</p>
+                </text>
                 <div id = "bigcoordinateBox">
-                    <div id = "coordinateBox" class="esri-coordinate-conversion" > </div>
-                    <button id="btnGoogle"> Jump to Google</button>
+                    <div id = "coordinateBox" class="esri-coordinate-conversion"> </div>
+                    <button id="googleButton">Jump to Google</button>
                 </div>
-                <div id="text">
+                <text>
                     <h2> EDIT BRIDGE </h2>
-                </div>
+                </text>
                 <calcite-label class = "custom-example-theme">
                     <calcite-select class = "custom-example-theme" id = "selectTest">
                         <calcite-option id = "selectYourChoice" value = "selectYourChoice" Selected> Select Your Choice </calcite-option>
@@ -682,26 +686,26 @@
                             <calcite-option id = "regSelect" value ="regSelect"> Regular Bridge</calcite-option>
                         </calcite-option-group>
                         <calcite-option-group label="Irregular Bridge">
-                            <calcite-option id = "alignSelect" value="alignSelect">Alignment</calcite-option>
-                            <calcite-option id = "compSelect" value="compSelect">Complex</calcite-option>
-                            <calcite-option id = "culSelect" value="culSelect">Culvert</calcite-option>
-                            <calcite-option id = "curvSelect" value="curvSelect">Curved</calcite-option>
-                            <calcite-option id = "elevSelect" value="elevSelect">Elevation</calcite-option>
-                            <calcite-option id = "newerSelect" value="newerSelect">Newer</calcite-option>
-                            <calcite-option id = "tinySelect" value="tinySelect">Tiny</calcite-option>
-                            <calcite-option id = "twowaySelect" value="twowaySelect">Twoway</calcite-option>
-                            <calcite-option id = "vegSelect" value="vegSelect">Vegetation</calcite-option>
-                            <calcite-option id = "otherSelect" value="otherSelect">Other</calcite-option>
+                            <calcite-option id="alignSelect" value="alignSelect">Alignment</calcite-option>
+                            <calcite-option id="compSelect" value="compSelect">Complex</calcite-option>
+                            <calcite-option id="culSelect" value="culSelect">Culvert</calcite-option>
+                            <calcite-option id="curvSelect" value="curvSelect">Curved</calcite-option>
+                            <calcite-option id="elevSelect" value="elevSelect">Elevation</calcite-option>
+                            <calcite-option id="newerSelect" value="newerSelect">Newer</calcite-option>
+                            <calcite-option id="tinySelect" value="tinySelect">Tiny</calcite-option>
+                            <calcite-option id="twowaySelect" value="twowaySelect">Twoway</calcite-option>
+                            <calcite-option id="vegSelect" value="vegSelect">Vegetation</calcite-option>
+                            <calcite-option id="otherSelect" value="otherSelect">Other</calcite-option>
                         </calcite-option-group>
                     </calcite-select>
                 </calcite-label>
-                <calcite-input-text class = "custom-example-theme" placeholder = "Enter any comments here after marking as irregular." id = "commentBox" clearable = true max-length=40></calcite-input-text>
-                <div id = "editButtonBox">
-                    <button id="saveBridgeBtn">Save and Next Bridge</button>
-                    <button id = "skipBridgeBtn"> Skip Bridge </button>
+                <calcite-input-text class="customTheme" placeholder="Enter any comments here after marking as irregular." id="commentBox" clearable=true max-length=40></calcite-input-text>
+                <div id="editButtonBox">
+                    <button id="saveBridgeButton">Save and Next Bridge</button>
+                    <button id="skipBridgeButton">Skip Bridge</button>
                 </div>
-                <div id = "signoutBox">
-                    <button id = "signoutButton"> Sign Out</span>
+                <div id="signoutBox">
+                    <button id="signoutButton">Sign Out</span>
                 </div>
 
             </div>
