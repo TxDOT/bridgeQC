@@ -92,6 +92,10 @@
                 color: red;
             }
 
+            .dashboard {
+                color: blue;
+            }
+
             input [type = "checkbox"] {
                 cursor: pointer;
             }
@@ -177,14 +181,14 @@
                     "esri/identity/OAuthInfo",
                     "esri/identity/IdentityManager",
                     "esri/portal/PortalQueryParams",
-                    "esri/widgets/BasemapToggle",
+                    "esri/widgets/BasemapToggle"
                 ],
 
                 // LOAD MODULES INTO FUNCTION FOR USE IN THE APP
                 function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, VectorTileLayer, Editor, CoordinateConversion, Portal, OAuthInfo, esriId, PortalQueryParams, BasemapToggle) {
 
                 // OAUTH OBJECT AND REGISTER WITH IDENTITY MANAGER
-                var oauthinfo = new OAuthInfo ({
+                let oauthinfo = new OAuthInfo ({
                     appId: "kCTficluQkq9ohaF", // REGISTERED APP ID
                     popup: false
                 });
@@ -397,7 +401,7 @@
                     console.log("this is the selected bridge ID", selectedBridgeID);
                     
                     // ZOOM TO IT
-                    var bridgeExtent = selectedBridge.geometry.extent.clone().expand(2);
+                    let bridgeExtent = selectedBridge.geometry.extent.clone().expand(2);
                     mapView.goTo(bridgeExtent);
 
                     // HIGHLIGHT IT
@@ -415,13 +419,13 @@
                 }
 
                 function highlight(selectedBridge) {
-                    var highlightSelect;
+                    let highlightSelect;
                     mapView.whenLayerView(bridges).then(function(layerView){
                         if (highlightSelect) {
                             highlightSelect.remove();
                         }
                         highlightSelect = layerView.highlight(selectedBridge);
-                    })
+                    });
                 }
 
                 // CREATE CALCITE TREE AND OPTIONS TO EDIT SELECTED BRIDGE
@@ -521,7 +525,13 @@
                 const userGuideButton = document.getElementById("userGuideButton");
                 userGuideButton.addEventListener("click", () => {
                     window.open("https://txdot.sharepoint.com/:b:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/BridgeApp_HelpDoc_v2.pdf?csf=1&web=1&e=lVFs6Z");
-                })
+                });
+
+                // BUTTON THAT LINKS TO PROGRESS DASHBOARD
+                const dashboardButton = document.getElementById("dashboardButton");
+                dashboardButton.addEventListener("click", () => {
+                    window.open("https://www.arcgis.com/apps/dashboards/88119f0b7ad64b00883770c453d3b180");
+                });
               
 
                 // CLEAR TREE SELECTION AND COMMENT BOX
@@ -535,7 +545,7 @@
                 // SAVE CHOICES USER MAKES AND POST TO LAYER
                 function saveChoices() {
                     console.log("this is the specBridge being saved", specBridgeID);
-                    var xmlhttp;
+                    let xmlhttp;
                     if (window.XMLHttpRequest) { // CODE FOR 1E7+, FIREFOX, CHROME, OPERA, SAFARI
                         xmlhttp = new XMLHttpRequest();
                     }
@@ -544,19 +554,19 @@
                     }
                     xmlhttp.onreadystatechange=async function() {
                         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                            console.log('success, finding the next one!')
+                            console.log('success, finding the next one!');
                             specBridgeID = await findBridge(); // SELECTED BRIDGE ID GETS RETURNED HERE
-                            console.log('here it is', specBridgeID)
+                            console.log('here it is', specBridgeID);
                         }
                     }
 
                     // SERVICE URL
-                    var serviceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0/updateFeatures?token=" + tokenNeeded + "&f=json&features=";
+                    let serviceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer/0/updateFeatures?token=" + tokenNeeded + "&f=json&features=";
 
                     // VARIABLES TO SAVE QC INPUTS FROM USER
-                    var isIrregValue;
-                    var irregReasonValue;
-                    var commentToSave;
+                    let isIrregValue;
+                    let irregReasonValue;
+                    let commentToSave;
 
                     if (regSelect.selected == true) {
                         isIrregValue = "0";
@@ -638,7 +648,7 @@
                 const ccWidget = new CoordinateConversion({
                     view: mapView,
                     container: coordinateBox,
-                    multipleConversions: false,
+                    multipleConversions: false
                 });
                 ccWidget.visibleElements = {
                     settingsButton: false,
@@ -707,6 +717,9 @@
                 </buttonBox>
                 <buttonBox>
                     <button class = "userGuide" id = "userGuideButton">User Guide</button>
+                    <button class = "dashboard" id = "dashboardButton">Progress Dashboard</button>
+                </buttonBox>
+                <buttonBox>
                     <button class = "signOut" id = "signoutButton">Sign Out</button>
                 </buttonBox>
             </div>
