@@ -49,7 +49,7 @@
 
             h1 {
                 text-align: center;
-                margin-bottom: 30px;
+                margin-bottom: 24px;
             }
             
             h2 {
@@ -407,6 +407,9 @@
                     // HIGHLIGHT IT
                     highlight(selectedBridge);
 
+                    // PUT IN OID DISPLAY HTML ELEMENT
+                    document.getElementById("bridgeIDDisplay").innerHTML = "Current Bridge OID = " + selectedBridgeID;
+
                     // RETURN SELECTED BRIDGE ID SO THAT IT CAN BE USED LATER TO SAVE EDITS
                     return selectedBridgeID;
                 }
@@ -718,9 +721,10 @@
                 <buttonBox>
                     <button class = "userGuide" id = "userGuideButton">User Guide</button>
                     <button class = "dashboard" id = "dashboardButton">Progress Dashboard</button>
+                    <button class = "signOut" id = "signoutButton">Sign Out</button>
                 </buttonBox>
                 <buttonBox>
-                    <button class = "signOut" id = "signoutButton">Sign Out</button>
+                    <text id = "bridgeIDDisplay"> </text>
                 </buttonBox>
             </div>
         </div>
