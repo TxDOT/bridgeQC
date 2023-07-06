@@ -222,7 +222,8 @@
                             }
                         })  
                     ],
-                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/newImagery.png?csf=1&web=1&e=yFvlMa"
+                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/newImagery.png?csf=1&web=1&e=yFvlMa",
+                    title: "Imagery"
                 });
 
                   // CREATE TXDOT VECTOR TILE BASEMAP
@@ -231,7 +232,8 @@
                         new VectorTileLayer({
                             url:"https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer"                        })
                     ],
-                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/newVector.png?csf=1&web=1&e=t4XYKX"
+                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/newVector.png?csf=1&web=1&e=t4XYKX",
+                    title: "Vector Tile"
                 });
 
                 //CREATE MAP WITH IMAGERY BASEMAP
@@ -252,6 +254,9 @@
 
                 // CREATE BASEMAP TOGGLE WIDGET
                 const basemapToggle = new BasemapToggle({
+                    visibleElements: {
+                        title: true
+                    },
                     view: mapView,
                     nextBasemap: vectorBasemap
                 });
