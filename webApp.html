@@ -217,13 +217,12 @@
                     baseLayers: [
                         new WMTSLayer({
                             url: "https://txgi.tnris.org/login/path/food-paul-zebra-shirt/wmts/1.0.0/WMTSCapabilities.xml",
-                            thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/imagery_thumbNail.png?csf=1&web=1&e=BCVxRI",
                             activeLayer: {
-                                id: "texas"
-
-                            }
-                        })  
-                    ]
+                                id: "texas",
+                            },
+                        })
+                    ],
+                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/imagery_thumbNail.png?csf=1&web=1&e=2SWhSS",
                 });
 
                   // CREATE TXDOT VECTOR TILE BASEMAP
@@ -231,9 +230,10 @@
                     baseLayers: [
                         new VectorTileLayer({
                             url:"https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer",
-                            thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/vectorTile_thumbNail.png?csf=1&web=1&e=mZRbcA",
+                           
                         })
-                    ]
+                    ],
+                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/vectorTile_thumbNail.png?csf=1&web=1&e=mZRbcA",
                 });
 
                 //CREATE MAP WITH IMAGERY BASEMAP
