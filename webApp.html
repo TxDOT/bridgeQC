@@ -100,7 +100,7 @@
                 cursor: pointer;
             }
 
-            buttonBox {
+            .buttonBox {
                 display: flex;
                 flex-direction:row;
                 justify-content: center;
@@ -677,19 +677,19 @@
                 <text>
                     <h2>REFERENCE INFORMATION</h2>
                 </text>
-                <buttonBox class = "toggleSet">
+                <div class = "buttonBox toggleSet">
                     <button class = "esri-widget layerToggle"> <input type = "checkbox" id = "bridges" checked/>Bridge Hulls</button>
                     <button class = "esri-widget layerToggle"> <input type = "checkbox" id = "nbiPoints" unchecked/>Bridge Points</button>
-                </buttonBox>
-                <buttonBox class = "toggleSet">
+                </div>
+                <div class = "buttonBox toggleSet">
                     <button class = "esri-widget layerToggle"> <input type = "checkbox" id = "roadways" unchecked/>Roads</button>
                     <button class = "esri-widget layerToggle"> <input type = "checkbox" id = "streams" unchecked/>Streams</button>
                     <button class = "esri-widget layerToggle"> <input type = "checkbox" id = "railroads" unchecked/>Railroads</button>
-                </buttonBox>
-                <buttonBox>
+                </div>
+                <div class = "buttonBox">
                     <div id = "coordinateBox" class = "esri-coordinate-conversion"> </div>
                     <button id = "googleButton">Jump to Google</button>
-                </buttonBox>
+                </div>
                 <text>
                     <h2> EDIT BRIDGE </h2>
                 </text>
@@ -714,18 +714,18 @@
                     </calcite-select>
                 </calcite-label>
                 <calcite-input-text class = "customTheme" id = "commentBox"></calcite-input-text>
-                <buttonBox>
+                <div class = "buttonBox">
                     <button id = "saveBridgeButton">Save and Next Bridge</button>
                     <button id = "skipBridgeButton">Skip Bridge</button>
-                </buttonBox>
-                <buttonBox>
+                </div>
+                <div class = "buttonBox">
                     <button class = "userGuide" id = "userGuideButton">User Guide</button>
                     <button class = "dashboard" id = "dashboardButton">Progress Dashboard</button>
                     <button class = "signOut" id = "signoutButton">Sign Out</button>
-                </buttonBox>
-                <buttonBox>
+                </div>
+                <div class = "buttonBox">
                     <text id = "bridgeIDDisplay"> </text>
-                </buttonBox>
+                </div>
             </div>
         </div>
     </body>
