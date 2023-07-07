@@ -175,17 +175,17 @@
                     // WIDGETS
                     "esri/widgets/Editor",
                     "esri/widgets/CoordinateConversion",
+                    "esri/widgets/BasemapToggle",
 
                     // OAUTH
                     "esri/portal/Portal",
                     "esri/identity/OAuthInfo",
                     "esri/identity/IdentityManager",
                     "esri/portal/PortalQueryParams",
-                    "esri/widgets/BasemapToggle"
                 ],
 
                 // LOAD MODULES INTO FUNCTION FOR USE IN THE APP
-                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, VectorTileLayer, Editor, CoordinateConversion, Portal, OAuthInfo, esriId, PortalQueryParams, BasemapToggle) {
+                function(esriConfig, Map, MapView, Basemap, FeatureLayer, TileLayer, WMTSLayer, VectorTileLayer, Editor, CoordinateConversion, BasemapToggle, Portal, OAuthInfo, esriId, PortalQueryParams) {
 
                 // OAUTH OBJECT AND REGISTER WITH IDENTITY MANAGER
                 let oauthinfo = new OAuthInfo ({
@@ -201,12 +201,11 @@
                 // CHECK SIGN IN STATUS AND SET TOKEN
                 esriId.checkSignInStatus("https://txdot.maps.arcgis.com/sharing").then((response) => {
                     tokenNeeded = response.token;
-                    console.log("token in check sign in", tokenNeeded);
                     }).catch((error) => {
                         console.log("failure! you are not logged in", error);
                 });
 
-                // SIGN OUT BUTTON
+                // CREATE SIGN OUT BUTTON
                 document.getElementById("signoutButton").addEventListener("click", () => {
                     esriId.destroyCredentials();
                     window.location.reload();
@@ -222,23 +221,24 @@
                             }
                         })  
                     ],
-                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/newImagery.png?csf=1&web=1&e=yFvlMa",
-                    title: "Imagery"
+                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/newImagery.png?csf=1&web=1&e=yFvlMa", // THUMBNAIL IMAGE FOR BASEMAP TOGGLE WIDGET
+                    title: "Imagery" // TITLE FOR BASEMAP TOGGLE WIDGET
                 });
 
                   // CREATE TXDOT VECTOR TILE BASEMAP
                 const vectorBasemap = new Basemap({
                     baseLayers: [
                         new VectorTileLayer({
-                            url:"https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer"                        })
+                            url:"https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer"                       
+                        })
                     ],
-                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/newVector.png?csf=1&web=1&e=t4XYKX",
-                    title: "Vector Tile"
+                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/newVector.png?csf=1&web=1&e=t4XYKX", // THUMBNAIL IMAGE FOR BASEMAP TOGGLE WIDGET
+                    title: "Vector Tile" // TITLE FOR BASEMAP TOGGLE WIDGET
                 });
 
-                //CREATE MAP WITH IMAGERY BASEMAP
+                // CREATE MAP WITH IMAGERY BASEMAP
                 const map = new Map({
-                    basemap : tisBasemap 
+                    basemap : tisBasemap
                 });
 
                 // CREATE MAPVIEW
@@ -248,17 +248,17 @@
                     zoom: 6,
                     container: "viewDiv",
                     padding: {
-                        left: 420 
+                        left: 420 // EQUAL TO THE SIDEBAR WIDTH
                     }
                 });
 
                 // CREATE BASEMAP TOGGLE WIDGET
                 const basemapToggle = new BasemapToggle({
                     visibleElements: {
-                        title: true
+                        title: true // HAVE TITLE SHOW UP ON TOGGLE WIDGET
                     },
-                    view: mapView,
-                    nextBasemap: vectorBasemap
+                    view: mapView, // DEFAULT
+                    nextBasemap: vectorBasemap // SECOND OPTION
                 });
 
                 // ADD BASEMAP TOGGLE TO MAP
