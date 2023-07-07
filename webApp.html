@@ -144,6 +144,11 @@
                 color: black;
             }
 
+            .esri-icon-home:before {
+                content: "\e62f";
+                color: inherit;
+            }
+
             #commentBox {
                 background-color: white;
                 padding: 4px;
@@ -373,7 +378,10 @@
 
                 // DECLARE NEW BRIDGE ID VARIABLE. VARIABLE IS ALWAYS POPULATED WITH CURRENTLY SELECTED BRIDGE OBJECT ID
                 let specBridgeID;
-                
+
+                // DECLARE NEW VARIABLE TO SAVE SELECTED BRIDGE GEOMETRY. USED FOR HOME ZOOM BUTTON.
+                let specBridgeGeometry;
+
                 // LOAD MAP AND FIND REFERENCE
                 mapView.when(async function() {
                     specBridgeID = await findBridge(); // SET specBridgeID VARIABLE EQUAL TO SELECTED BRIDGE OBJECT ID FROM findBridge()
@@ -411,9 +419,11 @@
                     let selectedBridgeID = selectedBridge.attributes.OBJECTID; // VARIABLE TO HOLD OBJECT ID OF THAT SELECTED BRIDGE
                     console.log("this is the selected bridge Object ID", selectedBridgeID);
                     
+                    // SAVE SELECTED BRIDGE GEOMETRY TO GLOBAL VARIABLE
+                    specBridgeGeometry = selectedBridge;
+
                     // ZOOM TO THE SELECTED BRIDGE
-                    let bridgeExtent = selectedBridge.geometry.extent.clone().expand(2); // CREATES VARIABLE FOR BRIDGE EXTENT
-                    mapView.goTo(bridgeExtent); // ZOOMS TO THAT EXTENT
+                    zoomToBridge(selectedBridge);
 
                     // HIGHLIGHT THE SELECTED BRIDGE
                     highlight(selectedBridge);
@@ -430,6 +440,11 @@
                     min = Math.ceil(min);
                     max = Math.floor(max);
                     return Math.floor(Math.random()* (max - min + 1) + min); // RETURN RANDOM INTEGER (REPRESENTS INDEX POSITION WITHIN ARRAY OF QUERY RESULTS)
+                }
+
+                function zoomToBridge(selectedBridge) {
+                    let bridgeExtent = selectedBridge.geometry.extent.clone().expand(2); // CREATES VARIABLE FOR BRIDGE EXTENT
+                    mapView.goTo(bridgeExtent); // ZOOMS TO THAT EXTENT
                 }
 
                 function highlight(selectedBridge) {
@@ -684,6 +699,17 @@
                     captureButton: false
                 };
 
+                // CREATE HOME BUTTON TO ZOOM TO SELECTED BRIDGE
+                let homeButton = document.createElement("div");
+                homeButton.className = "esri-icon-collection esri-widget--button esri-widget esri-interactive esri-icon-home"; // CREATES IN DESIRED STYLE WITH HOME ICON
+                homeButton.title = "Zoom Back to Bridge"; // ADDS TITLE TO SEE WHEN MOUSE HOVERS OVER
+                mapView.ui.add(homeButton, "top-left"); // ADD TO MAP VIEW, UNDER ZOOM BUTTONS
+
+                // WATCH FOR BUTTON CLICK, ZOOM BACK TO SELECTED BRIDGE WHEN CLICKED
+                homeButton.addEventListener("click", () => {
+                    zoomToBridge(specBridgeGeometry);
+                });
+                
             });
         </script>
     </head>
