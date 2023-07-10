@@ -2,7 +2,8 @@
     <head>
         <meta charset = "utf-8"/>
         <meta name = "viewport" content = "initial-scale=1,maximum-scale=1,user-scalable=no"/>
-        <title>Intern Bridge QAQC WebApp</title>
+        <title>Bridge Hull QAQC WebApp</title>
+        <link rel="icon" type="image/x-icon" href="REFERENCES/txdot-logo.ico">
 
         <!-- SET ESRI CSS SOURCE -->
         <link rel = "stylesheet" href = "https://js.arcgis.com/4.26/esri/themes/light/main.css"/>
@@ -226,7 +227,7 @@
                             }
                         })  
                     ],
-                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/newImagery.png?csf=1&web=1&e=yFvlMa", // THUMBNAIL IMAGE FOR BASEMAP TOGGLE WIDGET
+                    thumbnailUrl: "REFERENCES/ImageryThumbnail.png", // THUMBNAIL IMAGE FOR BASEMAP TOGGLE WIDGET
                     title: "Imagery" // TITLE FOR BASEMAP TOGGLE WIDGET
                 });
 
@@ -237,7 +238,7 @@
                             url:"https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer"                       
                         })
                     ],
-                    thumbnailUrl: "https://txdot.sharepoint.com/:i:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/thumbnails/newVector.png?csf=1&web=1&e=t4XYKX", // THUMBNAIL IMAGE FOR BASEMAP TOGGLE WIDGET
+                    thumbnailUrl: "REFERENCES/VectorThumbnail.png", // THUMBNAIL IMAGE FOR BASEMAP TOGGLE WIDGET
                     title: "Vector Tile" // TITLE FOR BASEMAP TOGGLE WIDGET
                 });
 
@@ -249,8 +250,6 @@
                 // CREATE MAPVIEW
                 const mapView = new MapView({
                     map: map,
-                    center: [-100.341389, 31.132222],
-                    zoom: 6,
                     container: "viewDiv",
                     padding: {
                         left: 420 // EQUAL TO THE SIDEBAR WIDTH
@@ -445,6 +444,16 @@
                 function zoomToBridge(selectedBridge) {
                     let bridgeExtent = selectedBridge.geometry.extent.clone().expand(2); // CREATES VARIABLE FOR BRIDGE EXTENT
                     mapView.goTo(bridgeExtent); // ZOOMS TO THAT EXTENT
+
+                    console.log("scale", mapView.scale);
+
+                    // SET CONSTRAINTS WITH REFERENCE TO THE SPECIFIC BRIDGE ZOOMED TO
+                    let constraintExtent = selectedBridge.geometry.extent.clone().expand(3)
+                    mapView.constraints = {
+                        geometry: constraintExtent, // SET CONSTRAINTS ON USER'S ABILITY TO PAN
+                        minScale: 10000, // SET CONSTRAINTS ON ZOOMING OUT
+                        maxScale: 0 // SET CONSTRAINTS ON ZOOMING IN
+                    };
                 }
 
                 function highlight(selectedBridge) {
@@ -679,7 +688,7 @@
                 // CREATE BUTTON THAT LINKS TO USER GUIDE
                 const userGuideButton = document.getElementById("userGuideButton");
                 userGuideButton.addEventListener("click", () => {
-                    window.open("https://txdot.sharepoint.com/:b:/r/sites/division-tpp/GIS/Project%20Documents/2023/Bridge%20Polygons/01_Project%20Files/Intern%20QAQC/BridgeApp_HelpDoc_v2.pdf?csf=1&web=1&e=lVFs6Z");
+                    window.open("REFERENCES/BridgeApp_HelpDoc.pdf");
                 });
 
                 // CREATE BUTTON THAT LINKS TO PROGRESS DASHBOARD
