@@ -250,8 +250,6 @@
                 // CREATE MAPVIEW
                 const mapView = new MapView({
                     map: map,
-                    center: [-100.341389, 31.132222],
-                    zoom: 6,
                     container: "viewDiv",
                     padding: {
                         left: 420 // EQUAL TO THE SIDEBAR WIDTH
@@ -446,6 +444,16 @@
                 function zoomToBridge(selectedBridge) {
                     let bridgeExtent = selectedBridge.geometry.extent.clone().expand(2); // CREATES VARIABLE FOR BRIDGE EXTENT
                     mapView.goTo(bridgeExtent); // ZOOMS TO THAT EXTENT
+
+                    console.log("scale", mapView.scale);
+
+                    // SET CONSTRAINTS WITH REFERENCE TO THE SPECIFIC BRIDGE ZOOMED TO
+                    let constraintExtent = selectedBridge.geometry.extent.clone().expand(3)
+                    mapView.constraints = {
+                        geometry: constraintExtent, // SET CONSTRAINTS ON USER'S ABILITY TO PAN
+                        minScale: 10000, // SET CONSTRAINTS ON ZOOMING OUT
+                        maxScale: 0 // SET CONSTRAINTS ON ZOOMING IN
+                    };
                 }
 
                 function highlight(selectedBridge) {
