@@ -1,4 +1,13 @@
-# bridgeQC
-Repo for bridge QAQC dev project
+# Bridge Hull QAQC WebApp
+Description & Purpose
 
-## test section title
+## User Setup
+Requirements & Instructions to Run Locally
+
+## Developer Setup
+Requirements & Instructions to Develop Locally
+
+## Script Process Overview
+
+
+## Further Documentation
