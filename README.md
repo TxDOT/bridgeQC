@@ -2,6 +2,8 @@
 
 Description & Purpose
 
+https://txdot.github.io/bridgeQC/webApp.html
+
 ## User Setup
 
 Requirements & Instructions to Run Locally
@@ -14,6 +16,7 @@ Requirements & Instructions to Run Locally
 | Visual Studio Code |
 | Live Server Extension for VS Code |
 | GitHub Desktop |
+
 
 | Required Access/Permissions | Details | Access Level Needed |
 | ----------- | ----------- | ----------- | 
@@ -130,3 +133,4 @@ Requirements & Instructions to Run Locally
 
 
 ## Further Documentation
+
