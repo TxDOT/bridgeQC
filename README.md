@@ -1,12 +1,35 @@
 # Bridge Hull QAQC WebApp
 
-Description & Purpose
+## Description
 
-https://txdot.github.io/bridgeQC/webApp.html
+- GIS WebApp developed to provide efficient editing workflow for end user conducting bridge polygon QAQC.
+    - User conducts assessment of LiDAR generated polygons representative of Texas bridges.
+    - Polygon regularity check is performed utilizing various visual references.
+    - Edits made in app save directly to the attribute table, updating relevant records within the database.
+
+## Background
+- Created in support of the larger TxDOT Bridge Data Aggregation Project.
+    - Overall project working towards improving usability and efficacy of TxDOT bridge layer, producing bridge geometry and standardization of attributes.
 
 ## User Setup
 
-Requirements & Instructions to Run Locally
+### Requirements
+- ArcGIS Online Account
+    - AGO login must be specifically associated to TxDOT.
+    - Must be an authorized member/contributor of "Bridge QC Project" AGO group.
+    ![Alt text](REFERENCES/Readme_Developing/AGOgroup.png)
+
+### Setup
+1. Open app in browser.
+    - [Bridge Hull QAQC WebApp Link](https://txdot.github.io/bridgeQC/webApp.html)
+2. Log in using TxDOT AGO credentials.
+![Alt text](REFERENCES/Readme_Developing/AGOlogin.png)
+3. Web App should appear as below.
+![Alt text](REFERENCES/Readme_Developing/HomePage.png)
+
+### User Instructions and Buttonology
+- [Bridge QAQC User Guide](https://txdot.github.io/bridgeQC/REFERENCES/BridgeApp_HelpDoc.pdf)
+
 
 ## Developer Setup
 
@@ -131,6 +154,27 @@ Requirements & Instructions to Run Locally
 
 ## Script Process Overview
 
+| User Action | Background Script Process |
+| ----------- | ------------------------- |
+| Clicks on WebApp URL and gets OAuth prompt | <ul><li>Checks if the user is already signed in.</li><li>If not signed in, asks user to sign into AGO account to verify layer permissions. </li><li>Saves token to use when/if applying edits to layer. </li><li>Loads map completely if permissions are correct. </li></ul> |
+| Loads Web App | Creates map and map view: <ul><li>Creates base layers and base layer toggle.</li><li>Creates feature layers and associated renderers. </li><li>Adds all layers to map and map view. </li><li>Creates checkboxes that allow user to toggle layers on and off. </li></ul> Finds next bridge to QC: <ul><li>Queries Bridge_Hull_QAQC feature layer for those that still have Null values for the IS_IRREG field.</li> <li>Picks one bridge from the query result at random.</li> <li>Zooms to this bridge.</li> <li>Puts constraint on user's ability to zoom out or pan away from selected bridge.</li> <li>Highlights this bridge.</li> <li>Saves the Object ID of the bridge in a global variable, for later use.</li></ul> Creates Calcite Select drop-down and Comment Box for Bridge QAQC Options: <ul><li>Select has 12 options, including "Select Your Choice" which is the default selection, and does not represent an actual QAQC option.</li> <li>Comment box remains inactive until user selects an option within the irregular bridge option group.</li></ul> Creates additional buttons and widgets.|
+| Clicks Skip Bridge Button | Finds next bridge to QC: <ul><li>Queries Bridge_Hull_QAQC feature layer for those that still have Null values for the IS_IRREG field.</li> <li>Picks one bridge from the query result at random.</li> <li>Zooms to this bridge.</li> <li>Puts constraint on user's ability to zoom out or pan away from selected bridge.</li> <li>Highlights this bridge.</li> <li>Saves the Object ID of the bridge in a global variable, for later use.</li></ul> Clears exisiting inputs: <ul><li> Clears any selection in the Calcite Select drop-down, and returns to default "Select Your Choice". </li> <li> Clears any inputs in Comment Box. </li></ul>|
+| Selects an optin in the Calcite Select drop-down | <ul><li> Enables comment box inputs.</li> <li>Enables user to click the Save and Next Bridge button.</li></ul>|
+| Clicks Save and Next Bridge Button | If user has not selected a QC option ("Select Your Choice" is still the selected option): <ul><li> An alert pops up to tell the user that there is nothing to save. </li></ul> If user has selected a QC option: <ul><li> Creates new variable to open new XML Http Request. </li> <li>Creates serviceURL variable that has basic REST URL to update features in Bridge_Hull_QAQC layer. </li> <li>Creates variables to save all of user's inputs (QC choice and comment) and append these to the service URL.</li> <li>Post edits to layer.</li></ul> Once edits get posted, finds next bridge to QC: <ul><li>Queries Bridge_Hull_QAQC feature layer for those that still have Null values for the IS_IRREG field.</li> <li>Picks one bridge from the query result at random.</li> <li>Zooms to this bridge.</li> <li>Puts constraint on user's ability to zoom out or pan away from selected bridge.</li> <li>Highlights this bridge.</li> <li>Saves the Object ID of the bridge in a global variable, for later use.</li></ul> Clears exisiting inputs: <ul><li> Clears any selection in the Calcite Select drop-down, and returns to default "Select Your Choice". </li> <li> Clears any inputs in Comment Box. </li></ul>|
+
+
 
 ## Further Documentation
 
+#### ESRI ArcGIS Maps SDK for JavaScript Documentation
+- [API reference](https://developers.arcgis.com/javascript/latest/api-reference/)
+#### Reference Layer Locations
+| Layer| Type | Source URL |
+| ----------- | ----------- | ----------- | 
+| Bridge Hull QAQC Layer | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer |
+| Bridge Points | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Bridges/FeatureServer  |
+| Texas Roadways | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer |
+| Waterways | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Streams/FeatureServer |
+| Texas Railroads | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Railroads/FeatureServer |
+| Texas Imagery Service 6in Imagery | WMTS Service | https://txgi.tnris.org/login/path/food-paul-zebra-shirt/wmts/1.0.0/WMTSCapabilities.xml |
+| TxDOT Vector Tile Basemap | Vector Tile Service | https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer/resources/styles/root.json |
