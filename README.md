@@ -1,12 +1,35 @@
 # Bridge Hull QAQC WebApp
 
-Description & Purpose
+## Description
 
-https://txdot.github.io/bridgeQC/webApp.html
+- GIS WebApp developed to provide efficient editing workflow for end user conducting bridge polygon QAQC.
+    - User conducts assessment of LiDAR generated polygons representative of Texas bridges.
+    - Polygon regularity check is performed utilizing various visual references.
+    - Edits made in app save directly to the attribute table, updating relevant records within the database.
+
+## Background
+- Created in support of the larger TxDOT Bridge Data Aggregation Project.
+    - Overall project working towards improving usability and efficacy of TxDOT bridge layer, producing bridge geometry and standardization of attributes.
 
 ## User Setup
 
-Requirements & Instructions to Run Locally
+### Requirements
+- ArcGIS Online Account
+    - AGO login must be specifically associated to TxDOT.
+    - Must be an authorized member/contributor of "Bridge QC Project" AGO group.
+    ![Alt text](REFERENCES/Readme_Developing/AGOgroup.png)
+
+### Setup
+1. Open app in browser.
+    - [Bridge Hull QAQC WebApp Link](https://txdot.github.io/bridgeQC/webApp.html)
+2. Log in using TxDOT AGO credentials.
+![Alt text](REFERENCES/Readme_Developing/AGOlogin.png)
+3. Web App should appear as below.
+![Alt text](REFERENCES/Readme_Developing/HomePage.png)
+
+### User Instructions and Buttonology
+- [Bridge QAQC User Guide](https://txdot.github.io/bridgeQC/REFERENCES/BridgeApp_HelpDoc.pdf)
+
 
 ## Developer Setup
 
@@ -132,5 +155,18 @@ Requirements & Instructions to Run Locally
 ## Script Process Overview
 
 
+
 ## Further Documentation
 
+#### ESRI ArcGIS Maps SDK for JavaScript Documentation
+- [API reference](https://developers.arcgis.com/javascript/latest/api-reference/)
+#### Reference Layer Locations
+| Layer| Type | Source URL |
+| ----------- | ----------- | ----------- | 
+| Bridge Hull QAQC Layer | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer |
+| Bridge Points | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Bridges/FeatureServer  |
+| Texas Roadways | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer |
+| Waterways | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Streams/FeatureServer |
+| Texas Railroads | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Railroads/FeatureServer |
+| Texas Imagery Service 6in Imagery | WMTS Service | https://txgi.tnris.org/login/path/food-paul-zebra-shirt/wmts/1.0.0/WMTSCapabilities.xml |
+| TxDOT Vector Tile Basemap | Vector Tile Service | https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer/resources/styles/root.json |
