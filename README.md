@@ -8,6 +8,7 @@
     - Edits made in app save directly to the feature layer's attribute table, updating relevant records within the database.
 - Created in support of the larger TxDOT Bridge Data Aggregation Project.
     - Overall project working towards improving usability and efficacy of TxDOT bridge layer, producing bridge geometry and standardization of attributes.
+- Created using [ArcGIS Maps SDK for JavaScript v4.26](https://developers.arcgis.com/javascript/latest/)
 
 ## User Setup
 
@@ -46,13 +47,16 @@
 | Live Server Extension for VS Code |
 | GitHub Desktop |
 
-
 | Required Access/Permissions | Details | Access Level Needed |
 | ----------- | ----------- | ----------- | 
 | bridgeQC respository on GitHub | Repo within TxDOT's GitHub company, shared with Intern_2023 team | Editing Access |
 | Bridge_Hull_QAQC Feature Layer on ArcGIS Online | AGO Feature layer under TXDOT_GIS AGO Account, shared with Bridge QC Group | Editing Access |
 | BridgeQAQCv2 Application on ArcGIS Online | AGO Application under TXDOT_GIS AGO Account, shared with Bridge QC Group | Editing Access |
 | BridgeQAQC_Tracking Dashboard on ArcGIS Online | AGO Dashboard under TXDOT_GIS AGO Account, shared with Bridge QC Group | Editing Access |
+
+| ESRI JS API Source |
+| ------------------ |
+| Written using ArcGIS Maps SDK for JavaScript v4.26 |
 
 ### Setup
 
@@ -128,33 +132,33 @@
 
     - D. When done with all of your edits for the branch, you can stop the live server by clicking on the "Port" button in the bottom right corner of VS Code.
 
-        <img title = "Step 4Da" src = "REFERENCES\Readme_Developing\Step4Da.png" width = "100">
+        <img title = "Step 4D" src = "REFERENCES\Readme_Developing\Step4D.png" width = "100">
 
     - E. Then, go to GitHub Desktop. Make sure correct branch is still selected. Then click "Preview Pull Request".
 
-        <img title = "Step 4Db" src = "REFERENCES\Readme_Developing\Step4Db.png" width = "800">
+        <img title = "Step 4E" src = "REFERENCES\Readme_Developing\Step4E.png" width = "800">
 
     - F. On the screen that pops up, make sure that it is merging into "gh-pages" before clicking "Create pull request".
 
-        <img title = "Step 4Ea" src = "REFERENCES\Readme_Developing\Step4Ea.png" width = "400">
+        <img title = "Step 4Fa" src = "REFERENCES\Readme_Developing\Step4Fa.png" width = "400">
 
-        <img title = "Step 4Eb" src = "REFERENCES\Readme_Developing\Step4Eb.png" width = "400">
+        <img title = "Step 4Fb" src = "REFERENCES\Readme_Developing\Step4Fb.png" width = "400">
 
     - G. This should open up the repository in GitHub online. Confirm settings before clicking "Create pull request".
 
-        <img title = "Step 4F" src = "REFERENCES\Readme_Developing\Step4F.png" width = "1000">
+        <img title = "Step 4G" src = "REFERENCES\Readme_Developing\Step4G.png" width = "1000">
 
     - H. If there are no conflicts between branches, click "Merge pull request" on the page that pops up. If there are conflicts, go through them and resolve them first, and then click "Merge pull request".
 
-        !<img title = "Step 4G" src = "REFERENCES\Readme_Developing\Step4G.png" width = "1000">
+        !<img title = "Step 4H" src = "REFERENCES\Readme_Developing\Step4H.png" width = "1000">
 
     - I. When ready, click "Confirm merge".
 
-        <img title = "Step 4H" src = "REFERENCES\Readme_Developing\Step4H.png" width = "1000">
+        <img title = "Step 4I" src = "REFERENCES\Readme_Developing\Step4I.png" width = "1000">
     
     - J. Once the merge is successful, click "Delete branch".
         
-        <img title = "Step 4I" src = "REFERENCES\Readme_Developing\Step4I.png" width = "1000">
+        <img title = "Step 4J" src = "REFERENCES\Readme_Developing\Step4J.png" width = "1000">
 
     - K. Finally, follow the same instructions to merge "gh-pages" into the "main" branch.
 
@@ -170,11 +174,15 @@
 
 ## Further Documentation
 
-#### ESRI ArcGIS Maps SDK for JavaScript Documentation
+#### Helpful Links:
 
-- [API reference](https://developers.arcgis.com/javascript/latest/api-reference/)
+- ESRI ArcGIS Maps SDK for JavaScript v4.26 Documentation: [API Reference](https://developers.arcgis.com/javascript/latest/api-reference/)
+- ESRI ArcGIS Maps SDK for JavaScript Sample Code: [Sample Code](https://developers.arcgis.com/javascript/latest/sample-code/)
+- OAuth 2.0 Documentation: [OAuth 2.0 Reference](https://developers.arcgis.com/documentation/mapping-apis-and-services/security/oauth-2.0/)
+- WebApp User Guide: [Bridge QAQC User Guide](https://txdot.github.io/bridgeQC/REFERENCES/BridgeApp_HelpDoc.pdf)
+    - Contains examples of each type of QC condition that a user might select.
 
-#### Reference Layer Locations
+#### Reference Layer Locations:
 
 | Layer| Type | Source |
 | ----------- | ----------- | ----------- | 
