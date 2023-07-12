@@ -116,8 +116,8 @@
 
     - D. After you make changes and save them, the web page refreshes and reflects these edits.
 
-4. Saving Edits
-    - A. Click ctrl-s to save edits to your code as you go.
+4. Saving Edits to Your Code
+    - A. On your keyboard, click "ctrl-s" to save edits to your code as you go.
     - B. After doing a chunk of edits, click commit edits under the source control tab. Give a short message to describe your saved edits.
 
         ![Step4B](/REFERENCES/Readme_Developing/Step4B.png "Step4B")
