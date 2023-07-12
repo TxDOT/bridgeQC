@@ -118,45 +118,45 @@
 
 4. Saving Edits to Your Code
     - A. On your keyboard, click "ctrl-s" to save edits to your code as you go.
-    - B. After doing a chunk of edits, click commit edits under the source control tab. Give a short message to describe your saved edits.
+    - B. After doing a chunk of edits, click "Commit" under the Source Control tab. Type a short message to describe your saved edits.
 
-        ![Step4B](/REFERENCES/Readme_Developing/Step4B.png "Step4B")
+        <img title = "Step 4B" src = "REFERENCES\Readme_Developing\Step4B.png" width = "250">
 
-    - C. Click sync changes.
+    - C. Next, click "Sync Changes".
 
-        ![Step4C](/REFERENCES/Readme_Developing/Step4C.png "Step4C")
+        <img title = "Step 4C" src = "REFERENCES\Readme_Developing\Step4C.png" width = "250">
 
-    - D. When done with your goal for the branch, you can stop the live server by clicking on port button.
+    - D. When done with all of your edits for the branch, you can stop the live server by clicking on the "Port" button in the bottom right corner of VS Code.
 
-        ![Step4Da](/REFERENCES/Readme_Developing/Step4Da.png "Step4Da")
+        <img title = "Step 4Da" src = "REFERENCES\Readme_Developing\Step4Da.png" width = "100">
 
-    - E. Then go to GitHub Desktop. Make sure correct branch is still selected. Then click Preview Pull Request.
+    - E. Then, go to GitHub Desktop. Make sure correct branch is still selected. Then click "Preview Pull Request".
 
-        ![Step4Db](/REFERENCES/Readme_Developing/Step4Db.png "Step4Db")
+        <img title = "Step 4Db" src = "REFERENCES\Readme_Developing\Step4Db.png" width = "800">
 
-    - F. Make sure that it is merging into gh-pages before clicking Create pull request to confirm.
+    - F. On the screen that pops up, make sure that it is merging into "gh-pages" before clicking "Create pull request".
 
-        ![Step4Ea](/REFERENCES/Readme_Developing/Step4Ea.png "Step4Ea")
+        <img title = "Step 4Ea" src = "REFERENCES\Readme_Developing\Step4Ea.png" width = "400">
 
-        ![Step4Eb](/REFERENCES/Readme_Developing/Step4Eb.png "Step4Eb")
+        <img title = "Step 4Eb" src = "REFERENCES\Readme_Developing\Step4Eb.png" width = "400">
 
-    - G. This should open up in GitHub online. Confirm settings before clicking Create pull request.
+    - G. This should open up the repository in GitHub online. Confirm settings before clicking "Create pull request".
 
-        ![Step4F](/REFERENCES/Readme_Developing/Step4F.png "Step4F")
+        <img title = "Step 4F" src = "REFERENCES\Readme_Developing\Step4F.png" width = "1000">
 
-    - H. If there are no conflicts, click Merge pull request on the page that pops up. If there are conflicts, go through them and resolve them first, and then click Merge pull request.
+    - H. If there are no conflicts between branches, click "Merge pull request" on the page that pops up. If there are conflicts, go through them and resolve them first, and then click "Merge pull request".
 
-        ![Step4G](/REFERENCES/Readme_Developing/Step4G.png "Step4G")
+        !<img title = "Step 4G" src = "REFERENCES\Readme_Developing\Step4G.png" width = "1000">
 
-    - I. When ready, confirm merge.
+    - I. When ready, click "Confirm merge".
 
-        ![Step4H](/REFERENCES/Readme_Developing/Step4H.png "Step4H")
+        <img title = "Step 4H" src = "REFERENCES\Readme_Developing\Step4H.png" width = "1000">
     
-    - J. Then, delete branch.
+    - J. Once the merge is successful, click "Delete branch".
         
-        ![Step4I](/REFERENCES/Readme_Developing/Step4I.png "Step4I")
+        <img title = "Step 4I" src = "REFERENCES\Readme_Developing\Step4I.png" width = "1000">
 
-    - K. Follow the same instructions to merge gh-pages into the main branch.
+    - K. Finally, follow the same instructions to merge "gh-pages" into the "main" branch.
 
 ## Script Process Overview
 
