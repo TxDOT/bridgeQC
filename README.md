@@ -178,12 +178,12 @@
 
 #### Reference Layer Locations
 
-| Layer| Type | Source URL |
+| Layer| Type | Source |
 | ----------- | ----------- | ----------- | 
-| Bridge Hull QAQC Layer | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer |
-| Bridge Points | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Bridges/FeatureServer  |
-| Texas Roadways | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer |
-| Waterways | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Streams/FeatureServer |
-| Texas Railroads | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Railroads/FeatureServer |
-| Texas Imagery Service 6in Imagery | WMTS Service | https://txgi.tnris.org/login/path/food-paul-zebra-shirt/wmts/1.0.0/WMTSCapabilities.xml |
-| TxDOT Vector Tile Basemap | Vector Tile Service | https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer/resources/styles/root.json |
+| Bridge Hull QAQC Layer | AGO Feature Service | [Bridge Hull QAQC URL](https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer) |
+| Bridge Points | AGO Feature Service | [Bridge Points URL](https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Bridges/FeatureServer)  |
+| Texas Roadways | AGO Feature Service | [Roadways URL](https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Roadways/FeatureServer) |
+| Waterways | AGO Feature Service | [Waterways URL](https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Streams/FeatureServer) |
+| Texas Railroads | AGO Feature Service | [Railroads URL](https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Texas_Railroads/FeatureServer) |
+| Texas Imagery Service 6in Imagery | WMTS Service | [Imagery Basemap URL](https://txgi.tnris.org/login/path/food-paul-zebra-shirt/wmts/1.0.0/WMTSCapabilities.xml) |
+| TxDOT Vector Tile Basemap | Vector Tile Service | [Vector Tile Basemap URL](https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer/resources/styles/root.json) |
