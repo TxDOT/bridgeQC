@@ -18,7 +18,7 @@
 | --------------------------- | ------- | ------------------- |
 | ArcGIS Online Account | <ul> <li> AGO login must be specifically associated to TxDOT. </li> <li> Must be an authorized member/contributor of "Bridge QC Project" AGO group. </li> </ul> | Authorized member/contributer |
 
-<img title = "AGOGroup" src = "REFERENCES\Readme_Developing\AGOgroup.png" width = "500">
+<img title = "AGOGroup" src = "REFERENCES\Readme_User\AGOgroup.png" width = "500">
 
 ### Setup
 
@@ -26,11 +26,11 @@
 
 2. Log in using TxDOT AGO credentials.
 
-    <img title = "AGOLogin" src = "REFERENCES\Readme_Developing\AGOlogin.png" width = "300">
+    <img title = "AGOLogin" src = "REFERENCES\Readme_User\AGOlogin.png" width = "300">
 
 3. Web App should appear as below.
 
-    <img title = "HomePage" src = "REFERENCES\Readme_Developing\HomePage.png" width = "1000">
+    <img title = "HomePage" src = "REFERENCES\Readme_User\HomePage.png" width = "1000">
 
 ### User Instructions and Buttonology
 
