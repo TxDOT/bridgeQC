@@ -1,39 +1,45 @@
 # Bridge Hull QAQC WebApp
 
-## Description
+## Description & Background
 
 - GIS WebApp developed to provide efficient editing workflow for end user conducting bridge polygon QAQC.
     - User conducts assessment of LiDAR generated polygons representative of Texas bridges.
     - Polygon regularity check is performed utilizing various visual references.
-    - Edits made in app save directly to the attribute table, updating relevant records within the database.
-
-## Background
+    - Edits made in app save directly to the feature layer's attribute table, updating relevant records within the database.
 - Created in support of the larger TxDOT Bridge Data Aggregation Project.
     - Overall project working towards improving usability and efficacy of TxDOT bridge layer, producing bridge geometry and standardization of attributes.
 
 ## User Setup
 
 ### Requirements
-- ArcGIS Online Account
-    - AGO login must be specifically associated to TxDOT.
-    - Must be an authorized member/contributor of "Bridge QC Project" AGO group.
-    ![Alt text](REFERENCES/Readme_Developing/AGOgroup.png)
+
+| Required Access/Permissions | Details | Access Level Needed |
+| --------------------------- | ------- | ------------------- |
+| ArcGIS Online Account | <ul> <li> AGO login must be specifically associated to TxDOT. </li> <li> Must be an authorized member/contributor of "Bridge QC Project" AGO group. </li> </ul> | Authorized member/contributer |
+
+<img title = "AGOGroup" src = "REFERENCES\Readme_Developing\AGOgroup.png" width = "500">
 
 ### Setup
-1. Open app in browser.
-    - [Bridge Hull QAQC WebApp Link](https://txdot.github.io/bridgeQC/webApp.html)
+
+1. Open app in browser: [Bridge Hull QAQC WebApp Link](https://txdot.github.io/bridgeQC/webApp.html)
+
 2. Log in using TxDOT AGO credentials.
-![Alt text](REFERENCES/Readme_Developing/AGOlogin.png)
+
+    <img title = "AGOLogin" src = "REFERENCES\Readme_Developing\AGOlogin.png" width = "300">
+
 3. Web App should appear as below.
-![Alt text](REFERENCES/Readme_Developing/HomePage.png)
+
+    <img title = "HomePage" src = "REFERENCES\Readme_Developing\HomePage.png" width = "1000">
 
 ### User Instructions and Buttonology
+
 - [Bridge QAQC User Guide](https://txdot.github.io/bridgeQC/REFERENCES/BridgeApp_HelpDoc.pdf)
 
 
 ## Developer Setup
 
-### Requirements to Develop
+### Requirements
+
 | Required Software |
 | ----------- |
 | Visual Studio Code |
@@ -48,67 +54,67 @@
 | BridgeQAQCv2 Application on ArcGIS Online | AGO Application under TXDOT_GIS AGO Account, shared with Bridge QC Group | Editing Access |
 | BridgeQAQC_Tracking Dashboard on ArcGIS Online | AGO Dashboard under TXDOT_GIS AGO Account, shared with Bridge QC Group | Editing Access |
 
-### Instructions to Develop Locally
+### Setup
 
 1. Create Branch
     - A. Open file in GitHub online: [GitHub Link](https://github.com/TxDOT/bridgeQC)
-    - B. Click on branch button, select "gh-pages" branch.
+    - B. Click on the branch button, select "gh-pages" branch.
 
-        ![Step1B](/REFERENCES/Readme_Developing/Step1B.png "Step1B")
+        <img title = "Step 1B" src = "REFERENCES\Readme_Developing\Step1B.png" width = "350">
     
-    - C. Click on branch button again, type in the "find or create a branch..." box with the name of a new branch.
+    - C. Click on the branch button again, and type in the "find or create a branch..." box. Type a name for your new branch.
 
-        ![Step1C](/REFERENCES/Readme_Developing/Step1C.png "Step1C")
+        <img title = "Step 1C" src = "REFERENCES\Readme_Developing\Step1C.png" width = "350">
     
-    - D. Make sure that your branch will be created off of gh-pages.
+    - D. Make sure that your branch will be created off of "gh-pages".
 
-        ![Step1D](/REFERENCES/Readme_Developing/Step1D.png "Step1D")
+        <img title = "Step 1D" src = "REFERENCES\Readme_Developing\Step1D.png" width = "350">
     
 2. Open File in VS Code
-    - A. Once your branch is created, click on the green code button.
+    - A. Once your branch is created, click on the green "Code" button.
 
-        ![Step2A](/REFERENCES/Readme_Developing/Step2A.png "Step2A")
+        <img title = "Step 2A" src = "REFERENCES\Readme_Developing\Step2A.png" width = "180">
 
-    - B. Make sure that local is selected, then click "Open with GitHub Desktop".
+    - B. Make sure that you are on the "Local" tab, then click "Open with GitHub Desktop".
 
-        ![Step2B](/REFERENCES/Readme_Developing/Step2B.png "Step2B")
+        <img title = "Step 2B" src = "REFERENCES\Readme_Developing\Step2B.png" width = "400">
 
-    - C. Click on any pop ups that ask for confirmation to open in GitHub desktop.
+    - C. Click on any pop-ups that ask for confirmation to open in GitHub desktop.
     - D. If GitHub Desktop does not open automatically, you may have to manually open the GitHub Desktop app and find the branch.
         - a. Open GitHub Desktop.
-        - b. Click on current reposity, select bridgeQC
-        - c. Click on current branch, select gh-pages.
-        - d. Click fetch origin.  
-        - e. Now click on current branch again, you should see the branch you just made. Select it. 
+        - b. Click on "Current repository", select "bridgeQC".
+        - c. Click on "Current branch", select "gh-pages".
+        - d. Click "Fetch origin".  
+        - e. Now, click on "Current branch" again, you should see the branch you just made. Select it. 
 
-            ![Step2D](/REFERENCES/Readme_Developing/Step2D.png "Step2D")
+            <img title = "Step 2D" src = "REFERENCES\Readme_Developing\Step2D.png" width = "800">
         
-    - E. Click "Open the repository in your external editor".
+    - E. Click "Open in Visual Studio Code" under the "Open the repository in your external editor" option.
 
-        ![Step2E](/REFERENCES/Readme_Developing/Step2E.png "Step2E")
+        <img title = "Step 2E" src = "REFERENCES\Readme_Developing\Step2E.png" width = "800">
     
-    - F. Once is VS Code, confirm at the bottom that it is the right branch and make sure that webApp.html is selected in the Explorer.
+    - F. Once in VS Code, confirm at the bottom that it is the correct branch and make sure that "webApp.html" is selected in the Explorer tab.
 
-        ![Step2Fa](/REFERENCES/Readme_Developing/Step2Fa.png "Step2Fa")
+        <img title = "Step 2Fa" src = "REFERENCES\Readme_Developing\Step2Fa.png" width = "250">
 
-        ![Step2Fb](/REFERENCES/Readme_Developing/Step2Fb.png "Step2Fb")
+        <img title = "Step 2Fb" src = "REFERENCES\Readme_Developing\Step2Fb.png" width = "250">
 
-3. Run Live Server in VS Code
-    - A. Click on "Go Live" to run the live server extension.
+3. Run Live Server extension in VS Code. Live Server allows you to preview and test the WebApp as you make changes to the code.
+    - A. Click on the "Go Live" button in the bottom right corner of VS Code to run the live server extension.
 
-        ![Step3A](/REFERENCES/Readme_Developing/Step3A.png "Step3A")
+        <img title = "Step 3A" src = "REFERENCES\Readme_Developing\Step3A.png" width = "200">
 
-    - B. Make sure that it serves on the correct port. You can change these settings in the Live Server Extension settings.
+    - B. Make sure that it is hosted on "127.0.0.1" and that it serves on the correct port (5500). You can change these settings in the Live Server Extension settings. This ensures that the redirect URI used for OAuth in the application works.
 
-        ![Step3Ba](/REFERENCES/Readme_Developing/Step3Ba.png "Step3Ba")
+        <img title = "Step 3Ba" src = "REFERENCES\Readme_Developing\Step3Ba.png" width = "500">
 
-        ![Step3Bb](/REFERENCES/Readme_Developing/Step3Bb.png "Step3Bb")
+        <img title = "Step 3Bb" src = "REFERENCES\Readme_Developing\Step3Bb.png" width = "400">
 
-    - C. When the live server launches, you will have to login to AGO in order to view the app.
+    - C. When the live server launches, you will have to login to ArcgIS Online in order to view the app.
 
-        ![Step3C](/REFERENCES/Readme_Developing/Step3C.png "Step3C")
+        <img title = "Step 3C" src = "REFERENCES\Readme_Developing\Step3C.png" width = "300">
 
-    - D. You can now see any changes to the code reflected on this live server every time you save it.
+    - D. After you make changes and save them, the web page refreshes and reflects these edits.
 
 4. Saving Edits
     - A. Click ctrl-s to save edits to your code as you go.
@@ -167,8 +173,11 @@
 ## Further Documentation
 
 #### ESRI ArcGIS Maps SDK for JavaScript Documentation
+
 - [API reference](https://developers.arcgis.com/javascript/latest/api-reference/)
+
 #### Reference Layer Locations
+
 | Layer| Type | Source URL |
 | ----------- | ----------- | ----------- | 
 | Bridge Hull QAQC Layer | AGO Feature Service | https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Bridge_Hull_QAQC/FeatureServer |
